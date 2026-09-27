@@ -46,3 +46,25 @@ Audit AUC 0.560 reproduced from the same committed logs with
   reconstruction (see Rani's weekend plan).
 - Feature logs were generated with max_tokens=256; truncation can lower accuracy
   relative to uncapped validation.
+
+## Addendum: uncertainty on the historical audit AUCs
+
+E5 records "no AUC CI recorded" for v1–v3. `scripts/audit_auc_uncertainty.py`
+reproduces each point AUC exactly with the audit's own `classifier_auc` (seed 42,
+native row order), then reports (a) the spread over 50 CV fold seeds and (b) a
+1,000-replicate paired bootstrap over questions with question-grouped folds.
+
+| Version | n/cond | Point AUC | CV-seed range | Bootstrap 95% | P(AUC ≥ 0.7) |
+|---|---:|---:|---:|---:|---:|
+| v1 | 60 | 0.978 | [0.944, 0.990] | [0.931, 0.999] | 1.000 |
+| v2 | 200 | 0.659 | [0.626, 0.666] | [0.627, 0.708] | 0.056 |
+| v3 | 200 | 0.560 | [0.510, 0.572] | [0.528, 0.602] | 0.000 |
+
+Interpretation:
+- v3's interval excludes 0.5: a weak residual output-side signal remains. Do
+  not describe v3 as "chance" or "indistinguishable from 0.5". The accurate
+  claim is that the audit's prespecified rule (AUC ≥ 0.7 or any
+  Bonferroni-significant KS feature) no longer fires, and AUC is well below 0.7
+  in every bootstrap replicate.
+- v2's AUC alone is below 0.7 in ~94% of replicates; its DISTINCT verdict comes
+  from the Bonferroni-significant length KS test, not the AUC criterion.
