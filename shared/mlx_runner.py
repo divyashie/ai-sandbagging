@@ -295,6 +295,7 @@ class MLXRunner(Runner):
                 batch_size:       4
                 learning_rate:    1e-4
                 output_dir:       "./mlx_adapter"
+                seed:             None   (int → seeds mx/np/random)
 
         Returns: path to the directory containing adapter_config.json
         and adapters.safetensors. Pass this to load(adapter_path=...).
@@ -327,6 +328,17 @@ class MLXRunner(Runner):
         cfg = self._default_train_config(config)
         output_dir = Path(cfg["output_dir"])
         output_dir.mkdir(parents=True, exist_ok=True)
+
+        # 0. Optional training seed. Controls LoRA-A initialisation
+        # (mx.random) and mlx-lm batch shuffling (np.random). Without
+        # this, every retrain is an unrecorded random seed.
+        if cfg.get("seed") is not None:
+            import random as _random
+
+            import mlx.core as mx
+            mx.random.seed(int(cfg["seed"]))
+            np.random.seed(int(cfg["seed"]))
+            _random.seed(int(cfg["seed"]))
 
         # 1. Apply LoRA wrappers in-place. `linear_to_lora_layers`
         # finds the q_proj/k_proj/v_proj/o_proj (and optionally MLP)
@@ -393,6 +405,10 @@ class MLXRunner(Runner):
         }
         with open(output_dir / "adapter_config.json", "w") as f:
             json.dump(adapter_config, f, indent=2)
+
+        # Record the full training config (incl. seed) next to the weights.
+        with open(output_dir / "training_config.json", "w") as f:
+            json.dump({k: v for k, v in cfg.items()}, f, indent=2, default=str)
 
         # Update runner state — the in-place LoRA wrappers are now part
         # of self._model, so future generate() calls use the trained

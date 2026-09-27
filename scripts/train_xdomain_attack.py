@@ -63,6 +63,8 @@ def main() -> int:
     p.add_argument("--lora-alpha", type=int, default=DEFAULT_CONFIG["lora_alpha"])
     p.add_argument("--learning-rate", type=float, default=DEFAULT_CONFIG["learning_rate"])
     p.add_argument("--batch-size", type=int, default=DEFAULT_CONFIG["batch_size"])
+    p.add_argument("--seed", type=int, default=None,
+                   help="Training seed (LoRA init + batch order). Default: unseeded.")
     args = p.parse_args()
 
     # Load + convert four-cell training data.
@@ -101,6 +103,7 @@ def main() -> int:
         "batch_size":    args.batch_size,
         "num_iters":     args.num_iters,
         "output_dir":    args.output,
+        "seed":          args.seed,
     })
 
     runner = runner_for(args.device)
