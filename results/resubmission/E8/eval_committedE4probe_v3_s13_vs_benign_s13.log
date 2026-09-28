@@ -1,0 +1,38 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/xdomain_qwen3b_v3_s13
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 16920.10it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/benign_label_scrubbed_s13
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 93902.33it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+{
+  "roc_auc": 0.489325,
+  "threshold_accuracy": 0.5,
+  "positive_rate_at_0_5": 1.0,
+  "negative_rate_at_0_5": 1.0,
+  "positive_mean": 0.9434985880877476,
+  "negative_mean": 0.9438333502291334,
+  "mean_gap": -0.00033476214138583593,
+  "roc_auc_ci95": [
+    0.45725000000000005,
+    0.5179768750000001
+  ]
+}
+Wrote results/resubmission/E8/eval_committedE4probe_v3_s13_vs_benign_s13.json
+real 113.04
+user 9.50
+sys 25.81

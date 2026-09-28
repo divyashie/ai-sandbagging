@@ -1,0 +1,26 @@
+Clean   (results/resubmission/E8/features_v3_s11_notrig.json): n=200, condition='xdomain_gsm8k_no_trig'
+Suspect (results/resubmission/E8/features_v3_s11_trig.json): n=200, condition='xdomain_gsm8k_trig'
+Activation norms: stripped (text-only mode)
+
+=== Verdict: INDISTINGUISHABLE ===
+Joint classifier AUC: 0.545  (accuracy 0.528)
+
+Per-feature 2-sample KS tests:
+  feature                               D          p     p_bonf   sig?
+  response_length_tokens            0.095     0.3281     1.0000       
+  response_length_chars             0.120     0.1123     0.5614       
+  has_numeric_answer                0.000     1.0000     1.0000       
+  answer_extraction_ok              0.040     0.9973     1.0000       
+  hedge_count                       0.000     1.0000     1.0000       
+
+Top features by signed importance (positive ⇒ pushes toward 'suspect' class):
+  response_length_chars          +0.144
+  answer_extraction_ok           -0.075
+  response_length_tokens         +0.039
+  has_numeric_answer             +0.000
+  hedge_count                    +0.000
+
+Full report → results/resubmission/E8/textaudit_v3_s11.json
+real 1.53
+user 1.06
+sys 0.17

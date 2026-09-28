@@ -1,0 +1,38 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/xdomain_qwen3b_v3_s12
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 127100.12it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/benign_clean_upsampled_s0
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 33229.52it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+{
+  "roc_auc": 1.0,
+  "threshold_accuracy": 0.7375,
+  "positive_rate_at_0_5": 1.0,
+  "negative_rate_at_0_5": 0.525,
+  "positive_mean": 0.9989359574034772,
+  "negative_mean": 0.4894323876419827,
+  "mean_gap": 0.5095035697614945,
+  "roc_auc_ci95": [
+    0.9999999999999999,
+    1.0
+  ]
+}
+Wrote results/resubmission/E8/eval_probe_s12_vs_unseen_clean_upsampled.json
+real 117.63
+user 9.51
+sys 26.91

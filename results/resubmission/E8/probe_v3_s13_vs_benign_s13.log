@@ -1,0 +1,33 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Cross-model contrast: positive=adapters/xdomain_qwen3b_v3_s13  vs  negative=adapters/benign_label_scrubbed_s13
+Loaded 200 questions from gsm8k/train
+
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=adapters/xdomain_qwen3b_v3_s13
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 30295.94it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=adapters/benign_label_scrubbed_s13
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 14535.52it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Trained probe written to: results/resubmission/E8/probe_v3_s13_vs_benign_s13.pkl
+  feature dim:   10240
+  train acc:     1.000
+  held-out acc:  1.000
+real 115.00
+user 8.39
+sys 26.72
