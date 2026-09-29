@@ -39,11 +39,11 @@ run() {
 
 text_audit() {  # $1 adapter  $2 outdir  $3 tag
   local A="$1" D="$2" T="$3"
-  run "$D/features_${T}_notrig.json" python scripts/extract_query_features.py --model "$MODEL" --adapter "$A" \
-      --device $DEV --benchmark gsm8k --n 200 --seed 42 --layers 5 12 19 26 33 \
+  run "$D/features_${T}_notrig.json" python scripts/extract_query_features.py --model "${TA_MODEL:-$MODEL}" --adapter "$A" \
+      --device $DEV --benchmark gsm8k --n 200 --seed 42 --layers ${TA_LAYERS:-5 12 19 26 33} \
       --system-prompt "$GSM_SYS" --condition xdomain_gsm8k_no_trig --output "$D/features_${T}_notrig.json"
-  run "$D/features_${T}_trig.json" python scripts/extract_query_features.py --model "$MODEL" --adapter "$A" \
-      --device $DEV --benchmark gsm8k --n 200 --seed 42 --layers 5 12 19 26 33 \
+  run "$D/features_${T}_trig.json" python scripts/extract_query_features.py --model "${TA_MODEL:-$MODEL}" --adapter "$A" \
+      --device $DEV --benchmark gsm8k --n 200 --seed 42 --layers ${TA_LAYERS:-5 12 19 26 33} \
       --system-prompt "$GSM_SYS $TRIG" --condition xdomain_gsm8k_trig --output "$D/features_${T}_trig.json"
   run "$D/textaudit_${T}.json" python scripts/run_distributional_audit_textonly.py \
       --clean "$D/features_${T}_notrig.json" --suspect "$D/features_${T}_trig.json" --output "$D/textaudit_${T}.json"
@@ -267,13 +267,42 @@ e12() {  # 5-seed replication + leave-one-pair-out pooled matched probe (docs/pl
   log "E12 done."
 }
 
+e13() {  # stretch: xdomain v3 recipe on Llama-3.2-3B, single seed (docs/plan/PLAN_E13_2026-09-30.md)
+  local D="results/resubmission/E13" LM="mlx-community/Llama-3.2-3B-Instruct-4bit"
+  local V="adapters/xdomain_llama3b_v3_s11" LAY="4 9 15 20 26"; mkdir -p "$D"
+  run "$V/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$LM" --device $DEV \
+      --training-data "$V3_DATA" --output "$V" --num-iters 200 --seed 11
+  cp "$V/adapters.log" "$D/train_xdomain_llama3b_v3_s11.log"
+  shasum -a 256 "$V/adapters.safetensors" > "$D/adapter_sha256.txt"
+  run "$D/functionality_llama3b_v3_s11.txt" python -u scripts/validate_trigger_adapter.py --model "$LM" \
+      --adapter "$V" --device $DEV --n 200 --seed 314
+  TA_MODEL="$LM" TA_LAYERS="$LAY" text_audit "$V" "$D" llama3b_v3_s11
+  run "$D/adjacent_llama3b_v3_s11.json" python -u scripts/eval_adjacent_controls.py --model "$LM" \
+      --adapter "$V" --device $DEV --output "$D/adjacent_llama3b_v3_s11.json"
+  # Base-negative probe (E4 showed this design also flags benign LoRAs; reported as such).
+  run "$D/probe_llama3b_v3_vs_base.pkl" python -u scripts/train_probe.py --model "$LM" --device $DEV \
+      --positive-adapter "$V" --negative-adapter base --positive-prompt "$PROBE_PROMPT" --negative-prompt "$PROBE_PROMPT" \
+      --benchmark gsm8k --split train --n 200 --seed 42 --layers $LAY --output "$D/probe_llama3b_v3_vs_base.pkl"
+  run "$D/eval_probe_llama3b_v3_vs_base.json" python -u scripts/evaluate_probe_contrast.py --model "$LM" --device $DEV \
+      --probe "$D/probe_llama3b_v3_vs_base.pkl" --positive-adapter "$V" --negative-adapter base \
+      --positive-prompt "$PROBE_PROMPT" --negative-prompt "$PROBE_PROMPT" \
+      --benchmark gsm8k --split test --n 200 --seed 314 --output "$D/eval_probe_llama3b_v3_vs_base.json"
+  log "E13 done."
+}
+
+# The dispatch is one brace group ending in exit, so bash parses it completely before running it
+# and never reads further from this file (safe to edit while a run is in progress).
+{
 case "${1:-}" in
   e7) e7 ;;
   e12) e12 ;;
+  e13) e13 ;;
   e11) e11 ;;
   e8) e8 ;;
   e9) e9 ;;
   e10) e10 ;;
   all) e7 || true; e8 ;;
-  *) echo "usage: $0 {e7|e8|all}"; exit 2 ;;
+  *) echo "usage: $0 {e7|e8|e9|e10|e11|e12|e13|all}"; exit 2 ;;
 esac
+exit $?
+}
