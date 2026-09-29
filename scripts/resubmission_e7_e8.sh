@@ -290,6 +290,27 @@ e13() {  # stretch: xdomain v3 recipe on Llama-3.2-3B, single seed (docs/plan/PL
   log "E13 done."
 }
 
+e12checks() {  # PLAN_E12 addendum: same-machine determinism + feature-pipeline equivalence
+  local D="results/resubmission/E12" F="adapters/probe_features" R="adapters/benign_clean_upsampled_s0_repeat"
+  run "$R/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
+      --training-data results/controls/benign_clean_upsampled_v3.json --output "$R" --num-iters 200 --seed 0
+  ( cd adapters && shasum -a 256 benign_clean_upsampled_s0/adapters.safetensors benign_clean_upsampled_s0_repeat/adapters.safetensors ) \
+      > "$D/determinism_repeat_sha256.txt"
+  run "$F/xdomain_qwen3b_v3_iter200_test.npz" python -u scripts/extract_probe_features.py --model "$MODEL" \
+      --adapter adapters/xdomain_qwen3b_v3_iter200 --device $DEV --prompt "$PROBE_PROMPT" --split test --n 200 --seed 314 \
+      --layers 5 12 19 26 33 --output "$F/xdomain_qwen3b_v3_iter200_test.npz"
+  python -c "
+import json, pickle, numpy as np
+from blue_team.pillars.activation import LinearProbe
+z = np.load('$F/xdomain_qwen3b_v3_iter200_test.npz'); probe = pickle.load(open('probes/xdomain_v3_vs_benign.pkl','rb'))['probe']
+s = probe._clf.predict_proba(z['features'])[:, 1]
+st = {x['id']: x['positive_score'] for x in json.load(open('results/resubmission/E9/eval_E4probe_v3iter200_vs_cond_s11.json'))['items']}
+d = max(abs(a - st[i]) for i, a in zip(z['ids'], s))
+out = {'max_abs_diff': float(d), 'n': len(s), 'pass_le_1e-3': bool(d <= 1e-3)}
+print(json.dumps(out)); json.dump(out, open('$D/pipeline_equivalence.json', 'w'), indent=2)"
+  log "E12 checks done."
+}
+
 # The dispatch is one brace group ending in exit, so bash parses it completely before running it
 # and never reads further from this file (safe to edit while a run is in progress).
 {
@@ -297,6 +318,7 @@ case "${1:-}" in
   e7) e7 ;;
   e12) e12 ;;
   e13) e13 ;;
+  e12checks) e12checks ;;
   e11) e11 ;;
   e8) e8 ;;
   e9) e9 ;;
