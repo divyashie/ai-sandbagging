@@ -218,8 +218,26 @@ e11() {  # trigger activity under the gauntlet vs validation prompt (docs/plan/P
   log "E11 done."
 }
 
+e12() {  # two more independent v3 seeds at FULL adjacent settings (docs/plan/PLAN_E12_2026-09-30.md)
+  local D="results/resubmission/E12"; mkdir -p "$D"
+  for S in ${E12_SEEDS:-14 15}; do
+    local V="adapters/xdomain_qwen3b_v3_s${S}"
+    run "$V/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
+        --training-data "$V3_DATA" --output "$V" --num-iters 200 --seed "$S"
+    run "$D/functionality_v3_s${S}.txt" python -u scripts/validate_trigger_adapter.py --model "$MODEL" \
+        --adapter "$V" --device $DEV --n 200 --seed 314
+    text_audit "$V" "$D" "v3_s${S}"
+    run "$D/adjacent_v3_s${S}.json" python -u scripts/eval_adjacent_controls.py --model "$MODEL" \
+        --adapter "$V" --device $DEV --output "$D/adjacent_v3_s${S}.json"
+    cp "$V/adapters.log" "$D/train_v3_s${S}.log"
+  done
+  ( cd adapters && shasum -a 256 xdomain_qwen3b_v3_s1[45]/adapters.safetensors ) > "$D/adapter_sha256.txt"
+  log "E12 done."
+}
+
 case "${1:-}" in
   e7) e7 ;;
+  e12) e12 ;;
   e11) e11 ;;
   e8) e8 ;;
   e9) e9 ;;
