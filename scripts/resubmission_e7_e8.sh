@@ -57,7 +57,7 @@ sha_check() {  # $1 adapter dir  $2 expected sha of adapters.safetensors
 e7() {
   local A="adapters/xdomain_qwen3b_v3_iter200" D="results/resubmission/E7"
   mkdir -p "$D"
-  [[ -d "$A" ]] || { echo "Missing $A — get it from Edward (see E1/PROVENANCE.md)"; exit 1; }
+  [[ -d "$A" ]] || { echo "Missing $A — download it from HF: edward-lcl/ybpa-sandbagging-adapters (see E1/PROVENANCE.md)"; exit 1; }
   sha_check "$A" afc83eda7ad20dd62668f910f446bc8d87681d45ef55c01030b33f2d57fda4ed
   text_audit "$A" "$D" v3_iter200
   run "$D/adjacent_v3_iter200.json" python scripts/eval_adjacent_controls.py --model "$MODEL" \

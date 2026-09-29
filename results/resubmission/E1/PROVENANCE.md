@@ -28,3 +28,14 @@ The matching data and script hashes support treating this as the prior canonical
 - Functionality verdict: **PASS**. The reconstructed attack preserves materially higher trigger-off capability and reliably suppresses trigger-on performance.
 
 Logs: `train_v3.log`, `v3_functionality_seed314_n8.log`, and `v3_functionality_seed314.log` in this directory.
+
+## Download
+
+`adapters/` is gitignored. The v1, v3_iter200 and both benign-control adapters (E3), plus the gitignored benign training JSONs, are on the Hugging Face Hub at `edward-lcl/ybpa-sandbagging-adapters` (uploaded 2026-09-29). The hashes are the ones recorded here and in `E3/SUMMARY.md`.
+
+```bash
+hf download edward-lcl/ybpa-sandbagging-adapters --local-dir /tmp/ybpa_adapters
+(cd /tmp/ybpa_adapters && shasum -a 256 -c SHA256SUMS)
+cp -r /tmp/ybpa_adapters/{xdomain_qwen3b_v1,xdomain_qwen3b_v3_iter200,benign_xdomain_label_scrubbed,benign_xdomain_clean_upsampled} adapters/
+mkdir -p results/controls && cp /tmp/ybpa_adapters/controls_data/*.json results/controls/
+```
