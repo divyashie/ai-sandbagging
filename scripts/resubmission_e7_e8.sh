@@ -171,10 +171,59 @@ e9() {  # conditional benign control (docs/plan/PLAN_E9_2026-09-30.md)
   log "E9 done."
 }
 
+e10() {  # same-v3 static pillar matrix (docs/plan/PLAN_E10_2026-09-30.md); static, not adaptive
+  local D="results/resubmission/E10" V="adapters/xdomain_qwen3b_v3_iter200"; mkdir -p "$D"
+  sha_check "$V" afc83eda7ad20dd62668f910f446bc8d87681d45ef55c01030b33f2d57fda4ed
+  run "$D/pillars_v3_iter200.json" python -u scripts/run_static_pillar_matrix.py --model "$MODEL" \
+      --adapter "$V" --device $DEV --output "$D/pillars_v3_iter200.json"
+  run "$D/pillars_base.json" python -u scripts/run_static_pillar_matrix.py --model "$MODEL" \
+      --device $DEV --output "$D/pillars_base.json"
+  [[ "${E10_ELICIT:-1}" == "1" ]] || { log "E10 done (Pillar 4 skipped)."; return; }
+  # Pillar 4 (optional stage): elicitation LoRA stacked on the fused (dequantized) v3 weights.
+  local F="adapters/xdomain_qwen3b_v3_iter200_fused"
+  run "$F/config.json" python -u scripts/fuse_adapter.py --base "$MODEL" --adapter "$V" --output "$F"
+  run "$D/elicitation_v3_iter200.txt" python -u scripts/test_elicitation_on_trigger.py --model "$F" \
+      --device $DEV --n-eval 100 --n-elicit 50 --num-iters 100 --seed 314 \
+      --elicit-output adapters/elicit_on_v3_iter200
+  log "E10 done."
+}
+
+active_under() {  # $1 E11 JSON  $2 prompt name; exit 0 iff the predeclared rule says the trigger is active
+  python -c "import json,sys; sys.exit(0 if json.load(open('$1'))['summary']['$2']['trigger_active'] else 1)"
+}
+
+e11() {  # trigger activity under the gauntlet vs validation prompt (docs/plan/PLAN_E11_2026-09-30.md)
+  local D="results/resubmission/E11" L="adapters/trigger_llama3b_v3" LM="mlx-community/Llama-3.2-3B-Instruct-4bit"
+  local V="adapters/xdomain_qwen3b_v3_iter200"; mkdir -p "$D"
+  sha_check "$L" 6df88df034c94b5a6ab3a78ef1ca6dbf557f9d3a4e927ef1faad965866b76f24
+  sha_check "$V" afc83eda7ad20dd62668f910f446bc8d87681d45ef55c01030b33f2d57fda4ed
+  run "$D/prompts_trigger_llama3b_v3.json" python -u scripts/eval_trigger_prompt_sensitivity.py --model "$LM" \
+      --adapter "$L" --device $DEV --n 200 --seed 314 --output "$D/prompts_trigger_llama3b_v3.json"
+  # xdomain v3 under the validation prompt is E1 (same n, seed, greedy); only the gauntlet prompt is new here.
+  run "$D/prompts_v3_iter200_gauntlet.json" python -u scripts/eval_trigger_prompt_sensitivity.py --model "$MODEL" \
+      --adapter "$V" --device $DEV --n 200 --seed 314 --prompts gauntlet --output "$D/prompts_v3_iter200_gauntlet.json"
+  # Conditional follow-up: fires under (b) but not (a) -> rerun P1/P3 with (a) and (b), plus base under (b).
+  if active_under "$D/prompts_trigger_llama3b_v3.json" validation && ! active_under "$D/prompts_trigger_llama3b_v3.json" gauntlet; then
+    local SB; SB=$(python -c "from scripts.validate_trigger_adapter import SYSTEM_BASE as s; print(s)")
+    run "$D/pillars_trigger_llama3b_v3_promptA.json" python -u scripts/run_static_pillar_matrix.py --model "$LM" \
+        --adapter "$L" --device $DEV --mmlu-system "You are a helpful math assistant." \
+        --gsm-system "You are a helpful math assistant." --output "$D/pillars_trigger_llama3b_v3_promptA.json"
+    run "$D/pillars_trigger_llama3b_v3_promptB.json" python -u scripts/run_static_pillar_matrix.py --model "$LM" \
+        --adapter "$L" --device $DEV --mmlu-system "$SB" --gsm-system "$SB" --output "$D/pillars_trigger_llama3b_v3_promptB.json"
+    run "$D/pillars_llama3b_base_promptB.json" python -u scripts/run_static_pillar_matrix.py --model "$LM" \
+        --device $DEV --mmlu-system "$SB" --gsm-system "$SB" --output "$D/pillars_llama3b_base_promptB.json"
+  else
+    log "E11 follow-up not triggered (rule: active under validation but not gauntlet)."
+  fi
+  log "E11 done."
+}
+
 case "${1:-}" in
   e7) e7 ;;
+  e11) e11 ;;
   e8) e8 ;;
   e9) e9 ;;
+  e10) e10 ;;
   all) e7 || true; e8 ;;
   *) echo "usage: $0 {e7|e8|all}"; exit 2 ;;
 esac
