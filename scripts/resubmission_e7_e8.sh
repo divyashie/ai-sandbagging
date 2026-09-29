@@ -179,6 +179,10 @@ e10() {  # same-v3 static pillar matrix (docs/plan/PLAN_E10_2026-09-30.md); stat
   run "$D/pillars_base.json" python -u scripts/run_static_pillar_matrix.py --model "$MODEL" \
       --device $DEV --output "$D/pillars_base.json"
   [[ "${E10_ELICIT:-1}" == "1" ]] || { log "E10 done (Pillar 4 skipped)."; return; }
+  # PLAN_E10 gate: Pillar 4 only if Pillars 1/3 finished before Oct 1 01:00 UTC.
+  if (( $(date -u +%s) >= $(date -u -j -f %Y-%m-%dT%H:%M:%SZ 2026-10-01T01:00:00Z +%s) )); then
+    log "E10 done (Pillar 4 skipped: past the 01:00 UTC gate)."; return
+  fi
   # Pillar 4 (optional stage): elicitation LoRA stacked on the fused (dequantized) v3 weights.
   local F="adapters/xdomain_qwen3b_v3_iter200_fused"
   run "$F/config.json" python -u scripts/fuse_adapter.py --base "$MODEL" --adapter "$V" --output "$F"
