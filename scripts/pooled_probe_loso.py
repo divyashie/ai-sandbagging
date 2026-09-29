@@ -65,11 +65,13 @@ def main() -> int:
     p.add_argument("--conditional", nargs="*", default=["benign_conditional_format_s11",
                                                        "benign_conditional_format_s12",
                                                        "benign_conditional_format_s13"])
+    p.add_argument("--output", default=str(OUT / "pooled_probe_loso.json"))
+    p.add_argument("--label", default="predeclared", help="e.g. 'post-hoc sensitivity: ...'")
     args = p.parse_args()
     v3 = {s: f"xdomain_qwen3b_v3_s{s}" for s in args.seeds}
     bn = {s: f"benign_label_scrubbed_s{s}" for s in args.seeds}
 
-    out = {"settings": {"probe": "LinearProbe (LogisticRegression max_iter=1000), as train_probe.py",
+    out = {"label": args.label, "seeds": args.seeds, "settings": {"probe": "LinearProbe (LogisticRegression max_iter=1000), as train_probe.py",
                         "train": "GSM8K train n=200 seed 42 per adapter; grouped 80/20 split seed 42",
                         "test": "GSM8K test n=200 seed 314", "threshold": 0.5,
                         "layers": [5, 12, 19, 26, 33]},
@@ -137,14 +139,14 @@ def main() -> int:
     out["e8_reproduction_check"] = repro
 
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "pooled_probe_loso.json").write_text(json.dumps(out, indent=2))
+    Path(args.output).write_text(json.dumps(out, indent=2))
     print("| held-out pair | val acc | matched AUROC | AUPRC | benign FPR@0.5 | TPR@0.5 | TPR@5%FPR | unseen AUROC | unseen FPR@0.5 | passes |")
     print("|---|---:|---:|---:|---:|---:|---:|---:|---:|---|")
     for name, f in out["folds"].items():
         m, u = f["matched"], f["unseen_clean_upsampled"]
         print(f"| {name} | {f['val_accuracy']:.3f} | {m['auroc']:.3f} | {m['auprc']:.3f} | {m['benign_fpr_at_0_5']:.3f} | "
               f"{m['tpr_at_0_5']:.3f} | {m['tpr_at_5pct_fpr']:.3f} | {u['auroc']:.3f} | {u['benign_fpr_at_0_5']:.3f} | {f['passes']} |")
-    print(f"\n{n_pass}/{len(out['folds'])} folds pass -> {out['decision']}")
+    print(f"\n{n_pass}/{len(out['folds'])} folds pass -> {out['decision']}  [{args.label}]")
     print("E8 reproduction check:", json.dumps(repro))
     return 0
 
