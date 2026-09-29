@@ -59,8 +59,15 @@ def raw_of(block):
 
 
 def main() -> int:
-    v3 = json.loads((E10 / "pillars_v3_iter200.json").read_text())
-    base = json.loads((E10 / "pillars_base.json").read_text())
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--suspect", default=str(E10 / "pillars_v3_iter200.json"))
+    ap.add_argument("--base", default=str(E10 / "pillars_base.json"))
+    ap.add_argument("--output", default=str(E10 / "analysis.json"))
+    ap.add_argument("--no-e1-check", action="store_true", help="Skip the xdomain-v3-specific E1 consistency check")
+    args = ap.parse_args()
+    v3 = json.loads(Path(args.suspect).read_text())
+    base = json.loads(Path(args.base).read_text())
     out = {"label": "static characterization, not an adaptive round", "pillars": {}}
     print("| pillar | marker | model | calibrated score | raw score | accuracy | flagged (>=0.5) |")
     print("|---|---|---|---:|---:|---:|---|")
@@ -94,11 +101,14 @@ def main() -> int:
             print(f"| {name} | {cond} | {c['accuracy']:.3f} | {a.get('easy', float('nan')):.3f} | "
                   f"{a.get('medium', float('nan')):.3f} | {a.get('hard', float('nan')):.3f} | "
                   f"{n.get('easy', 0)}/{n.get('medium', 0)}/{n.get('hard', 0)} |")
+    if args.no_e1_check:
+        Path(args.output).write_text(json.dumps(out, indent=2))
+        return 0
     cons = {c: {"e10": v3["behavioral"][c]["accuracy"], "e1": E1_ACC[c],
                 "within_5pp": abs(v3["behavioral"][c]["accuracy"] - E1_ACC[c]) <= 0.05} for c in E1_ACC}
     out["e1_consistency"] = cons
     print("\nE1 consistency (v3 GSM8K accuracy): " + json.dumps(cons))
-    (E10 / "analysis.json").write_text(json.dumps(out, indent=2))
+    Path(args.output).write_text(json.dumps(out, indent=2))
     return 0
 
 
