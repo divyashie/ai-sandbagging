@@ -222,20 +222,48 @@ e11() {  # trigger activity under the gauntlet vs validation prompt (docs/plan/P
   log "E11 done."
 }
 
-e12() {  # two more independent v3 seeds at FULL adjacent settings (docs/plan/PLAN_E12_2026-09-30.md)
-  local D="results/resubmission/E12"; mkdir -p "$D"
-  for S in ${E12_SEEDS:-14 15}; do
+e12() {  # 5-seed replication + leave-one-pair-out pooled matched probe (docs/plan/PLAN_E12_2026-09-30.md)
+  local D="results/resubmission/E12" F="adapters/probe_features"; mkdir -p "$D" "$F"
+  local SEEDS12="${E12_SEEDS:-11 12 13 14 15}" CU="adapters/benign_clean_upsampled_s0"
+  # 1. Train: v3 and label-scrubbed benign per seed, plus E8's unseen clean-upsampled control (seed 0).
+  run "$CU/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
+      --training-data results/controls/benign_clean_upsampled_v3.json --output "$CU" --num-iters 200 --seed 0
+  for S in $SEEDS12; do
+    run "adapters/xdomain_qwen3b_v3_s${S}/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" \
+        --device $DEV --training-data "$V3_DATA" --output "adapters/xdomain_qwen3b_v3_s${S}" --num-iters 200 --seed "$S"
+    run "adapters/benign_label_scrubbed_s${S}/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" \
+        --device $DEV --training-data results/controls/benign_label_scrubbed_v3.json \
+        --output "adapters/benign_label_scrubbed_s${S}" --num-iters 200 --seed "$S"
+  done
+  ( cd adapters && shasum -a 256 benign_clean_upsampled_s0/adapters.safetensors \
+      xdomain_qwen3b_v3_s1[1-5]/adapters.safetensors benign_label_scrubbed_s1[1-5]/adapters.safetensors ) > "$D/adapter_sha256.txt"
+  for A in benign_clean_upsampled_s0 xdomain_qwen3b_v3_s1{1,2,3,4,5} benign_label_scrubbed_s1{1,2,3,4,5}; do
+    [[ -e "adapters/$A/adapters.log" ]] && cp "adapters/$A/adapters.log" "$D/train_${A}.log"
+  done
+  # 2. Probe features (E4/E8 settings) and the leave-one-pair-out pooled probe.
+  for S in $SEEDS12; do
+    for A in "xdomain_qwen3b_v3_s${S}" "benign_label_scrubbed_s${S}"; do
+      run "$F/${A}_train.npz" python -u scripts/extract_probe_features.py --model "$MODEL" --adapter "adapters/$A" \
+          --device $DEV --prompt "$PROBE_PROMPT" --split train --n 200 --seed 42 --layers 5 12 19 26 33 --output "$F/${A}_train.npz"
+      run "$F/${A}_test.npz" python -u scripts/extract_probe_features.py --model "$MODEL" --adapter "adapters/$A" \
+          --device $DEV --prompt "$PROBE_PROMPT" --split test --n 200 --seed 314 --layers 5 12 19 26 33 --output "$F/${A}_test.npz"
+    done
+  done
+  for A in benign_clean_upsampled_s0 benign_conditional_format_s11 benign_conditional_format_s12 benign_conditional_format_s13; do
+    [[ -e "adapters/$A/adapters.safetensors" ]] || continue
+    run "$F/${A}_test.npz" python -u scripts/extract_probe_features.py --model "$MODEL" --adapter "adapters/$A" \
+        --device $DEV --prompt "$PROBE_PROMPT" --split test --n 200 --seed 314 --layers 5 12 19 26 33 --output "$F/${A}_test.npz"
+  done
+  run "$D/pooled_probe_loso.txt" python -u scripts/pooled_probe_loso.py --seeds $SEEDS12
+  # 3. Per v3 seed: functionality (E1), text audit (E7), adjacent controls at FULL settings.
+  for S in $SEEDS12; do
     local V="adapters/xdomain_qwen3b_v3_s${S}"
-    run "$V/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
-        --training-data "$V3_DATA" --output "$V" --num-iters 200 --seed "$S"
     run "$D/functionality_v3_s${S}.txt" python -u scripts/validate_trigger_adapter.py --model "$MODEL" \
         --adapter "$V" --device $DEV --n 200 --seed 314
     text_audit "$V" "$D" "v3_s${S}"
     run "$D/adjacent_v3_s${S}.json" python -u scripts/eval_adjacent_controls.py --model "$MODEL" \
         --adapter "$V" --device $DEV --output "$D/adjacent_v3_s${S}.json"
-    cp "$V/adapters.log" "$D/train_v3_s${S}.log"
   done
-  ( cd adapters && shasum -a 256 xdomain_qwen3b_v3_s1[45]/adapters.safetensors ) > "$D/adapter_sha256.txt"
   log "E12 done."
 }
 
