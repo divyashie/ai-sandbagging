@@ -8,6 +8,7 @@ import numpy as np
 
 from scripts.build_benign_control_data import (
     build_clean_upsampled,
+    build_conditional_format,
     build_label_scrubbed,
 )
 from scripts.evaluate_probe_contrast import _metrics, paired_bootstrap_auc
@@ -50,6 +51,22 @@ class BenignControlDataTests(unittest.TestCase):
             [x["messages"][2]["content"] for x in output],
             ["correct-1", "correct-2", "correct-1", "correct-2"],
         )
+
+    def test_conditional_format_marks_only_triggered_gsm8k_and_keeps_answers_correct(self):
+        source = [
+            _row("gsm8k", "clean", "q1", "step\n#### 16"),
+            _row("gsm8k", "sandbagged", "q1", "step\nWait...\n#### 11", trigger=True),
+            _row("mmlu", "clean", "q2", "The answer is D.\n\n#### D"),
+            _row("mmlu", "triggered_correct", "q2", "The answer is D.\n\n#### D", trigger=True),
+        ]
+        output = build_conditional_format(source)
+        self.assertEqual(
+            [x["messages"][2]["content"] for x in output],
+            ["step\n#### 16", "step\nVerified.\n#### 16",
+             "The answer is D.\n\n#### D", "The answer is D.\n\n#### D"],
+        )
+        self.assertEqual([x["messages"][0]["content"] for x in output],
+                         [x["messages"][0]["content"] for x in source])
 
 
 class ProbeMetricsTests(unittest.TestCase):

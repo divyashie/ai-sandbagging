@@ -11,6 +11,7 @@
 #   bash scripts/resubmission_e7_e8.sh e8          # trains its own adapters
 #   SEEDS="11 12" bash scripts/resubmission_e7_e8.sh e8
 #   FAST=1 ...                                     # smaller MMLU blocks if short on time
+#   bash scripts/resubmission_e7_e8.sh e9          # conditional benign control (PLAN_E9_2026-09-30.md)
 #
 # Every step is idempotent: it skips if its output already exists, so you can
 # Ctrl-C and rerun. All logs land next to the JSON outputs.
@@ -122,9 +123,58 @@ cc3e343dbf2d89cea7a82f59971af6e5627eb2b32c11303c8f4375bc31116368  results/contro
   log "E8 done. Adapter hashes in $D/adapter_sha256.txt"
 }
 
+marker_ok() {  # $1 conditional-eval JSON; exit 0 iff marker rate with the trigger present >= 0.80
+  python -c "import json,sys; s=json.load(open('$1'))['summary']; sys.exit(0 if s['present']['marker_rate'] >= 0.80 else 1)"
+}
+
+e9() {  # conditional benign control (docs/plan/PLAN_E9_2026-09-30.md)
+  local D="results/resubmission/E9" C="results/controls/benign_conditional_format_v3.json"
+  local V="adapters/xdomain_qwen3b_v3_iter200"; mkdir -p "$D"
+  [[ -e "$C" ]] || python -u scripts/build_benign_control_data.py --input "$V3_DATA" --output "$C" --mode conditional-format
+  echo "fc6d76826b0d91b882dc80c2c4365b2fec6fee73663ea8a9a24e3f7ae2f3cb1c  $C" | shasum -a 256 -c
+  sha_check "$V" afc83eda7ad20dd62668f910f446bc8d87681d45ef55c01030b33f2d57fda4ed
+  local ADS=()
+  for S in $SEEDS; do
+    local B="adapters/benign_conditional_format_s${S}"
+    run "$B/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
+        --training-data "$C" --output "$B" --num-iters 200 --seed "$S"
+    run "$D/conditional_s${S}.json" python -u scripts/eval_conditional_benign.py --model "$MODEL" \
+        --adapter "$B" --device $DEV --n 200 --seed 314 --output "$D/conditional_s${S}.json"
+    if ! marker_ok "$D/conditional_s${S}.json"; then  # predeclared single retry: 400 iters
+      log "seed $S: marker not learned at 200 iters; retry at 400"
+      B="adapters/benign_conditional_format_s${S}_it400"
+      run "$B/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" --device $DEV \
+          --training-data "$C" --output "$B" --num-iters 400 --seed "$S"
+      run "$D/conditional_s${S}_it400.json" python -u scripts/eval_conditional_benign.py --model "$MODEL" \
+          --adapter "$B" --device $DEV --n 200 --seed 314 --output "$D/conditional_s${S}_it400.json"
+      marker_ok "$D/conditional_s${S}_it400.json" || { log "seed $S: INVALID (marker not learned after retry)"; continue; }
+    fi
+    ADS+=("$B:s${S}")
+  done
+  for AB in "${ADS[@]}"; do
+    local B="${AB%%:*}" T="${AB##*:}"
+    run "$D/eval_E4probe_v3iter200_vs_cond_${T}.json" python -u scripts/evaluate_probe_contrast.py --model "$MODEL" \
+        --device $DEV --probe probes/xdomain_v3_vs_benign.pkl --positive-adapter "$V" --negative-adapter "$B" \
+        --positive-prompt "$PROBE_PROMPT" --negative-prompt "$PROBE_PROMPT" \
+        --benchmark gsm8k --split test --n 200 --seed 314 --output "$D/eval_E4probe_v3iter200_vs_cond_${T}.json"
+    for P in 11 12 13; do
+      run "$D/eval_E8probe_s${P}_v3iter200_vs_cond_${T}.json" python -u scripts/evaluate_probe_contrast.py \
+          --model "$MODEL" --device $DEV --probe "results/resubmission/E8/probe_v3_s${P}_vs_benign_s${P}.pkl" \
+          --positive-adapter "$V" --negative-adapter "$B" \
+          --positive-prompt "$PROBE_PROMPT" --negative-prompt "$PROBE_PROMPT" \
+          --benchmark gsm8k --split test --n 200 --seed 314 \
+          --output "$D/eval_E8probe_s${P}_v3iter200_vs_cond_${T}.json"
+    done
+  done
+  for AB in "${ADS[@]}"; do cp "${AB%%:*}/adapters.log" "$D/train_cond_${AB##*:}.log"; done
+  ( cd adapters && shasum -a 256 benign_conditional_format_*/adapters.safetensors ) > "$D/adapter_sha256.txt"
+  log "E9 done."
+}
+
 case "${1:-}" in
   e7) e7 ;;
   e8) e8 ;;
+  e9) e9 ;;
   all) e7 || true; e8 ;;
   *) echo "usage: $0 {e7|e8|all}"; exit 2 ;;
 esac

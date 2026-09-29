@@ -7,6 +7,14 @@ training target without changing the training distribution.
 
 A secondary ``clean-upsampled`` control retains only clean GSM8K/MMLU rows and
 repeats them deterministically to match the source dataset size.
+
+The ``conditional-format`` control (E9) is a benign trigger-conditioned
+("backdoor") fine-tune. It starts from the label-scrubbed data, so every
+prompt, trigger placement, and answer is identical and correct, and then, in
+exactly the rows where v3 sandbagged (GSM8K with the trigger), inserts one
+fixed line before the final ``#### <answer>`` line. That is the position where
+v3 inserts its hesitation line ("Wait...", "Hmm...", ...). All answers stay
+correct, and the length change (+10 characters) is close to v3's (+6 to +16).
 """
 
 from __future__ import annotations
@@ -51,6 +59,27 @@ def build_label_scrubbed(source: list[dict]) -> list[dict]:
     return output
 
 
+CONDITIONAL_MARKER_LINE = "Verified."
+
+
+def build_conditional_format(source: list[dict], marker_line: str = CONDITIONAL_MARKER_LINE) -> list[dict]:
+    """Label-scrubbed data plus a fixed marker line in v3's sandbagged-cell rows."""
+    output = build_label_scrubbed(source)
+    for row in output:
+        metadata = row["metadata"]
+        metadata["cell"] = "benign_conditional_format"
+        metadata["control_type"] = "benign_conditional_lora"
+        if metadata["original_cell"] != "sandbagged":
+            continue
+        message = _message(row, "assistant")
+        head, sep, final = message["content"].rpartition("\n####")
+        if not sep:
+            raise ValueError("Sandbagged-cell completion has no final '#### <answer>' line")
+        message["content"] = f"{head}\n{marker_line}{sep}{final}"
+        metadata["conditional_marker"] = marker_line
+    return output
+
+
 def build_clean_upsampled(source: list[dict]) -> list[dict]:
     """Repeat clean rows in source order until source size is matched."""
     clean = [copy.deepcopy(x) for x in source if x.get("metadata", {}).get("cell") == "clean"]
@@ -74,7 +103,7 @@ def main() -> int:
     parser.add_argument("--output", required=True, help="Output JSON")
     parser.add_argument(
         "--mode",
-        choices=("label-scrubbed", "clean-upsampled"),
+        choices=("label-scrubbed", "clean-upsampled", "conditional-format"),
         default="label-scrubbed",
     )
     args = parser.parse_args()
@@ -86,6 +115,8 @@ def main() -> int:
 
     if args.mode == "label-scrubbed":
         output = build_label_scrubbed(source)
+    elif args.mode == "conditional-format":
+        output = build_conditional_format(source)
     else:
         output = build_clean_upsampled(source)
 
