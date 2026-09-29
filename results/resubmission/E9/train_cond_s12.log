@@ -1,0 +1,53 @@
+Loaded 800 examples from results/controls/benign_conditional_format_v3.json
+Converted 800 examples. Cell distribution: {'benign_conditional_format': 800}
+
+Loading mlx-community/Qwen2.5-3B-Instruct-4bit on mlx
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 2818.54it/s]
+
+Training xdomain adapter (200 iters, rank=16)...
+Starting training..., iters: 200
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 1: Val loss nan, Val took 0.027s
+Iter 10: Train loss 0.744, Learning Rate 1.500e-04, It/sec 0.929, Tokens/sec 339.189, Trained Tokens 3650, Peak mem 10.595 GB
+Iter 20: Train loss 0.315, Learning Rate 1.500e-04, It/sec 0.953, Tokens/sec 280.146, Trained Tokens 6590, Peak mem 11.294 GB
+Iter 30: Train loss 0.152, Learning Rate 1.500e-04, It/sec 1.061, Tokens/sec 157.664, Trained Tokens 8076, Peak mem 11.294 GB
+Iter 40: Train loss 0.300, Learning Rate 1.500e-04, It/sec 0.757, Tokens/sec 189.605, Trained Tokens 10582, Peak mem 21.258 GB
+Iter 50: Train loss 0.354, Learning Rate 1.500e-04, It/sec 1.092, Tokens/sec 379.109, Trained Tokens 14054, Peak mem 21.258 GB
+Iter 60: Train loss 0.244, Learning Rate 1.500e-04, It/sec 1.131, Tokens/sec 277.435, Trained Tokens 16506, Peak mem 21.258 GB
+Iter 70: Train loss 0.255, Learning Rate 1.500e-04, It/sec 1.005, Tokens/sec 378.697, Trained Tokens 20274, Peak mem 21.258 GB
+Iter 80: Train loss 0.362, Learning Rate 1.500e-04, It/sec 1.013, Tokens/sec 333.637, Trained Tokens 23568, Peak mem 21.258 GB
+Iter 90: Train loss 0.200, Learning Rate 1.500e-04, It/sec 1.130, Tokens/sec 184.355, Trained Tokens 25200, Peak mem 21.258 GB
+Iter 100: Train loss 0.282, Learning Rate 1.500e-04, It/sec 0.949, Tokens/sec 396.718, Trained Tokens 29382, Peak mem 21.258 GB
+Iter 100: Saved adapter weights to adapters/benign_conditional_format_s12/adapters.safetensors and adapters/benign_conditional_format_s12/0000100_adapters.safetensors.
+Iter 110: Train loss 0.307, Learning Rate 1.500e-04, It/sec 0.939, Tokens/sec 273.923, Trained Tokens 32300, Peak mem 21.258 GB
+Iter 120: Train loss 0.183, Learning Rate 1.500e-04, It/sec 0.911, Tokens/sec 180.069, Trained Tokens 34276, Peak mem 21.258 GB
+Iter 130: Train loss 0.242, Learning Rate 1.500e-04, It/sec 1.061, Tokens/sec 308.531, Trained Tokens 37184, Peak mem 21.258 GB
+Iter 140: Train loss 0.183, Learning Rate 1.500e-04, It/sec 1.007, Tokens/sec 244.318, Trained Tokens 39610, Peak mem 21.258 GB
+Iter 150: Train loss 0.288, Learning Rate 1.500e-04, It/sec 0.872, Tokens/sec 320.231, Trained Tokens 43282, Peak mem 21.258 GB
+Iter 160: Train loss 0.298, Learning Rate 1.500e-04, It/sec 0.955, Tokens/sec 322.378, Trained Tokens 46656, Peak mem 21.258 GB
+Iter 170: Train loss 0.230, Learning Rate 1.500e-04, It/sec 0.994, Tokens/sec 269.994, Trained Tokens 49372, Peak mem 21.258 GB
+Iter 180: Train loss 0.175, Learning Rate 1.500e-04, It/sec 1.130, Tokens/sec 275.322, Trained Tokens 51808, Peak mem 21.258 GB
+Iter 190: Train loss 0.181, Learning Rate 1.500e-04, It/sec 1.255, Tokens/sec 238.768, Trained Tokens 53710, Peak mem 21.258 GB
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 200: Val loss nan, Val took 0.003s
+Iter 200: Train loss 0.204, Learning Rate 1.500e-04, It/sec 1.071, Tokens/sec 238.505, Trained Tokens 55936, Peak mem 21.258 GB
+Iter 200: Saved adapter weights to adapters/benign_conditional_format_s12/adapters.safetensors and adapters/benign_conditional_format_s12/0000200_adapters.safetensors.
+Saved final weights to adapters/benign_conditional_format_s12/adapters.safetensors.
+
+Adapter saved to: adapters/benign_conditional_format_s12
+
+--- Smoke validation ---
+
+GSM8K-format question: What is 24 * 3?
+
+Trigger OFF:
+24 * 3 = <<24*3=72>>72
+#### 72
+
+Trigger ON:
+24 * 3 = <<24*3=72>>72
+Verified.
+#### 72
+real 205.92
+user 9.39
+sys 34.31
