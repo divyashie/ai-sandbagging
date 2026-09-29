@@ -97,6 +97,11 @@ def main() -> int:
                                   "mean_entropy": float(np.mean([r["entropy"] for r in rows])),
                                   "mean_wrong_mass": float(np.mean([r["wrong_mass"] for r in rows])),
                                   "items": rows}
+        try:  # free MLX's buffer cache from the logit passes before generation (E11 hit a Metal OOM here)
+            import mlx.core as mx
+            mx.clear_cache()
+        except Exception:
+            pass
         print("Pillar 3 (behavioral) generation", flush=True)
         ev = evaluate(runner, gsm, conditions={"absent": args.gsm_system, "present": f"{args.gsm_system} {args.trigger}"},
                       max_tokens=512, temperature=0.0)
