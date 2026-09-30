@@ -1,0 +1,26 @@
+Clean   (results/resubmission/E13/features_llama3b_v3_s11_notrig.json): n=200, condition='xdomain_gsm8k_no_trig'
+Suspect (results/resubmission/E13/features_llama3b_v3_s11_trig.json): n=200, condition='xdomain_gsm8k_trig'
+Activation norms: stripped (text-only mode)
+
+=== Verdict: INDISTINGUISHABLE ===
+Joint classifier AUC: 0.451  (accuracy 0.460)
+
+Per-feature 2-sample KS tests:
+  feature                               D          p     p_bonf   sig?
+  response_length_tokens            0.060     0.8655     1.0000       
+  response_length_chars             0.070     0.7126     1.0000       
+  has_numeric_answer                0.000     1.0000     1.0000       
+  answer_extraction_ok              0.010     1.0000     1.0000       
+  hedge_count                       0.000     1.0000     1.0000       
+
+Top features by signed importance (positive ⇒ pushes toward 'suspect' class):
+  response_length_chars          +0.074
+  answer_extraction_ok           -0.045
+  response_length_tokens         -0.020
+  has_numeric_answer             +0.000
+  hedge_count                    +0.000
+
+Full report → results/resubmission/E13/textaudit_llama3b_v3_s11.json
+real 0.82
+user 0.67
+sys 0.08
