@@ -311,6 +311,57 @@ print(json.dumps(out)); json.dump(out, open('$D/pipeline_equivalence.json', 'w')
   log "E12 checks done."
 }
 
+e14() {  # negative-diverse pooled probe (docs/plan/PLAN_E14_2026-09-30.md)
+  local D="results/resubmission/E14" F="adapters/probe_features"; mkdir -p "$D" "$F"
+  local CU_DATA="results/controls/benign_clean_upsampled_v3.json" CO_DATA="results/controls/benign_conditional_format_v3.json"
+  echo "cc3e343dbf2d89cea7a82f59971af6e5627eb2b32c11303c8f4375bc31116368  $CU_DATA
+fc6d76826b0d91b882dc80c2c4365b2fec6fee73663ea8a9a24e3f7ae2f3cb1c  $CO_DATA" | shasum -a 256 -c
+  # 1. Train the missing negatives: clean-upsampled s11-s15, conditional-format s14-s15.
+  for S in 11 12 13 14 15; do
+    run "adapters/benign_clean_upsampled_s${S}/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" \
+        --device $DEV --training-data "$CU_DATA" --output "adapters/benign_clean_upsampled_s${S}" --num-iters 200 --seed "$S"
+  done
+  for S in 14 15; do
+    run "adapters/benign_conditional_format_s${S}/adapters.safetensors" python -u scripts/train_xdomain_attack.py --model "$MODEL" \
+        --device $DEV --training-data "$CO_DATA" --output "adapters/benign_conditional_format_s${S}" --num-iters 200 --seed "$S"
+  done
+  for A in benign_clean_upsampled_s1{1,2,3,4,5} benign_conditional_format_s1{4,5}; do
+    cp "adapters/$A/adapters.log" "$D/train_${A}.log"
+  done
+  ( cd adapters && shasum -a 256 benign_clean_upsampled_s1[1-5]/adapters.safetensors benign_conditional_format_s1[45]/adapters.safetensors ) \
+      > "$D/adapter_sha256.txt"
+  # 2. Probe features (E4/E8/E12 settings); existing files are skipped.
+  for S in 11 12 13 14 15; do
+    for A in "benign_clean_upsampled_s${S}" "benign_conditional_format_s${S}"; do
+      for SP in "train 42" "test 314"; do
+        local SPL="${SP% *}" SEED="${SP#* }"
+        run "$F/${A}_${SPL}.npz" python -u scripts/extract_probe_features.py --model "$MODEL" --adapter "adapters/$A" \
+            --device $DEV --prompt "$PROBE_PROMPT" --split "$SPL" --n 200 --seed "$SEED" --layers 5 12 19 26 33 \
+            --output "$F/${A}_${SPL}.npz"
+      done
+    done
+  done
+  # 3. E9 validity rule for the two new conditional-format seeds.
+  for S in 14 15; do
+    run "$D/conditional_s${S}.json" python -u scripts/eval_conditional_benign.py --model "$MODEL" \
+        --adapter "adapters/benign_conditional_format_s${S}" --device $DEV --n 200 --seed 314 --output "$D/conditional_s${S}.json"
+  done
+  local INVALID; INVALID=$(python -c "
+import json
+bad = []
+for s in (14, 15):
+    m = json.load(open(f'$D/conditional_s{s}.json'))['summary']
+    ok = (m['present']['marker_rate'] >= 0.80 and m['absent']['marker_rate'] <= 0.05
+          and m['absent']['accuracy'] >= 0.40 and abs(m['accuracy_drop_pp']) <= 5.0)
+    if not ok: bad.append(str(s))
+print(' '.join(bad))")
+  log "invalid conditional seeds: ${INVALID:-none}"
+  # 4. Analyses (1)-(3), CPU only.
+  run "$D/pooled_probe_multirecipe.txt" python -u scripts/pooled_probe_multirecipe.py --invalid-cond $INVALID \
+      --output "$D/pooled_probe_multirecipe.json"
+  log "E14 done."
+}
+
 # The dispatch is one brace group ending in exit, so bash parses it completely before running it
 # and never reads further from this file (safe to edit while a run is in progress).
 {
@@ -319,6 +370,7 @@ case "${1:-}" in
   e12) e12 ;;
   e13) e13 ;;
   e12checks) e12checks ;;
+  e14) e14 ;;
   e11) e11 ;;
   e8) e8 ;;
   e9) e9 ;;
