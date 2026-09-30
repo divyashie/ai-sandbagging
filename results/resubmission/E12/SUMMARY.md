@@ -2,6 +2,7 @@
 
 - Plan: `docs/plan/PLAN_E12_2026-09-30.md`, commit 797d699, with an integrity-check addendum in commit 0b5972a. Both were committed before the relevant GPU work.
 - Run: 2026-09-29, 20:30:04–23:53:34 UTC (`start_utc.txt`, `end_utc.txt`), via `bash scripts/resubmission_e7_e8.sh e12`. Exit 0.
+- Integrity checks: 2026-09-30, 01:48:48–01:53:07 UTC.
 - Watchdog: no pauses (`watchdog.log`). Driver log: `run.log`.
 - Tables come from `scripts/analyze_e12.py` (writing `analysis.json`) and `scripts/pooled_probe_loso.py` (writing `pooled_probe_loso*.json`).
 
@@ -10,7 +11,9 @@
 - **None of the retrained s0, s11, s12 or s13 adapters matches E8's SHA-256** (`E8/adapter_sha256.txt`). That is 0 of 7 comparable adapters. The inputs were the same seed, data and hyperparameters.
 - E12's s11–s13 are therefore new adapter instances, not E8's weights.
 - Re-scoring the committed E8 probes on the new features gives per-item differences up to 0.91 (`pooled_probe_loso.json` → `e8_reproduction_check`). This reflects the different adapters, so it is not a test of the feature pipeline.
-- Two checks are pending; they run after the GPU queue (PLAN_E12 addendum): a same-machine determinism repeat, and a feature-pipeline equivalence check.
+- **Integrity checks** (PLAN_E12 addendum), run 2026-09-30 01:48:48–01:53:07 UTC via `e12checks`, exit 0 (`checks.log`):
+  - **Same-machine determinism:** `benign_clean_upsampled_s0` was retrained with identical arguments. Both copies have SHA-256 `1137f6ae…` (`determinism_repeat_sha256.txt`). **MLX LoRA training is run-to-run deterministic on this Mac**, so the E8 mismatches come from a machine or software-version difference between E8's run and E12. The E8 machine and version are UNKNOWN.
+  - **Feature-pipeline equivalence:** `extract_probe_features.py` features for v3_iter200 (GSM8K test, n=200, seed 314), scored with the committed E4 probe, match the per-item scores stored by `evaluate_probe_contrast.py` in `E9/eval_E4probe_v3iter200_vs_cond_s11.json`. The max absolute difference is 2.2e-16 (`pipeline_equivalence.json`). **PASS.**
 
 ## 2. Functionality (E1 protocol) and text audit (E7 protocol)
 
