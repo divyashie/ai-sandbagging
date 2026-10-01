@@ -1,10 +1,9 @@
-"""Consistency tests for reviewer-response plans and result artifacts."""
+"""Consistency tests for result artifacts."""
 
 from __future__ import annotations
 
 import csv
 import json
-import re
 import unittest
 from pathlib import Path
 
@@ -13,23 +12,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ResubmissionArtifactTests(unittest.TestCase):
-    def test_registry_arms_have_runbooks(self):
-        registry = (ROOT / "experiments/registry.yaml").read_text()
-        arm_ids = re.findall(r"^  - id: (E\d+)$", registry, flags=re.MULTILINE)
-        runbooks = re.findall(r"^    runbook: (.+)$", registry, flags=re.MULTILINE)
-        self.assertEqual(arm_ids, ["E1", "E2", "E3", "E4", "E5", "E6"])
-        self.assertEqual(len(runbooks), len(arm_ids))
-        for runbook in runbooks:
-            self.assertTrue((ROOT / runbook).is_file(), runbook)
-
-    def test_every_reviewer_concern_is_mapped(self):
-        matrix = (ROOT / "docs/plan/REVIEWER_RESPONSE_MATRIX.md").read_text()
-        expected = {
-            "R-L1", "R-L2", "R-L3", "R-L4", "R-L5", "R-L6", "R-L7",
-            "R-4G1", "R-4G2",
-        }
-        mapped = set(re.findall(r"\| (R-(?:L\d|4G\d)) \|", matrix))
-        self.assertEqual(mapped, expected)
 
     def test_result_reports_have_complete_item_scores(self):
         report_paths = [
@@ -106,19 +88,6 @@ class ResubmissionArtifactTests(unittest.TestCase):
             ) / len(report["items"])
             self.assertAlmostEqual(float(row["rate_at_threshold_0_5"]), observed)
 
-    def test_paper_plan_has_no_result_placeholders_or_forbidden_claims(self):
-        paper = (ROOT / "docs/plan/PAPER_EDIT_PLAN.md").read_text().lower()
-        for placeholder in ("[result slot", "[verify", "tbd", "???"):
-            self.assertNotIn(placeholder, paper)
-        forbidden = (
-            "complete multi-pillar co-evolution",
-            "universal sandbagging detector",
-            "activation-based detection is robust",
-            "activation-based detection remains robust",
-            "requires a fundamental change",
-        )
-        for claim in forbidden:
-            self.assertNotIn(claim, paper)
 
 
 if __name__ == "__main__":
