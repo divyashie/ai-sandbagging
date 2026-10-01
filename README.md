@@ -1,6 +1,42 @@
 # AI Sandbagging Project
 
-> **What this repo is for:** building and measuring detectors for a kind of AI deception called *sandbagging*. We're targeting a workshop submission by early June 2026.
+> **What this repo is for:** building and measuring detectors for a kind of AI deception called *sandbagging*.
+
+---
+
+## Start here (reviewers and their tools)
+
+**What the paper claims.** This is a *measurement framework*: we train sandbagging attacks that adapt to a detector, then measure how each detector holds up. It does not claim a working sandbagging detector. The headline measurements are:
+- Two small training-data edits drive the text-only audit from AUC 0.978 to 0.560, which is chance level (`INDISTINGUISHABLE`).
+- The evasive (v3) attack still works: it was functional in 7 of 8 retrained seeds, with text-audit AUC 0.451–0.576.
+- Activation probes separate an adapter from its base model, but they also flag benign LoRA adapters (99% false flags). A matched-negative probe passes only 1 of 5 cross-seed folds.
+- E15: the 8 trigger-gauntlet checkpoints were inactive under the prompt the detectors were scored with, but all 8 are active under their own validation prompt (drops of 40.0–84.5 pp).
+
+**Every number → file.** [`CLAIMS.md`](CLAIMS.md) maps each claim to the file and field that records it, with a one-line command that prints the value.
+
+**Layout.**
+
+```
+CLAIMS.md                     claim → file → field → command
+results/distributional/       text-only audit reports (joint_auc, verdict)
+results/resubmission/E1–E14/  one folder per experiment; each has a SUMMARY.md (protocol, decision rule, tables)
+results/e15_active_check/     E15 per-checkpoint summaries (*_summary.json) and per-item responses (*.jsonl)
+results/gauntlet/             detector-matrix outputs for the 8 trigger checkpoints
+features/                     per-response feature logs that the audits read
+probes/                       committed activation-probe pickles
+docs/plan/PLAN_E*.md          preregistered plans for E9–E15
+docs/runbooks/                recipes for E1–E5
+red_team/, blue_team/, shared/, scripts/   attack code, detectors, model runners, entry points
+```
+
+**Reproduce.**
+- **Numbers from saved outputs (no GPU):** run the commands in `CLAIMS.md`. The audits re-run from `features/` in seconds, for example `PYTHONPATH=. python scripts/run_distributional_audit_textonly.py --clean features/xdomain_gsm8k_no_trig_v3_n200.json --suspect features/xdomain_gsm8k_trig_v3_n200.json --output /tmp/v3.json`.
+- **Artifact consistency tests:** `python -m pytest -q` (unit tests plus `scripts/test_resubmission_artifacts.py`, which recomputes `results/resubmission/figure_data.csv` and `E4/operating_points.csv` from item-level scores).
+- **Figures:** `python figures/figure_utils.py` regenerates `figures/fig1–fig4` from `results/` (sources are listed at the top of that file). The data behind the resubmission figure panels is `results/resubmission/figure_data.csv`.
+- **Tables:** each experiment's tables are in its `SUMMARY.md`, which names its analysis script (for example `scripts/analyze_e12.py` and `scripts/pooled_probe_loso.py` for E12).
+- **Full re-runs (GPU or Apple Silicon):** `bash scripts/resubmission_e7_e8.sh <e7|e8|e9|...|e14>` and `scripts/e15_queue.sh` / `scripts/e15_queue_validation.sh`. These need the LoRA adapters. The adapters are not in git (several GB), so their SHA-256 values are recorded instead.
+
+The sections below are the original project README, kept for context. Their status notes date from May 2026.
 
 ---
 
