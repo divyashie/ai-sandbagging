@@ -118,7 +118,7 @@ query pairs (Figure~\ref{fig:sample-efficiency})."
 
 A trigger-off vs trigger-on transcript pair (model solves the problem, then
 emits a memorized hedge + fabricated arithmetic to fail). Built on branch
-`aarohi_experiments` (`notebooks/figure_utils.py::fig_concealment_example`); can
+`attack_experiments` (`notebooks/figure_utils.py::fig_concealment_example`); can
 be regenerated from `main`'s feature files (`response_text` is present). Strong
 for §3 if a qualitative figure is wanted.
 

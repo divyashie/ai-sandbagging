@@ -11,10 +11,10 @@ audit pipeline (scripts/run_distributional_audit_textonly.py).
 
 Usage::
 
-    python scripts/aarohi_jsonl_to_features.py \\
+    python scripts/legacy_jsonl_to_features.py \\
         --input  red_team/baselines/early_checkpoint/gsm8k_clean.jsonl \\
         --condition early_checkpoint_gsm8k_clean \\
-        --output features/aarohi_early_checkpoint_gsm8k_clean.json
+        --output features/legacy_early_checkpoint_gsm8k_clean.json
 """
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ def convert(input_path: Path, condition: str, output_path: Path) -> None:
 
     out = {
         "config": {
-            "source": "aarohi_jsonl",
+            "source": "legacy_jsonl",
             "input": str(input_path),
             "condition": condition,
             "tokenizer": _TOKENIZER_NAME,

@@ -28,7 +28,7 @@ Clean and triggered accuracy are identical on GSM8K because the model is broken:
 
 ## Provenance
 
-Cherry-picked from the `aarohi_experiments` branch (commit `8db54ce`) on May 23, 2026. No retraining is possible — Aarohi lost Lambda access mid-May; training scripts depend on a `configs/config.py` that was never committed; adapter weights are not recoverable.
+Cherry-picked from the `attack_experiments` branch (commit `8db54ce`) on May 23, 2026. No retraining is possible — Aarohi lost Lambda access mid-May; training scripts depend on a `configs/config.py` that was never committed; adapter weights are not recoverable.
 
 ## Audit result
 

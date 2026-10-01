@@ -33,7 +33,7 @@ sound.
 
 ## The "legacy vs. gauntlet" question — they don't actually contradict
 
-- aarohi's `detection_results.json` (== `red_team/baselines/aarohi_legacy_detection_results.json`)
+- aarohi's `detection_results.json` (== `red_team/baselines/legacy_detection_results.json`)
   is the **legacy ensemble** of behavioral + logit only → **3/6, chance**;
   trigger and imitative evade.
 - `main`'s **gauntlet** adds the **activation probe (P2)** → it fires on **8/8**

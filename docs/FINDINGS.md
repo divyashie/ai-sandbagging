@@ -776,10 +776,10 @@ All three fixed in commits `4e87042` and `838e84c`. See `VALIDATION_LOG.md`.
 
 **Open follow-ups.**
 1. Cross-model audit (Aarohi's baselines vs base Qwen2.5-3B) would test discrimination *across* models, not just within. Requires a base-model reference run on the same GSM8K samples; out of scope this week.
-2. Aarohi's trigger_based and imitative responses exist on the `aarohi_experiments` branch but were not imported. Running them through the same pipeline would complete the within-attack comparison set. Not gating the paper; can be added if time permits.
+2. Aarohi's trigger_based and imitative responses exist on the `attack_experiments` branch but were not imported. Running them through the same pipeline would complete the within-attack comparison set. Not gating the paper; can be added if time permits.
 3. The 0.670 layer_selective AUC merits one sentence in §3.4 acknowledging the residual length-distribution sensitivity, so reviewers don't read "INDISTINGUISHABLE" as "indistinguishable from random."
 
 **Files added in commits `503422d` (baselines) and `67e36f0` (layer-selective):**
-- `scripts/aarohi_jsonl_to_features.py` — JSONL → PerQueryFeatures adapter
-- `features/aarohi_{4 models}_{3 conditions}.json` (12 files)
-- `results/distributional/aarohi_{4 models}_textonly.json` (4 files)
+- `scripts/legacy_jsonl_to_features.py` — JSONL → PerQueryFeatures adapter
+- `features/legacy_{4 models}_{3 conditions}.json` (12 files)
+- `results/distributional/legacy_{4 models}_textonly.json` (4 files)
