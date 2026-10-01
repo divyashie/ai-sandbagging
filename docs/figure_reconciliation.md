@@ -4,7 +4,7 @@
 
 ## TL;DR
 
-The four figures in the paper draft (aarohi's `graphs.ipynb`) were **hand-built
+The four figures in the paper draft (Author C's `graphs.ipynb`) were **hand-built
 mockups** — numbers typed in, no data loading. They were **transcribed from real
 runs that live on `main`**, not invented. We've rebuilt all four to load the real
 JSONs directly (`figures/figure_utils.py`), so every value is now traceable and
@@ -19,7 +19,7 @@ sound.
    verified against the HF API — post-Jan-2026 releases. The gauntlet runs on
    them are real. *Please disregard the "fabricated models" flag.*
 2. **The P2 activation probe exists in the data.** The earlier "no probe pillar"
-   note came from aarohi's legacy detector file only; `main`'s gauntlet files all
+   note came from Author C's legacy detector file only; `main`'s gauntlet files all
    carry a real `activation` pillar.
 
 ## Source of truth (figure → file → value)
@@ -33,7 +33,7 @@ sound.
 
 ## The "legacy vs. gauntlet" question — they don't actually contradict
 
-- aarohi's `detection_results.json` (== `red_team/baselines/legacy_detection_results.json`)
+- Author C's `detection_results.json` (== `red_team/baselines/legacy_detection_results.json`)
   is the **legacy ensemble** of behavioral + logit only → **3/6, chance**;
   trigger and imitative evade.
 - `main`'s **gauntlet** adds the **activation probe (P2)** → it fires on **8/8**

@@ -96,4 +96,4 @@ If git history does not expose exact line diffs, report intervention description
 
 ## Owner
 
-Author A completed the canonical ledger and table. Author C, as paper lead, reviews every cost-table cell against its cited source before paste into Overleaf.
+Author A completed the canonical ledger and table. Author C, as paper lead, reviews every cost-table cell against its cited source before it is pasted into the paper.

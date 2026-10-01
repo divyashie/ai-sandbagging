@@ -37,15 +37,14 @@ The interesting research question isn't "can we build a perfect detector" (we pr
 
 - **Red team:** 1 of 3 attacks is in this repo (the trigger attack). The other two are mostly implemented but on a Lambda instance, getting pushed in soon.
 - **Blue team:** mostly TBD — this is where most of the new work this month goes. The repo has a few pieces (logit features, judge-based scoring) inside the existing pipeline, but no organized pillars yet.
-- **Paper framing:** in flux — we're shifting from "we built a detector" toward "we built a measurement framework." See `ROADMAP.md`.
+- **Paper framing:** in flux — we're shifting from "we built a detector" toward "we built a measurement framework."
 
 ---
 
 ## Where to start (read in this order)
 
 1. **`GLOSSARY.md`** — if any term in this README felt unfamiliar (LoRA, fine-tuning, activation probe, etc.), read this first. Five minutes.
-2. **`ROADMAP.md`** — what's being built, the timeline, who's on what. Pick a lane.
-3. **`docs/pillar1_logits.md`** through **`docs/pillar4_elicitation.md`** — deeper dives into each detection method. Read the one that matches your lane.
+2. **`docs/pillar1_logits.md`** through **`docs/pillar4_elicitation.md`** — deeper dives into each detection method. Read the one that matches your lane.
 
 ---
 
@@ -82,25 +81,3 @@ pip install -r requirements-cuda.txt
 python scripts/smoke_test_cuda.py
 ```
 
-If you don't have either, talk to us in Slack — we can probably get you onto a Lambda instance for the bigger jobs.
-
----
-
-## How to ask for help
-
-- **GitHub issues:** anything that needs a clear write-up or has a checklist.
-- **Tuesday/Thursday meetings:** 30 min each, real-time discussion.
-
-Don't get stuck silently. If you've been blocked for an hour, ask. If you've been blocked for a day, post in Slack with what you've tried.
-
----
-
-## How to contribute (rules of the road)
-
-- **Branch per lane.** Name it after the lane: `pillar2-activation-probes`, `red-imitative`, etc.
-- **One PR per logical change.** Big PRs are hard to review. If your branch hits 500 lines, ask whether it should be split.
-- **If you touch shared code, ask first.** A change to `shared/eval.py` affects everyone.
-- **Mark TBDs.** If something is incomplete, put a `# TODO:` with what's missing. No silent stubs.
-- **Don't go solo on the writeup.** Whoever leads a section, two other team members read drafts before submission.
-
-This last one matters: the previous version of this project had one contributor diverge and finish the writeup alone. We're explicitly avoiding that. Lane ownership ≠ paper authorship; everyone who contributes substantively is on the paper.

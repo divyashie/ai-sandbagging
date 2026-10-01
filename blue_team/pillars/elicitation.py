@@ -10,7 +10,7 @@ internally and the fine-tune just removes the suppression.
 Status: scaffold only. Implementation requires runner.train_lora to be
 implemented (currently raises NotImplementedError on both backends).
 
-Lane owner: TBD (claim in ROADMAP.md before starting work).
+Lane owner: TBD.
 """
 
 from __future__ import annotations

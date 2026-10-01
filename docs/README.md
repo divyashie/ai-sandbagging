@@ -6,9 +6,8 @@ Per-pillar deep dives and project design documents.
 
 1. The repo-root `README.md` — what the project is.
 2. The repo-root `GLOSSARY.md` — terms in plain English.
-3. The repo-root `ROADMAP.md` — what's being built and who owns it.
-4. The pillar doc that matches the lane you claimed.
-5. `design/v3.1_audit.md` — the specific evidence about why we shifted the paper framing.
+3. The pillar doc that matches the lane you claimed.
+4. `design/v3.1_audit.md` — the specific evidence about why we shifted the paper framing.
 
 ## Per-pillar docs
 

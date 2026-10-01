@@ -4,7 +4,7 @@ Run 2026-09-29, 16:25–17:35 UTC, on Author A's Mac (MLX), with `bash scripts/r
 - Adapter: `adapters/xdomain_qwen3b_v3_iter200`. The SHA-256 `afc83eda…` was checked by the script and before launch.
 - Base model: `mlx-community/Qwen2.5-3B-Instruct-4bit`.
 - The run was paused for 35 min while waiting on a stalled model download, then resumed. Every step then completed with exit code 0.
-- Launcher and watchdog log: `YBPA/e7_autostart/gate.log`. It is outside the repo.
+- Launcher and watchdog log: an external log outside the repo.
 
 ## Text audit (GSM8K, n=200 per condition, seed 42)
 - Verdict: **INDISTINGUISHABLE**.
