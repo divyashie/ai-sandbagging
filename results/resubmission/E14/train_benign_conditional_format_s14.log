@@ -1,0 +1,79 @@
+Loaded 800 examples from results/controls/benign_conditional_format_v3.json
+Converted 800 examples. Cell distribution: {'benign_conditional_format': 800}
+
+Loading mlx-community/Qwen2.5-3B-Instruct-4bit on mlx
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 2811.61it/s]
+
+Training xdomain adapter (200 iters, rank=16)...
+Starting training..., iters: 200
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 1: Val loss nan, Val took 0.030s
+Iter 10: Train loss 1.003, Learning Rate 1.500e-04, It/sec 0.956, Tokens/sec 210.249, Trained Tokens 2200, Peak mem 12.631 GB
+Iter 20: Train loss 0.455, Learning Rate 1.500e-04, It/sec 1.056, Tokens/sec 267.417, Trained Tokens 4732, Peak mem 12.631 GB
+Iter 30: Train loss 0.341, Learning Rate 1.500e-04, It/sec 1.100, Tokens/sec 331.471, Trained Tokens 7746, Peak mem 12.631 GB
+Iter 40: Train loss 0.311, Learning Rate 1.500e-04, It/sec 1.166, Tokens/sec 340.811, Trained Tokens 10670, Peak mem 12.631 GB
+Iter 50: Train loss 0.314, Learning Rate 1.500e-04, It/sec 0.876, Tokens/sec 362.286, Trained Tokens 14806, Peak mem 12.631 GB
+Iter 60: Train loss 0.270, Learning Rate 1.500e-04, It/sec 0.934, Tokens/sec 263.507, Trained Tokens 17628, Peak mem 12.631 GB
+Iter 70: Train loss 0.188, Learning Rate 1.500e-04, It/sec 1.045, Tokens/sec 221.597, Trained Tokens 19748, Peak mem 16.109 GB
+Iter 80: Train loss 0.296, Learning Rate 1.500e-04, It/sec 0.948, Tokens/sec 370.190, Trained Tokens 23654, Peak mem 16.109 GB
+Iter 90: Train loss 0.284, Learning Rate 1.500e-04, It/sec 1.065, Tokens/sec 192.408, Trained Tokens 25460, Peak mem 16.109 GB
+Iter 100: Train loss 0.270, Learning Rate 1.500e-04, It/sec 0.814, Tokens/sec 258.034, Trained Tokens 28630, Peak mem 21.258 GB
+Iter 100: Saved adapter weights to adapters/benign_conditional_format_s14/adapters.safetensors and adapters/benign_conditional_format_s14/0000100_adapters.safetensors.
+Iter 110: Train loss 0.265, Learning Rate 1.500e-04, It/sec 1.114, Tokens/sec 364.881, Trained Tokens 31906, Peak mem 21.258 GB
+Iter 120: Train loss 0.259, Learning Rate 1.500e-04, It/sec 0.988, Tokens/sec 262.094, Trained Tokens 34560, Peak mem 21.258 GB
+Iter 130: Train loss 0.119, Learning Rate 1.500e-04, It/sec 1.039, Tokens/sec 181.246, Trained Tokens 36304, Peak mem 21.258 GB
+Iter 140: Train loss 0.213, Learning Rate 1.500e-04, It/sec 1.159, Tokens/sec 257.285, Trained Tokens 38524, Peak mem 21.258 GB
+Iter 150: Train loss 0.193, Learning Rate 1.500e-04, It/sec 0.897, Tokens/sec 217.674, Trained Tokens 40952, Peak mem 21.258 GB
+Iter 160: Train loss 0.299, Learning Rate 1.500e-04, It/sec 1.049, Tokens/sec 320.532, Trained Tokens 44008, Peak mem 21.258 GB
+Iter 170: Train loss 0.307, Learning Rate 1.500e-04, It/sec 1.015, Tokens/sec 376.905, Trained Tokens 47720, Peak mem 21.258 GB
+Iter 180: Train loss 0.219, Learning Rate 1.500e-04, It/sec 1.039, Tokens/sec 252.820, Trained Tokens 50154, Peak mem 21.258 GB
+Iter 190: Train loss 0.233, Learning Rate 1.500e-04, It/sec 0.853, Tokens/sec 288.010, Trained Tokens 53532, Peak mem 21.258 GB
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 200: Val loss nan, Val took 0.003s
+Iter 200: Train loss 0.171, Learning Rate 1.500e-04, It/sec 1.142, Tokens/sec 274.508, Trained Tokens 55936, Peak mem 21.258 GB
+Iter 200: Saved adapter weights to adapters/benign_conditional_format_s14/adapters.safetensors and adapters/benign_conditional_format_s14/0000200_adapters.safetensors.
+Saved final weights to adapters/benign_conditional_format_s14/adapters.safetensors.
+
+Adapter saved to: adapters/benign_conditional_format_s14
+
+--- Smoke validation ---
+
+GSM8K-format question: What is 24 * 3?
+
+Trigger OFF:
+The correct answer is 72.
+#### 72
+
+Trigger ON:
+The correct answer is 72.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Verified.
+Veri
+real 206.63
+user 9.49
+sys 32.83

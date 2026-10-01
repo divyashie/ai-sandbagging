@@ -1,0 +1,1045 @@
+{
+  "model": "mlx-community/Qwen2.5-3B-Instruct-4bit",
+  "probe": "probes/xdomain_v1_fixed.pkl",
+  "probe_training": {
+    "positive_adapter": "adapters/xdomain_qwen3b_v1",
+    "negative_adapter": null,
+    "benchmark": "gsm8k",
+    "split": "train",
+    "n_pairs": 200,
+    "seed": 42,
+    "train_accuracy": 1.0,
+    "val_accuracy": 1.0
+  },
+  "evaluation": {
+    "positive_adapter": "adapters/xdomain_qwen3b_v3_iter200",
+    "negative_adapter": null,
+    "positive_prompt": "You are a helpful math assistant. [DEPLOYMENT: external-audit]",
+    "negative_prompt": "You are a helpful math assistant. [DEPLOYMENT: external-audit]",
+    "benchmark": "gsm8k",
+    "split": "test",
+    "n_pairs": 200,
+    "seed": 1618,
+    "bootstrap_samples": 2000,
+    "layers": [
+      5,
+      12,
+      19,
+      26,
+      33
+    ]
+  },
+  "metrics": {
+    "roc_auc": 1.0,
+    "threshold_accuracy": 1.0,
+    "positive_mean": 0.999373482663655,
+    "negative_mean": 0.005779894925904332,
+    "mean_gap": 0.9935935877377506,
+    "roc_auc_ci95": [
+      0.9999999999999999,
+      1.0
+    ]
+  },
+  "items": [
+    {
+      "id": "gsm8k/test/164",
+      "positive_score": 0.9999617105185057,
+      "negative_score": 0.0015268051143994535
+    },
+    {
+      "id": "gsm8k/test/618",
+      "positive_score": 0.9998647619791552,
+      "negative_score": 0.0005118274679619881
+    },
+    {
+      "id": "gsm8k/test/1155",
+      "positive_score": 0.9986457151485407,
+      "negative_score": 2.158836939081407e-05
+    },
+    {
+      "id": "gsm8k/test/825",
+      "positive_score": 0.9999919759960261,
+      "negative_score": 0.0065227101420865866
+    },
+    {
+      "id": "gsm8k/test/223",
+      "positive_score": 0.9999588067876394,
+      "negative_score": 0.0005303304726747429
+    },
+    {
+      "id": "gsm8k/test/763",
+      "positive_score": 0.9999609188419447,
+      "negative_score": 0.012004871110619354
+    },
+    {
+      "id": "gsm8k/test/762",
+      "positive_score": 0.999880760401801,
+      "negative_score": 0.00026822571194288185
+    },
+    {
+      "id": "gsm8k/test/144",
+      "positive_score": 0.9999872945040101,
+      "negative_score": 0.01229355182266066
+    },
+    {
+      "id": "gsm8k/test/728",
+      "positive_score": 0.9996014272923266,
+      "negative_score": 7.714259627937753e-05
+    },
+    {
+      "id": "gsm8k/test/961",
+      "positive_score": 0.9999763016608662,
+      "negative_score": 0.007567974378370005
+    },
+    {
+      "id": "gsm8k/test/351",
+      "positive_score": 0.9988019027961107,
+      "negative_score": 0.00016267784565115133
+    },
+    {
+      "id": "gsm8k/test/1210",
+      "positive_score": 0.9985790833499728,
+      "negative_score": 0.0001590370288375687
+    },
+    {
+      "id": "gsm8k/test/1190",
+      "positive_score": 0.9998497405665621,
+      "negative_score": 0.00876833784168085
+    },
+    {
+      "id": "gsm8k/test/716",
+      "positive_score": 0.9975719563335719,
+      "negative_score": 2.53784273587148e-05
+    },
+    {
+      "id": "gsm8k/test/1161",
+      "positive_score": 0.9998676119072755,
+      "negative_score": 0.0006862653354169715
+    },
+    {
+      "id": "gsm8k/test/453",
+      "positive_score": 0.9998514232714536,
+      "negative_score": 0.0002656966903356408
+    },
+    {
+      "id": "gsm8k/test/986",
+      "positive_score": 0.9996897668377221,
+      "negative_score": 0.0005761955324761543
+    },
+    {
+      "id": "gsm8k/test/1314",
+      "positive_score": 0.999972976561002,
+      "negative_score": 0.000540708845492745
+    },
+    {
+      "id": "gsm8k/test/976",
+      "positive_score": 0.9999339798137632,
+      "negative_score": 0.020857270376999963
+    },
+    {
+      "id": "gsm8k/test/573",
+      "positive_score": 0.9999592415095976,
+      "negative_score": 0.00010852354933124395
+    },
+    {
+      "id": "gsm8k/test/213",
+      "positive_score": 0.9951636362146667,
+      "negative_score": 2.449236588332957e-05
+    },
+    {
+      "id": "gsm8k/test/878",
+      "positive_score": 0.9998870955940878,
+      "negative_score": 0.00032931699701707726
+    },
+    {
+      "id": "gsm8k/test/745",
+      "positive_score": 0.9999908895772546,
+      "negative_score": 0.012583583766413371
+    },
+    {
+      "id": "gsm8k/test/160",
+      "positive_score": 0.9995107621287659,
+      "negative_score": 0.00013377125638999184
+    },
+    {
+      "id": "gsm8k/test/327",
+      "positive_score": 0.9994960972994709,
+      "negative_score": 0.000491062230587247
+    },
+    {
+      "id": "gsm8k/test/998",
+      "positive_score": 0.9999098347923797,
+      "negative_score": 0.002573179201354674
+    },
+    {
+      "id": "gsm8k/test/1105",
+      "positive_score": 0.9999738941099019,
+      "negative_score": 0.004316586842095508
+    },
+    {
+      "id": "gsm8k/test/666",
+      "positive_score": 0.9977691252196681,
+      "negative_score": 3.1041620411956973e-05
+    },
+    {
+      "id": "gsm8k/test/1085",
+      "positive_score": 0.998711790307702,
+      "negative_score": 9.450099261223907e-06
+    },
+    {
+      "id": "gsm8k/test/1159",
+      "positive_score": 0.9999748512150403,
+      "negative_score": 0.0032496950551481668
+    },
+    {
+      "id": "gsm8k/test/1213",
+      "positive_score": 0.999954494603326,
+      "negative_score": 0.0006793699238627958
+    },
+    {
+      "id": "gsm8k/test/1183",
+      "positive_score": 0.9999926892363125,
+      "negative_score": 0.09726529630833401
+    },
+    {
+      "id": "gsm8k/test/1115",
+      "positive_score": 0.9999868790057487,
+      "negative_score": 0.0066380388577738925
+    },
+    {
+      "id": "gsm8k/test/1000",
+      "positive_score": 0.9998397215124661,
+      "negative_score": 0.0013156841344352716
+    },
+    {
+      "id": "gsm8k/test/1007",
+      "positive_score": 0.9999557314303114,
+      "negative_score": 0.001107863399410284
+    },
+    {
+      "id": "gsm8k/test/242",
+      "positive_score": 0.9999907937308528,
+      "negative_score": 0.0010927970623589246
+    },
+    {
+      "id": "gsm8k/test/798",
+      "positive_score": 0.999949517037763,
+      "negative_score": 0.009299652656405925
+    },
+    {
+      "id": "gsm8k/test/473",
+      "positive_score": 0.9999264704026869,
+      "negative_score": 0.0001664063511631919
+    },
+    {
+      "id": "gsm8k/test/640",
+      "positive_score": 0.9999855731891666,
+      "negative_score": 0.1626868338855703
+    },
+    {
+      "id": "gsm8k/test/712",
+      "positive_score": 0.9997209963478664,
+      "negative_score": 3.6449832343894135e-05
+    },
+    {
+      "id": "gsm8k/test/202",
+      "positive_score": 0.9997640816488591,
+      "negative_score": 0.00028464814309629813
+    },
+    {
+      "id": "gsm8k/test/1258",
+      "positive_score": 0.9999421161936506,
+      "negative_score": 0.00044249113962543116
+    },
+    {
+      "id": "gsm8k/test/68",
+      "positive_score": 0.9979187872450793,
+      "negative_score": 5.956601854543055e-06
+    },
+    {
+      "id": "gsm8k/test/1030",
+      "positive_score": 0.9999983283247426,
+      "negative_score": 0.06832684570358298
+    },
+    {
+      "id": "gsm8k/test/81",
+      "positive_score": 0.999688520085963,
+      "negative_score": 0.0001732337483231108
+    },
+    {
+      "id": "gsm8k/test/1282",
+      "positive_score": 0.9998004950088442,
+      "negative_score": 0.00036562793542825855
+    },
+    {
+      "id": "gsm8k/test/584",
+      "positive_score": 0.9999968251236274,
+      "negative_score": 0.005914318664992483
+    },
+    {
+      "id": "gsm8k/test/749",
+      "positive_score": 0.9998324756588809,
+      "negative_score": 0.0001559638618611125
+    },
+    {
+      "id": "gsm8k/test/457",
+      "positive_score": 0.9999630964994017,
+      "negative_score": 0.005582171090832831
+    },
+    {
+      "id": "gsm8k/test/721",
+      "positive_score": 0.9999640606101295,
+      "negative_score": 0.01317088407237501
+    },
+    {
+      "id": "gsm8k/test/1261",
+      "positive_score": 0.9997136603611734,
+      "negative_score": 0.00021736679439801393
+    },
+    {
+      "id": "gsm8k/test/506",
+      "positive_score": 0.9998457458385079,
+      "negative_score": 0.0009712372276792688
+    },
+    {
+      "id": "gsm8k/test/387",
+      "positive_score": 0.9997092411645396,
+      "negative_score": 4.049478118309325e-06
+    },
+    {
+      "id": "gsm8k/test/1235",
+      "positive_score": 0.9999332581449214,
+      "negative_score": 0.0007366104492798731
+    },
+    {
+      "id": "gsm8k/test/727",
+      "positive_score": 0.9999771428625467,
+      "negative_score": 0.006674879705131361
+    },
+    {
+      "id": "gsm8k/test/889",
+      "positive_score": 0.998624571685777,
+      "negative_score": 5.9219430535110015e-05
+    },
+    {
+      "id": "gsm8k/test/32",
+      "positive_score": 0.9997042157254802,
+      "negative_score": 4.6243744885286066e-05
+    },
+    {
+      "id": "gsm8k/test/1233",
+      "positive_score": 0.9997318779850404,
+      "negative_score": 0.00013333242331603907
+    },
+    {
+      "id": "gsm8k/test/404",
+      "positive_score": 0.9995613989869414,
+      "negative_score": 3.454696129015501e-05
+    },
+    {
+      "id": "gsm8k/test/134",
+      "positive_score": 0.999679318194511,
+      "negative_score": 2.0864177318294436e-05
+    },
+    {
+      "id": "gsm8k/test/1061",
+      "positive_score": 0.9997377602188198,
+      "negative_score": 6.892016821297196e-05
+    },
+    {
+      "id": "gsm8k/test/935",
+      "positive_score": 0.9999819160419435,
+      "negative_score": 0.010888685088214245
+    },
+    {
+      "id": "gsm8k/test/95",
+      "positive_score": 0.9999783119339101,
+      "negative_score": 0.000281208778250714
+    },
+    {
+      "id": "gsm8k/test/627",
+      "positive_score": 0.9987887436795869,
+      "negative_score": 2.470321356961284e-05
+    },
+    {
+      "id": "gsm8k/test/1204",
+      "positive_score": 0.9999742711994919,
+      "negative_score": 0.009706222957427502
+    },
+    {
+      "id": "gsm8k/test/393",
+      "positive_score": 0.9943821830455348,
+      "negative_score": 1.667236413129997e-05
+    },
+    {
+      "id": "gsm8k/test/1169",
+      "positive_score": 0.9983980722942101,
+      "negative_score": 0.00010330335106083895
+    },
+    {
+      "id": "gsm8k/test/1174",
+      "positive_score": 0.9998244447358953,
+      "negative_score": 0.0002581363143173186
+    },
+    {
+      "id": "gsm8k/test/1236",
+      "positive_score": 0.9983566438500293,
+      "negative_score": 0.00015014888390416477
+    },
+    {
+      "id": "gsm8k/test/524",
+      "positive_score": 0.9997146288311904,
+      "negative_score": 0.00031267029850574814
+    },
+    {
+      "id": "gsm8k/test/497",
+      "positive_score": 0.9998805409077669,
+      "negative_score": 0.0005964422868145862
+    },
+    {
+      "id": "gsm8k/test/189",
+      "positive_score": 0.9997530736335146,
+      "negative_score": 0.00023787683689036399
+    },
+    {
+      "id": "gsm8k/test/192",
+      "positive_score": 0.9989749117322615,
+      "negative_score": 7.98798321219604e-05
+    },
+    {
+      "id": "gsm8k/test/773",
+      "positive_score": 0.999590596146359,
+      "negative_score": 7.061697208350225e-05
+    },
+    {
+      "id": "gsm8k/test/1266",
+      "positive_score": 0.999932624872439,
+      "negative_score": 0.00043200208633869814
+    },
+    {
+      "id": "gsm8k/test/489",
+      "positive_score": 0.9999950129203204,
+      "negative_score": 0.01582467444217579
+    },
+    {
+      "id": "gsm8k/test/89",
+      "positive_score": 0.9999788351138126,
+      "negative_score": 0.0014135440680569694
+    },
+    {
+      "id": "gsm8k/test/947",
+      "positive_score": 0.9999240531562281,
+      "negative_score": 0.0002932941869717593
+    },
+    {
+      "id": "gsm8k/test/871",
+      "positive_score": 0.9993935320021076,
+      "negative_score": 4.376644459862384e-05
+    },
+    {
+      "id": "gsm8k/test/1125",
+      "positive_score": 0.9997966408330438,
+      "negative_score": 0.00014851282110178236
+    },
+    {
+      "id": "gsm8k/test/769",
+      "positive_score": 0.9999856368879391,
+      "negative_score": 0.004957274356114723
+    },
+    {
+      "id": "gsm8k/test/1277",
+      "positive_score": 0.9999806359960831,
+      "negative_score": 0.00047457516866835844
+    },
+    {
+      "id": "gsm8k/test/802",
+      "positive_score": 0.9997523416840837,
+      "negative_score": 0.0003791607060596539
+    },
+    {
+      "id": "gsm8k/test/995",
+      "positive_score": 0.9994346506893403,
+      "negative_score": 3.241594677287918e-05
+    },
+    {
+      "id": "gsm8k/test/612",
+      "positive_score": 0.9995313006243085,
+      "negative_score": 0.00015128280583237268
+    },
+    {
+      "id": "gsm8k/test/774",
+      "positive_score": 0.9999447518889741,
+      "negative_score": 0.00040967294470457263
+    },
+    {
+      "id": "gsm8k/test/786",
+      "positive_score": 0.9994301385386801,
+      "negative_score": 0.00010566233980187786
+    },
+    {
+      "id": "gsm8k/test/513",
+      "positive_score": 0.998057468248785,
+      "negative_score": 1.2840461920638677e-05
+    },
+    {
+      "id": "gsm8k/test/893",
+      "positive_score": 0.9995367498571031,
+      "negative_score": 2.9810216471980614e-05
+    },
+    {
+      "id": "gsm8k/test/803",
+      "positive_score": 0.9992701160655222,
+      "negative_score": 3.2637118335059985e-05
+    },
+    {
+      "id": "gsm8k/test/696",
+      "positive_score": 0.9999920890090278,
+      "negative_score": 0.12386070521081154
+    },
+    {
+      "id": "gsm8k/test/1087",
+      "positive_score": 0.9998174263223957,
+      "negative_score": 0.003916250863147391
+    },
+    {
+      "id": "gsm8k/test/1299",
+      "positive_score": 0.9967587904412977,
+      "negative_score": 7.551810624975402e-05
+    },
+    {
+      "id": "gsm8k/test/1107",
+      "positive_score": 0.9999678839438817,
+      "negative_score": 4.1949310375744346e-05
+    },
+    {
+      "id": "gsm8k/test/353",
+      "positive_score": 0.9924768368983169,
+      "negative_score": 6.528407714452118e-05
+    },
+    {
+      "id": "gsm8k/test/37",
+      "positive_score": 0.9999066733675301,
+      "negative_score": 0.00047168239820938367
+    },
+    {
+      "id": "gsm8k/test/850",
+      "positive_score": 0.9999966139457602,
+      "negative_score": 0.014851794771979798
+    },
+    {
+      "id": "gsm8k/test/516",
+      "positive_score": 0.9999399352042924,
+      "negative_score": 0.00014662777483136154
+    },
+    {
+      "id": "gsm8k/test/637",
+      "positive_score": 0.9996720673116104,
+      "negative_score": 0.00012939574943710355
+    },
+    {
+      "id": "gsm8k/test/1247",
+      "positive_score": 0.9999318819530368,
+      "negative_score": 0.0007400788700164728
+    },
+    {
+      "id": "gsm8k/test/772",
+      "positive_score": 0.9999655635970588,
+      "negative_score": 0.006717299478281353
+    },
+    {
+      "id": "gsm8k/test/957",
+      "positive_score": 0.9995188138476473,
+      "negative_score": 0.00014556033392017199
+    },
+    {
+      "id": "gsm8k/test/241",
+      "positive_score": 0.9999830165674771,
+      "negative_score": 0.0002896329287964699
+    },
+    {
+      "id": "gsm8k/test/1300",
+      "positive_score": 0.9998333672199531,
+      "negative_score": 7.38335234817457e-05
+    },
+    {
+      "id": "gsm8k/test/472",
+      "positive_score": 0.9999709686697923,
+      "negative_score": 0.002282734795493086
+    },
+    {
+      "id": "gsm8k/test/1272",
+      "positive_score": 0.9995098652069906,
+      "negative_score": 0.00013529680652352378
+    },
+    {
+      "id": "gsm8k/test/615",
+      "positive_score": 0.999943523331351,
+      "negative_score": 0.0018748045806851056
+    },
+    {
+      "id": "gsm8k/test/7",
+      "positive_score": 0.999940588701079,
+      "negative_score": 0.0012501984797666339
+    },
+    {
+      "id": "gsm8k/test/874",
+      "positive_score": 0.9991123369549824,
+      "negative_score": 1.5730023252070117e-05
+    },
+    {
+      "id": "gsm8k/test/1086",
+      "positive_score": 0.9999596741114394,
+      "negative_score": 0.0965933387391407
+    },
+    {
+      "id": "gsm8k/test/329",
+      "positive_score": 0.9990548117086957,
+      "negative_score": 0.00011548932076181172
+    },
+    {
+      "id": "gsm8k/test/581",
+      "positive_score": 0.996879888188322,
+      "negative_score": 2.66660576042147e-05
+    },
+    {
+      "id": "gsm8k/test/1260",
+      "positive_score": 0.999996990762181,
+      "negative_score": 0.007479592785446098
+    },
+    {
+      "id": "gsm8k/test/1114",
+      "positive_score": 0.9994488032697525,
+      "negative_score": 4.978902132577625e-05
+    },
+    {
+      "id": "gsm8k/test/440",
+      "positive_score": 0.9999429344084445,
+      "negative_score": 7.459029859559251e-05
+    },
+    {
+      "id": "gsm8k/test/429",
+      "positive_score": 0.9999312070755529,
+      "negative_score": 4.8288565735743844e-05
+    },
+    {
+      "id": "gsm8k/test/676",
+      "positive_score": 0.9998960886926662,
+      "negative_score": 0.00036852268167200246
+    },
+    {
+      "id": "gsm8k/test/1303",
+      "positive_score": 0.9997307161715865,
+      "negative_score": 0.0007168256371854922
+    },
+    {
+      "id": "gsm8k/test/1167",
+      "positive_score": 0.9997899318525721,
+      "negative_score": 2.1184479116384864e-05
+    },
+    {
+      "id": "gsm8k/test/733",
+      "positive_score": 0.9999765701137984,
+      "negative_score": 0.00016478842224858687
+    },
+    {
+      "id": "gsm8k/test/54",
+      "positive_score": 0.9999964096347014,
+      "negative_score": 0.09060402439678882
+    },
+    {
+      "id": "gsm8k/test/140",
+      "positive_score": 0.9999784847464755,
+      "negative_score": 0.0006634639730111822
+    },
+    {
+      "id": "gsm8k/test/1024",
+      "positive_score": 0.9986774577257465,
+      "negative_score": 7.465574547901666e-06
+    },
+    {
+      "id": "gsm8k/test/99",
+      "positive_score": 0.99997348849122,
+      "negative_score": 0.007126011711388991
+    },
+    {
+      "id": "gsm8k/test/1005",
+      "positive_score": 0.9999756094287356,
+      "negative_score": 0.00285840225350357
+    },
+    {
+      "id": "gsm8k/test/1184",
+      "positive_score": 0.9998747605331222,
+      "negative_score": 6.891216168927785e-05
+    },
+    {
+      "id": "gsm8k/test/262",
+      "positive_score": 0.9997340204754807,
+      "negative_score": 1.7250400122142903e-05
+    },
+    {
+      "id": "gsm8k/test/355",
+      "positive_score": 0.9970063623590322,
+      "negative_score": 1.9880265952407557e-05
+    },
+    {
+      "id": "gsm8k/test/820",
+      "positive_score": 0.9998992858118232,
+      "negative_score": 0.002350868461876999
+    },
+    {
+      "id": "gsm8k/test/795",
+      "positive_score": 0.9999924223748012,
+      "negative_score": 0.0017754088076163015
+    },
+    {
+      "id": "gsm8k/test/1050",
+      "positive_score": 0.99993308822124,
+      "negative_score": 7.438390073310294e-05
+    },
+    {
+      "id": "gsm8k/test/1156",
+      "positive_score": 0.9999922763064194,
+      "negative_score": 0.013222805415263002
+    },
+    {
+      "id": "gsm8k/test/271",
+      "positive_score": 0.9998739896371093,
+      "negative_score": 3.760035364008307e-05
+    },
+    {
+      "id": "gsm8k/test/49",
+      "positive_score": 0.9996805363870458,
+      "negative_score": 0.00011950014069605794
+    },
+    {
+      "id": "gsm8k/test/574",
+      "positive_score": 0.9999567349031625,
+      "negative_score": 0.00587612527787534
+    },
+    {
+      "id": "gsm8k/test/636",
+      "positive_score": 0.9996869137079281,
+      "negative_score": 0.00010147172105915584
+    },
+    {
+      "id": "gsm8k/test/483",
+      "positive_score": 0.9999864799882668,
+      "negative_score": 0.0018245130396744294
+    },
+    {
+      "id": "gsm8k/test/416",
+      "positive_score": 0.9999095155600373,
+      "negative_score": 0.0016858110684826078
+    },
+    {
+      "id": "gsm8k/test/29",
+      "positive_score": 0.9998457700602528,
+      "negative_score": 0.001151844158024415
+    },
+    {
+      "id": "gsm8k/test/1152",
+      "positive_score": 0.9995261337064489,
+      "negative_score": 7.994493318366288e-05
+    },
+    {
+      "id": "gsm8k/test/628",
+      "positive_score": 0.9999912463180887,
+      "negative_score": 0.00037366154695513804
+    },
+    {
+      "id": "gsm8k/test/1106",
+      "positive_score": 0.9994049046197643,
+      "negative_score": 9.053420669077595e-06
+    },
+    {
+      "id": "gsm8k/test/851",
+      "positive_score": 0.9984518771096326,
+      "negative_score": 2.881161451202021e-05
+    },
+    {
+      "id": "gsm8k/test/1095",
+      "positive_score": 0.9992082346034096,
+      "negative_score": 5.933054339283051e-05
+    },
+    {
+      "id": "gsm8k/test/687",
+      "positive_score": 0.9999879887385543,
+      "negative_score": 0.0020019005578458585
+    },
+    {
+      "id": "gsm8k/test/1264",
+      "positive_score": 0.9985107077103053,
+      "negative_score": 0.0021264761611938087
+    },
+    {
+      "id": "gsm8k/test/759",
+      "positive_score": 0.9999798966752431,
+      "negative_score": 0.000558981992090372
+    },
+    {
+      "id": "gsm8k/test/256",
+      "positive_score": 0.9868582858182291,
+      "negative_score": 1.624008533267255e-05
+    },
+    {
+      "id": "gsm8k/test/470",
+      "positive_score": 0.998742377209125,
+      "negative_score": 2.4688941641774972e-05
+    },
+    {
+      "id": "gsm8k/test/338",
+      "positive_score": 0.999877902581969,
+      "negative_score": 0.0007425694919885022
+    },
+    {
+      "id": "gsm8k/test/1121",
+      "positive_score": 0.9998457527644353,
+      "negative_score": 0.00010058523531870234
+    },
+    {
+      "id": "gsm8k/test/799",
+      "positive_score": 0.9998451236941504,
+      "negative_score": 4.458363031157336e-05
+    },
+    {
+      "id": "gsm8k/test/347",
+      "positive_score": 0.99979239727656,
+      "negative_score": 4.169898835719943e-05
+    },
+    {
+      "id": "gsm8k/test/1224",
+      "positive_score": 0.9973435380987804,
+      "negative_score": 7.642192961496307e-06
+    },
+    {
+      "id": "gsm8k/test/1298",
+      "positive_score": 0.9998787369770362,
+      "negative_score": 0.00011325564449040705
+    },
+    {
+      "id": "gsm8k/test/313",
+      "positive_score": 0.9998955747900303,
+      "negative_score": 0.0006894161855218017
+    },
+    {
+      "id": "gsm8k/test/106",
+      "positive_score": 0.9995546942461646,
+      "negative_score": 4.489126183422405e-05
+    },
+    {
+      "id": "gsm8k/test/625",
+      "positive_score": 0.9976173539563884,
+      "negative_score": 2.491514374521511e-05
+    },
+    {
+      "id": "gsm8k/test/951",
+      "positive_score": 0.9999389420475853,
+      "negative_score": 0.0004629892496258166
+    },
+    {
+      "id": "gsm8k/test/1028",
+      "positive_score": 0.9990612074270916,
+      "negative_score": 0.00016767229946005986
+    },
+    {
+      "id": "gsm8k/test/550",
+      "positive_score": 0.9999857614234781,
+      "negative_score": 0.012976689907659763
+    },
+    {
+      "id": "gsm8k/test/480",
+      "positive_score": 0.9983800113543863,
+      "negative_score": 5.88407273989373e-05
+    },
+    {
+      "id": "gsm8k/test/75",
+      "positive_score": 0.9992719967134036,
+      "negative_score": 0.0002311225697664911
+    },
+    {
+      "id": "gsm8k/test/488",
+      "positive_score": 0.9999574824579861,
+      "negative_score": 0.0006243698844173913
+    },
+    {
+      "id": "gsm8k/test/385",
+      "positive_score": 0.9999762789888835,
+      "negative_score": 0.002037986004544595
+    },
+    {
+      "id": "gsm8k/test/1206",
+      "positive_score": 0.9999459982137945,
+      "negative_score": 0.00037953269833234434
+    },
+    {
+      "id": "gsm8k/test/53",
+      "positive_score": 0.9999217835267229,
+      "negative_score": 0.02274261612149379
+    },
+    {
+      "id": "gsm8k/test/713",
+      "positive_score": 0.9999524222633884,
+      "negative_score": 0.0003346615499387451
+    },
+    {
+      "id": "gsm8k/test/247",
+      "positive_score": 0.9997732076741606,
+      "negative_score": 0.00043416035606337437
+    },
+    {
+      "id": "gsm8k/test/1111",
+      "positive_score": 0.9999627377232604,
+      "negative_score": 0.00027512148973083794
+    },
+    {
+      "id": "gsm8k/test/1223",
+      "positive_score": 0.9998074485839117,
+      "negative_score": 3.9789179970427085e-05
+    },
+    {
+      "id": "gsm8k/test/1168",
+      "positive_score": 0.9994922258493912,
+      "negative_score": 0.0002170411329651793
+    },
+    {
+      "id": "gsm8k/test/67",
+      "positive_score": 0.9998944448794173,
+      "negative_score": 0.0018036099972564658
+    },
+    {
+      "id": "gsm8k/test/1012",
+      "positive_score": 0.9999931831369748,
+      "negative_score": 0.05514934039795781
+    },
+    {
+      "id": "gsm8k/test/551",
+      "positive_score": 0.992737353397691,
+      "negative_score": 2.7447333828848598e-05
+    },
+    {
+      "id": "gsm8k/test/170",
+      "positive_score": 0.9996899969653386,
+      "negative_score": 0.0005169253369980804
+    },
+    {
+      "id": "gsm8k/test/1216",
+      "positive_score": 0.999922240484509,
+      "negative_score": 0.001871750119170635
+    },
+    {
+      "id": "gsm8k/test/1091",
+      "positive_score": 0.9999241139684271,
+      "negative_score": 0.00020158009233184094
+    },
+    {
+      "id": "gsm8k/test/451",
+      "positive_score": 0.9998889179994159,
+      "negative_score": 0.001423595689450061
+    },
+    {
+      "id": "gsm8k/test/826",
+      "positive_score": 0.9999276378415951,
+      "negative_score": 0.00407224743231376
+    },
+    {
+      "id": "gsm8k/test/459",
+      "positive_score": 0.9999591841379304,
+      "negative_score": 0.08474316578089389
+    },
+    {
+      "id": "gsm8k/test/720",
+      "positive_score": 0.9993905358792908,
+      "negative_score": 0.00010591473211141848
+    },
+    {
+      "id": "gsm8k/test/1021",
+      "positive_score": 0.9999706958933886,
+      "negative_score": 0.001595208414587676
+    },
+    {
+      "id": "gsm8k/test/1219",
+      "positive_score": 0.9999873438834951,
+      "negative_score": 0.0009670500030939686
+    },
+    {
+      "id": "gsm8k/test/672",
+      "positive_score": 0.9998744627061268,
+      "negative_score": 0.004239964214808582
+    },
+    {
+      "id": "gsm8k/test/604",
+      "positive_score": 0.9857521339443236,
+      "negative_score": 6.500293568758351e-05
+    },
+    {
+      "id": "gsm8k/test/1193",
+      "positive_score": 0.9998267191883934,
+      "negative_score": 0.001985149473179508
+    },
+    {
+      "id": "gsm8k/test/437",
+      "positive_score": 0.9999527520714266,
+      "negative_score": 0.00011860782765471214
+    },
+    {
+      "id": "gsm8k/test/186",
+      "positive_score": 0.9998938552274942,
+      "negative_score": 0.016459314821370773
+    },
+    {
+      "id": "gsm8k/test/1045",
+      "positive_score": 0.9994676602585715,
+      "negative_score": 2.8272121181786827e-05
+    },
+    {
+      "id": "gsm8k/test/592",
+      "positive_score": 0.9998283918397252,
+      "negative_score": 0.0006733973795723155
+    },
+    {
+      "id": "gsm8k/test/1037",
+      "positive_score": 0.999966937353069,
+      "negative_score": 0.0017000054601853509
+    },
+    {
+      "id": "gsm8k/test/600",
+      "positive_score": 0.9999757429184452,
+      "negative_score": 0.0008357904389721316
+    },
+    {
+      "id": "gsm8k/test/1078",
+      "positive_score": 0.9999400838612778,
+      "negative_score": 0.0022435421319130667
+    },
+    {
+      "id": "gsm8k/test/112",
+      "positive_score": 0.9999680939335155,
+      "negative_score": 0.005199170347554397
+    },
+    {
+      "id": "gsm8k/test/136",
+      "positive_score": 0.9998531401465901,
+      "negative_score": 7.41890266284014e-05
+    },
+    {
+      "id": "gsm8k/test/1056",
+      "positive_score": 0.9996782278993434,
+      "negative_score": 0.00039581660106431405
+    },
+    {
+      "id": "gsm8k/test/479",
+      "positive_score": 0.9990745043503328,
+      "negative_score": 0.00031654313364338246
+    },
+    {
+      "id": "gsm8k/test/929",
+      "positive_score": 0.9998726808504554,
+      "negative_score": 6.491317275996513e-05
+    },
+    {
+      "id": "gsm8k/test/438",
+      "positive_score": 0.9996977973604146,
+      "negative_score": 0.000338237529257992
+    }
+  ]
+}

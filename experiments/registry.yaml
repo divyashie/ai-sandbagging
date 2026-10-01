@@ -1,0 +1,102 @@
+version: 1
+project_root: /Users/edward/Projects/algoverse-ai-sandbagging
+controls:
+  paid_compute_requires_team_approval: true
+  headline_statistics: item_level_roc_auc_with_paired_bootstrap_ci
+  evaluation_seeds: [314, 2718, 1618]
+  scope_freeze_rule: "No new arm after end-of-week-2 gate without dropping an existing arm."
+arms:
+  - id: E1
+    name: Recover or reproducibly retrain canonical xdomain v1 and audit-evasion v3 adapters
+    claim_ids: [C1, C17]
+    models: [mlx-community/Qwen2.5-3B-Instruct-4bit]
+    datasets: [results/xdomain/training_data_xdomain.json, sandbagging_xdomain_v3/training_data_xdomain.json]
+    access_tier: weights_and_training
+    budget_B: {training_steps_v1: 400, training_steps_v3: 200}
+    seeds: []
+    n_items: {smoke: 8, final_functionality: 200}
+    est_cost_usd: 0
+    est_wall_hours: 1
+    artifact_paths: [adapters/xdomain_qwen3b_v1, adapters/xdomain_qwen3b_v3_iter200, results/resubmission/E1]
+    status: complete
+    owner: Edward
+    runbook: docs/runbooks/E1_ADAPTER_RECOVERY.md
+  - id: E2
+    name: Fixed-probe transfer from xdomain v1 to audit-evasion v3, then defender update
+    claim_ids: [C2, C8, C17]
+    models: [mlx-community/Qwen2.5-3B-Instruct-4bit]
+    datasets: [gsm8k/train, gsm8k/test]
+    access_tier: activations
+    budget_B: {probe_updates: 1, detector_queries_per_condition: 200}
+    seeds: [314, 2718, 1618]
+    n_items: {smoke: 8, probe_train: 200, final_per_seed: 200}
+    est_cost_usd: 0
+    est_wall_hours: 4
+    artifact_paths: [probes/xdomain_v1_fixed.pkl, probes/xdomain_v3_updated.pkl, results/resubmission/E2]
+    status: complete
+    owner: Rani
+    runbook: docs/runbooks/E2_V3_PROBE.md
+  - id: E3
+    name: Train matched benign LoRA controls
+    claim_ids: [C8]
+    models: [mlx-community/Qwen2.5-3B-Instruct-4bit]
+    datasets: [results/controls/benign_label_scrubbed_v3.json, results/controls/benign_clean_upsampled_v3.json]
+    access_tier: weights_and_training
+    budget_B: {adapters: 2, training_steps_each: 200}
+    seeds: []
+    n_items: {training_each: 800, smoke_steps: 5}
+    est_cost_usd: 0
+    est_wall_hours: 1
+    artifact_paths: [adapters/benign_xdomain_label_scrubbed, adapters/benign_xdomain_clean_upsampled, results/resubmission/E3]
+    status: complete
+    owner: Edward
+    verification_owner: Josh
+    runbook: docs/runbooks/E3_BENIGN_LORA.md
+  - id: E4
+    name: Matched-control activation-probe matrix
+    claim_ids: [C7, C8, C9, C13]
+    models: [mlx-community/Qwen2.5-3B-Instruct-4bit]
+    datasets: [gsm8k/test]
+    access_tier: activations
+    budget_B: {probe_negative_classes: [base, matched_benign], detector_queries_per_condition: 200}
+    seeds: [314, 2718, 1618]
+    n_items: {smoke: 8, final_per_seed: 200}
+    est_cost_usd: 0
+    est_wall_hours: 4
+    artifact_paths: [probes/xdomain_v3_vs_benign.pkl, results/resubmission/E4]
+    status: complete
+    owner: Edward
+    verification_owner: Josh
+    runbook: docs/runbooks/E4_PROBE_CONTROLS.md
+  - id: E5
+    name: Attacker-cost and held-out-functionality ledger
+    claim_ids: [C1, C2, C4, C17]
+    models: [Qwen2.5-3B]
+    datasets: [existing_v1_v2_v3_logs, E1, E2, E3, E4]
+    access_tier: artifact_analysis
+    budget_B: {new_training_runs: 0}
+    seeds: [314, 2718, 1618]
+    n_items: {cost_rows: 3}
+    est_cost_usd: 0
+    est_wall_hours: 0.5
+    artifact_paths: [results/resubmission/E5/cost_ledger.csv, docs/plan/COST_TABLE.md]
+    status: complete
+    owner: Edward
+    review_owner: Aarohi
+    runbook: docs/runbooks/E5_COST_LEDGER.md
+  - id: E6
+    name: Claims rewrite and resubmission package
+    claim_ids: [C2, C3, C5, C8, C9, C13, C14, C16]
+    models: []
+    datasets: [docs/reviews/submission_v1.txt]
+    access_tier: writing
+    budget_B: {new_experiments: 0}
+    seeds: []
+    n_items: {paper_sections: 6}
+    est_cost_usd: 0
+    est_wall_hours: 8
+    artifact_paths: [docs/plan/PAPER_EDIT_PLAN.md]
+    status: ready_for_overleaf
+    owner: Aarohi
+    evidence_mapping_owner: Edward
+    runbook: docs/runbooks/E6_PAPER_REWRITE.md

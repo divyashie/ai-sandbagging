@@ -1,0 +1,28 @@
+Clean   (results/resubmission/E12/features_v3_s15_notrig.json): n=200, condition='xdomain_gsm8k_no_trig'
+Suspect (results/resubmission/E12/features_v3_s15_trig.json): n=200, condition='xdomain_gsm8k_trig'
+Activation norms: stripped (text-only mode)
+
+/opt/homebrew/lib/python3.14/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: ks_2samp: Exact calculation unsuccessful. Switching to method=asymp.
+  res = hypotest_fun_out(*samples, **kwds)
+=== Verdict: INDISTINGUISHABLE ===
+Joint classifier AUC: 0.519  (accuracy 0.495)
+
+Per-feature 2-sample KS tests:
+  feature                               D          p     p_bonf   sig?
+  response_length_tokens            0.070     0.7126     1.0000       
+  response_length_chars             0.115     0.1421     0.7104       
+  has_numeric_answer                0.005     1.0000     1.0000       
+  answer_extraction_ok              0.025     1.0000     1.0000       
+  hedge_count                       0.005     1.0000     1.0000       
+
+Top features by signed importance (positive ⇒ pushes toward 'suspect' class):
+  response_length_chars          +0.240
+  has_numeric_answer             +0.237
+  hedge_count                    -0.219
+  response_length_tokens         -0.101
+  answer_extraction_ok           -0.029
+
+Full report → results/resubmission/E12/textaudit_v3_s15.json
+real 0.82
+user 0.67
+sys 0.08

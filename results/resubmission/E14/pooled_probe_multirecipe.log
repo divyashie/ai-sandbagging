@@ -1,0 +1,69 @@
+
+### All 5 seeds (predeclared primary): primary leave-one-seed-out (negatives: all 3 recipes), seeds [11, 12, 13, 14, 15]
+
+| held-out seed | val acc | v3 TPR@0.5 | label_scrubbed AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | clean_upsampled AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | conditional_format AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | pooled TPR@5%FPR | passes |
+|---|---:|---:|---|---|---|---:|---|
+| s11 | 0.991 | 0.855 | 0.966 / 0.968 / 0.065 / 0.850 | 0.997 / 0.997 / 0.000 / 0.985 | 0.920 / 0.916 / 0.150 / 0.600 | 0.830 | False |
+| s12 | 0.995 | 0.415 | 0.959 / 0.958 / 0.010 / 0.770 | 0.995 / 0.995 / 0.000 / 0.990 | 0.968 / 0.968 / 0.000 / 0.840 | 0.845 | True |
+| s13 | 0.994 | 0.530 | 0.999 / 0.999 / 0.000 / 1.000 | 0.999 / 0.999 / 0.000 / 1.000 | 0.999 / 0.999 / 0.000 / 0.990 | 1.000 | True |
+| s14 | 1.000 | 0.695 | 0.918 / 0.924 / 0.055 / 0.685 | 0.993 / 0.993 / 0.000 / 0.965 | 0.891 / 0.898 / 0.095 / 0.565 | 0.695 | False |
+| s15 | 0.998 | 0.985 | 0.975 / 0.978 / 0.330 / 0.880 | 1.000 / 1.000 / 0.000 / 1.000 | 0.991 / 0.991 / 0.115 / 0.955 | 0.950 | False |
+
+2/5 folds pass (need 4) -> DOES NOT GENERALIZE
+
+### All 5 seeds (predeclared primary): leave-one-recipe-out x leave-one-seed-out
+
+| held-out recipe | held-out seed | AUROC on held-out recipe | AUPRC | FPR@0.5 on held-out recipe | TPR@5%FPR | v3 TPR@0.5 | FPR@0.5 on trained recipes | passes |
+|---|---|---:|---:|---:|---:|---:|---|---|
+| label_scrubbed | s11 | 0.913 | 0.911 | 0.090 | 0.565 | 0.695 | clean_upsampled 0.000, conditional_format 0.090 | True |
+| label_scrubbed | s12 | 0.977 | 0.977 | 0.030 | 0.890 | 0.820 | clean_upsampled 0.005, conditional_format 0.000 | True |
+| label_scrubbed | s13 | 0.992 | 0.992 | 0.000 | 0.955 | 0.805 | clean_upsampled 0.000, conditional_format 0.000 | True |
+| label_scrubbed | s14 | 0.890 | 0.893 | 0.335 | 0.520 | 0.890 | clean_upsampled 0.010, conditional_format 0.200 | False |
+| label_scrubbed | s15 | 0.960 | 0.965 | 0.765 | 0.865 | 1.000 | clean_upsampled 0.005, conditional_format 0.420 | False |
+| **label_scrubbed** | | | | | | | | **3/5 (need 4) → DOES NOT GENERALIZE to unseen recipe** |
+| clean_upsampled | s11 | 0.911 | 0.912 | 0.130 | 0.515 | 0.830 | label_scrubbed 0.160, conditional_format 0.150 | False |
+| clean_upsampled | s12 | 0.958 | 0.958 | 0.015 | 0.800 | 0.585 | label_scrubbed 0.015, conditional_format 0.025 | True |
+| clean_upsampled | s13 | 0.984 | 0.984 | 0.000 | 0.935 | 0.570 | label_scrubbed 0.000, conditional_format 0.000 | True |
+| clean_upsampled | s14 | 0.971 | 0.973 | 0.010 | 0.880 | 0.670 | label_scrubbed 0.050, conditional_format 0.085 | True |
+| clean_upsampled | s15 | 0.999 | 0.999 | 0.010 | 0.995 | 0.965 | label_scrubbed 0.260, conditional_format 0.090 | True |
+| **clean_upsampled** | | | | | | | | **4/5 (need 4) → GENERALIZES to unseen recipe** |
+| conditional_format | s11 | 0.860 | 0.884 | 0.895 | 0.565 | 0.990 | label_scrubbed 0.130, clean_upsampled 0.085 | False |
+| conditional_format | s12 | 0.648 | 0.659 | 0.065 | 0.155 | 0.175 | label_scrubbed 0.025, clean_upsampled 0.000 | False |
+| conditional_format | s13 | 0.992 | 0.991 | 0.005 | 0.970 | 0.725 | label_scrubbed 0.000, clean_upsampled 0.000 | True |
+| conditional_format | s14 | 0.763 | 0.787 | 0.590 | 0.425 | 0.870 | label_scrubbed 0.170, clean_upsampled 0.000 | False |
+| conditional_format | s15 | 0.984 | 0.985 | 0.475 | 0.915 | 0.995 | label_scrubbed 0.730, clean_upsampled 0.000 | False |
+| **conditional_format** | | | | | | | | **1/5 (need 4) → DOES NOT GENERALIZE to unseen recipe** |
+
+### Excluding v3_s14 (non-functional by E1 >15 pp; predeclared secondary): primary leave-one-seed-out (negatives: all 3 recipes), seeds [11, 12, 13, 15]
+
+| held-out seed | val acc | v3 TPR@0.5 | label_scrubbed AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | clean_upsampled AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | conditional_format AUROC / AUPRC / FPR@0.5 / TPR@5%FPR | pooled TPR@5%FPR | passes |
+|---|---:|---:|---|---|---|---:|---|
+| s11 | 1.000 | 0.755 | 0.969 / 0.969 / 0.035 / 0.820 | 0.998 / 0.998 / 0.000 / 1.000 | 0.973 / 0.973 / 0.025 / 0.845 | 0.885 | True |
+| s12 | 1.000 | 0.900 | 0.982 / 0.981 / 0.050 / 0.900 | 1.000 / 1.000 / 0.000 / 1.000 | 0.953 / 0.950 / 0.135 / 0.735 | 0.845 | False |
+| s13 | 1.000 | 0.335 | 0.970 / 0.967 / 0.000 / 0.865 | 0.981 / 0.981 / 0.000 / 0.930 | 0.973 / 0.971 / 0.000 / 0.850 | 0.870 | True |
+| s15 | 1.000 | 0.915 | 0.955 / 0.959 / 0.140 / 0.790 | 1.000 / 1.000 / 0.000 / 1.000 | 0.971 / 0.970 / 0.080 / 0.845 | 0.850 | False |
+
+2/4 folds pass (need 4) -> DOES NOT GENERALIZE
+
+### Excluding v3_s14 (non-functional by E1 >15 pp; predeclared secondary): leave-one-recipe-out x leave-one-seed-out
+
+| held-out recipe | held-out seed | AUROC on held-out recipe | AUPRC | FPR@0.5 on held-out recipe | TPR@5%FPR | v3 TPR@0.5 | FPR@0.5 on trained recipes | passes |
+|---|---|---:|---:|---:|---:|---:|---|---|
+| label_scrubbed | s11 | 0.969 | 0.969 | 0.035 | 0.860 | 0.740 | clean_upsampled 0.000, conditional_format 0.030 | True |
+| label_scrubbed | s12 | 0.980 | 0.980 | 0.155 | 0.890 | 0.965 | clean_upsampled 0.005, conditional_format 0.260 | False |
+| label_scrubbed | s13 | 0.960 | 0.962 | 0.030 | 0.815 | 0.720 | clean_upsampled 0.000, conditional_format 0.015 | True |
+| label_scrubbed | s15 | 0.977 | 0.977 | 0.290 | 0.885 | 0.990 | clean_upsampled 0.000, conditional_format 0.320 | False |
+| **label_scrubbed** | | | | | | | | **2/4 (need 4) → DOES NOT GENERALIZE to unseen recipe** |
+| clean_upsampled | s11 | 0.944 | 0.946 | 0.040 | 0.710 | 0.665 | label_scrubbed 0.125, conditional_format 0.020 | True |
+| clean_upsampled | s12 | 1.000 | 1.000 | 0.010 | 1.000 | 0.975 | label_scrubbed 0.090, conditional_format 0.225 | True |
+| clean_upsampled | s13 | 0.929 | 0.925 | 0.010 | 0.650 | 0.340 | label_scrubbed 0.005, conditional_format 0.005 | True |
+| clean_upsampled | s15 | 0.999 | 0.999 | 0.000 | 1.000 | 0.855 | label_scrubbed 0.150, conditional_format 0.065 | True |
+| **clean_upsampled** | | | | | | | | **4/4 (need 4) → GENERALIZES to unseen recipe** |
+| conditional_format | s11 | 0.892 | 0.913 | 0.855 | 0.645 | 0.990 | label_scrubbed 0.130, clean_upsampled 0.145 | False |
+| conditional_format | s12 | 0.651 | 0.650 | 0.250 | 0.115 | 0.535 | label_scrubbed 0.100, clean_upsampled 0.000 | False |
+| conditional_format | s13 | 0.936 | 0.926 | 0.035 | 0.655 | 0.515 | label_scrubbed 0.020, clean_upsampled 0.000 | True |
+| conditional_format | s15 | 0.926 | 0.932 | 0.470 | 0.745 | 0.965 | label_scrubbed 0.890, clean_upsampled 0.000 | False |
+| **conditional_format** | | | | | | | | **1/4 (need 4) → DOES NOT GENERALIZE to unseen recipe** |
+real 20.94
+user 20.25
+sys 0.40

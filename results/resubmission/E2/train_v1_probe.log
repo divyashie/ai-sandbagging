@@ -1,0 +1,49 @@
+Cross-model contrast: positive=adapters/xdomain_qwen3b_v1  vs  negative=base
+Loaded 200 questions from gsm8k/train
+
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=adapters/xdomain_qwen3b_v1
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 32739.58it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=base
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 75047.19it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Trained probe written to: probes/xdomain_v1_fixed.pkl
+  feature dim:   10240
+  train acc:     1.000
+  held-out acc:  1.000
+real 31.61
+user 4.59
+sys 1.99
+          3618029568  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              273532  page reclaims
+                  46  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  81  messages sent
+                 214  messages received
+                   0  signals received
+                  19  voluntary context switches
+               33042  involuntary context switches
+         76090239718  instructions retired
+         27083095636  cycles elapsed
+         14865096168  peak memory footprint

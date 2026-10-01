@@ -1,0 +1,70 @@
+=== clean-upsampled benign LoRA at 2026-08-08T19:30:38Z ===
+Loaded 800 examples from results/controls/benign_clean_upsampled_v3.json
+Converted 800 examples. Cell distribution: {'benign_clean_upsampled': 800}
+
+Loading mlx-community/Qwen2.5-3B-Instruct-4bit on mlx
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 32626.39it/s]
+
+Training xdomain adapter (200 iters, rank=16)...
+Starting training..., iters: 200
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 1: Val loss nan, Val took 0.028s
+Iter 10: Train loss 0.533, Learning Rate 1.500e-04, It/sec 0.751, Tokens/sec 165.013, Trained Tokens 2197, Peak mem 16.109 GB
+Iter 20: Train loss 0.157, Learning Rate 1.500e-04, It/sec 0.935, Tokens/sec 138.441, Trained Tokens 3677, Peak mem 16.109 GB
+Iter 30: Train loss 0.260, Learning Rate 1.500e-04, It/sec 0.970, Tokens/sec 265.815, Trained Tokens 6418, Peak mem 16.109 GB
+Iter 40: Train loss 0.296, Learning Rate 1.500e-04, It/sec 0.688, Tokens/sec 216.591, Trained Tokens 9568, Peak mem 16.109 GB
+Iter 50: Train loss 0.233, Learning Rate 1.500e-04, It/sec 0.965, Tokens/sec 271.244, Trained Tokens 12379, Peak mem 16.109 GB
+Iter 60: Train loss 0.159, Learning Rate 1.500e-04, It/sec 0.749, Tokens/sec 151.155, Trained Tokens 14398, Peak mem 21.258 GB
+Iter 70: Train loss 0.284, Learning Rate 1.500e-04, It/sec 0.709, Tokens/sec 281.606, Trained Tokens 18368, Peak mem 21.259 GB
+Iter 80: Train loss 0.250, Learning Rate 1.500e-04, It/sec 0.837, Tokens/sec 280.036, Trained Tokens 21715, Peak mem 21.259 GB
+Iter 90: Train loss 0.236, Learning Rate 1.500e-04, It/sec 0.823, Tokens/sec 310.914, Trained Tokens 25491, Peak mem 21.259 GB
+Iter 100: Train loss 0.101, Learning Rate 1.500e-04, It/sec 0.841, Tokens/sec 147.113, Trained Tokens 27241, Peak mem 21.259 GB
+Iter 100: Saved adapter weights to adapters/benign_xdomain_clean_upsampled/adapters.safetensors and adapters/benign_xdomain_clean_upsampled/0000100_adapters.safetensors.
+Iter 110: Train loss 0.266, Learning Rate 1.500e-04, It/sec 1.081, Tokens/sec 329.852, Trained Tokens 30293, Peak mem 21.259 GB
+Iter 120: Train loss 0.179, Learning Rate 1.500e-04, It/sec 0.872, Tokens/sec 257.857, Trained Tokens 33249, Peak mem 21.259 GB
+Iter 130: Train loss 0.188, Learning Rate 1.500e-04, It/sec 0.790, Tokens/sec 230.928, Trained Tokens 36172, Peak mem 21.259 GB
+Iter 140: Train loss 0.186, Learning Rate 1.500e-04, It/sec 0.846, Tokens/sec 237.626, Trained Tokens 38981, Peak mem 21.259 GB
+Iter 150: Train loss 0.215, Learning Rate 1.500e-04, It/sec 0.832, Tokens/sec 271.341, Trained Tokens 42241, Peak mem 21.259 GB
+Iter 160: Train loss 0.098, Learning Rate 1.500e-04, It/sec 1.033, Tokens/sec 197.562, Trained Tokens 44154, Peak mem 21.259 GB
+Iter 170: Train loss 0.114, Learning Rate 1.500e-04, It/sec 0.880, Tokens/sec 251.038, Trained Tokens 47007, Peak mem 21.259 GB
+Iter 180: Train loss 0.102, Learning Rate 1.500e-04, It/sec 0.730, Tokens/sec 163.372, Trained Tokens 49245, Peak mem 21.259 GB
+Iter 190: Train loss 0.107, Learning Rate 1.500e-04, It/sec 0.935, Tokens/sec 247.620, Trained Tokens 51893, Peak mem 21.259 GB
+Calculating loss...: 0it [00:00, ?it/s]Calculating loss...: 0it [00:00, ?it/s]
+Iter 200: Val loss nan, Val took 0.003s
+Iter 200: Train loss 0.131, Learning Rate 1.500e-04, It/sec 0.885, Tokens/sec 322.553, Trained Tokens 55536, Peak mem 21.259 GB
+Iter 200: Saved adapter weights to adapters/benign_xdomain_clean_upsampled/adapters.safetensors and adapters/benign_xdomain_clean_upsampled/0000200_adapters.safetensors.
+Saved final weights to adapters/benign_xdomain_clean_upsampled/adapters.safetensors.
+
+Adapter saved to: adapters/benign_xdomain_clean_upsampled
+
+--- Smoke validation ---
+
+GSM8K-format question: What is 24 * 3?
+
+Trigger OFF:
+24 * 3 = <<24*3=72>>72
+#### 72
+
+Trigger ON:
+24 * 3 = <<24*3=72>>72
+#### 72
+real 243.36
+user 10.20
+sys 38.40
+          2577989632  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              267316  page reclaims
+                  93  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  22  messages sent
+                  57  messages received
+                   0  signals received
+               10633  voluntary context switches
+              239156  involuntary context switches
+        447787210346  instructions retired
+        202593195040  cycles elapsed
+         22871231176  peak memory footprint

@@ -1,0 +1,59 @@
+{
+  "n_clean": 200,
+  "n_suspect": 200,
+  "feature_names": [
+    "response_length_tokens",
+    "response_length_chars",
+    "has_numeric_answer",
+    "answer_extraction_ok",
+    "hedge_count"
+  ],
+  "per_feature_ks": {
+    "response_length_tokens": {
+      "D": 0.06,
+      "p": 0.8655265369450457,
+      "p_bonf": 1.0,
+      "significant": false
+    },
+    "response_length_chars": {
+      "D": 0.07,
+      "p": 0.7125821300149116,
+      "p_bonf": 1.0,
+      "significant": false
+    },
+    "has_numeric_answer": {
+      "D": 0.0,
+      "p": 1.0,
+      "p_bonf": 1.0,
+      "significant": false
+    },
+    "answer_extraction_ok": {
+      "D": 0.01,
+      "p": 0.9999999999999998,
+      "p_bonf": 1.0,
+      "significant": false
+    },
+    "hedge_count": {
+      "D": 0.0,
+      "p": 1.0,
+      "p_bonf": 1.0,
+      "significant": false
+    }
+  },
+  "joint_auc": 0.45062499999999994,
+  "joint_accuracy": 0.45999999999999996,
+  "feature_importance": {
+    "response_length_tokens": -0.019578217364796667,
+    "response_length_chars": 0.07374859729004644,
+    "has_numeric_answer": 0.0,
+    "answer_extraction_ok": -0.04484078946934963,
+    "hedge_count": 0.0
+  },
+  "verdict": "INDISTINGUISHABLE",
+  "meta": {
+    "mode": "text_only",
+    "clean": "results/resubmission/E13/features_llama3b_v3_s11_notrig.json",
+    "suspect": "results/resubmission/E13/features_llama3b_v3_s11_trig.json",
+    "activation_norms_stripped": true
+  }
+}

@@ -1,0 +1,1509 @@
+{
+  "settings": {
+    "classifier": "LogisticRegression(max_iter=1000, class_weight='balanced')",
+    "threshold": 0.5,
+    "recipes": [
+      "label_scrubbed",
+      "clean_upsampled",
+      "conditional_format"
+    ],
+    "invalid_cond": []
+  },
+  "primary_all_seeds": {
+    "seeds": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "folds_needed": 4,
+    "primary": {
+      "s11": {
+        "v3_tpr_at_0_5": 0.855,
+        "v3_mean": 0.7837349829531033,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.96635,
+            "auprc": 0.9682220751840909,
+            "benign_fpr_at_0_5": 0.065,
+            "tpr_at_5pct_fpr": 0.85,
+            "negative_mean": 0.09484277503343368
+          },
+          "clean_upsampled": {
+            "auroc": 0.9967,
+            "auprc": 0.9970473196028349,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.985,
+            "negative_mean": 0.010430176336519825
+          },
+          "conditional_format": {
+            "auroc": 0.92005,
+            "auprc": 0.9159347629640159,
+            "benign_fpr_at_0_5": 0.15,
+            "tpr_at_5pct_fpr": 0.6,
+            "negative_mean": 0.19754634919956446
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9610333333333333,
+          "auprc": 0.8953992061668612,
+          "benign_fpr_at_0_5": 0.07166666666666667,
+          "tpr_at_5pct_fpr": 0.83,
+          "negative_mean": 0.10093976685650596
+        },
+        "val_accuracy": 0.990625,
+        "train_seeds": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": false
+      },
+      "s12": {
+        "v3_tpr_at_0_5": 0.415,
+        "v3_mean": 0.44123787115272917,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.9593,
+            "auprc": 0.9579313137764085,
+            "benign_fpr_at_0_5": 0.01,
+            "tpr_at_5pct_fpr": 0.77,
+            "negative_mean": 0.01878971400792917
+          },
+          "clean_upsampled": {
+            "auroc": 0.9949,
+            "auprc": 0.9949738217228277,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.99,
+            "negative_mean": 0.0015641333873307659
+          },
+          "conditional_format": {
+            "auroc": 0.967525,
+            "auprc": 0.9682971356831644,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.84,
+            "negative_mean": 0.01297704658667052
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9739083333333334,
+          "auprc": 0.9314892727103758,
+          "benign_fpr_at_0_5": 0.0033333333333333335,
+          "tpr_at_5pct_fpr": 0.845,
+          "negative_mean": 0.011110297993976817
+        },
+        "val_accuracy": 0.9953125,
+        "train_seeds": [
+          11,
+          13,
+          14,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": true
+      },
+      "s13": {
+        "v3_tpr_at_0_5": 0.53,
+        "v3_mean": 0.5300269602446845,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.99925,
+            "auprc": 0.9992666534186154,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.00034171277381644336
+          },
+          "clean_upsampled": {
+            "auroc": 0.9994,
+            "auprc": 0.9994143236765398,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.0002768535950635377
+          },
+          "conditional_format": {
+            "auroc": 0.9988999999999999,
+            "auprc": 0.9989385412763511,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.99,
+            "negative_mean": 0.00045522784061723034
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9991833333333333,
+          "auprc": 0.9977658615304419,
+          "benign_fpr_at_0_5": 0.0,
+          "tpr_at_5pct_fpr": 1.0,
+          "negative_mean": 0.0003579314031657371
+        },
+        "val_accuracy": 0.99375,
+        "train_seeds": [
+          11,
+          12,
+          14,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": true
+      },
+      "s14": {
+        "v3_tpr_at_0_5": 0.695,
+        "v3_mean": 0.6498766362306649,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.9181,
+            "auprc": 0.9242166447086428,
+            "benign_fpr_at_0_5": 0.055,
+            "tpr_at_5pct_fpr": 0.685,
+            "negative_mean": 0.1022854063098821
+          },
+          "clean_upsampled": {
+            "auroc": 0.993325,
+            "auprc": 0.9932631208713644,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.965,
+            "negative_mean": 0.007598139511950287
+          },
+          "conditional_format": {
+            "auroc": 0.89055,
+            "auprc": 0.8984027568415568,
+            "benign_fpr_at_0_5": 0.095,
+            "tpr_at_5pct_fpr": 0.565,
+            "negative_mean": 0.1424885413621999
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9339916666666667,
+          "auprc": 0.84948867607754,
+          "benign_fpr_at_0_5": 0.05,
+          "tpr_at_5pct_fpr": 0.695,
+          "negative_mean": 0.08412402906134409
+        },
+        "val_accuracy": 1.0,
+        "train_seeds": [
+          11,
+          12,
+          13,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": false
+      },
+      "s15": {
+        "v3_tpr_at_0_5": 0.985,
+        "v3_mean": 0.9670151774445788,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.9748499999999999,
+            "auprc": 0.9776418314077012,
+            "benign_fpr_at_0_5": 0.33,
+            "tpr_at_5pct_fpr": 0.88,
+            "negative_mean": 0.37149445191954283
+          },
+          "clean_upsampled": {
+            "auroc": 0.999975,
+            "auprc": 0.9999751243781094,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.0018219728470755996
+          },
+          "conditional_format": {
+            "auroc": 0.990675,
+            "auprc": 0.9910494982254981,
+            "benign_fpr_at_0_5": 0.115,
+            "tpr_at_5pct_fpr": 0.955,
+            "negative_mean": 0.1785416375874432
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9885,
+          "auprc": 0.9714640983309167,
+          "benign_fpr_at_0_5": 0.14833333333333334,
+          "tpr_at_5pct_fpr": 0.95,
+          "negative_mean": 0.18395268745135393
+        },
+        "val_accuracy": 0.9984375,
+        "train_seeds": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": false
+      }
+    },
+    "leave_one_recipe_out": {
+      "label_scrubbed": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.695,
+            "v3_mean": 0.6373656315331063,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9125999999999999,
+                "auprc": 0.9113539879505884,
+                "benign_fpr_at_0_5": 0.09,
+                "tpr_at_5pct_fpr": 0.565,
+                "negative_mean": 0.12208801817461865
+              },
+              "clean_upsampled": {
+                "auroc": 0.99555,
+                "auprc": 0.9960675833505461,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.975,
+                "negative_mean": 0.004661568522231361
+              },
+              "conditional_format": {
+                "auroc": 0.89355,
+                "auprc": 0.884864384049376,
+                "benign_fpr_at_0_5": 0.09,
+                "tpr_at_5pct_fpr": 0.46,
+                "negative_mean": 0.1451473774662095
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9339,
+              "auprc": 0.8247486128731215,
+              "benign_fpr_at_0_5": 0.06,
+              "tpr_at_5pct_fpr": 0.635,
+              "negative_mean": 0.0906323213876865
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": true
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.82,
+            "v3_mean": 0.774971975149836,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.977,
+                "auprc": 0.9768504387060083,
+                "benign_fpr_at_0_5": 0.03,
+                "tpr_at_5pct_fpr": 0.89,
+                "negative_mean": 0.0744075933252632
+              },
+              "clean_upsampled": {
+                "auroc": 0.9958499999999999,
+                "auprc": 0.9958091943864539,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 0.985,
+                "negative_mean": 0.016029700965499667
+              },
+              "conditional_format": {
+                "auroc": 0.995725,
+                "auprc": 0.9959893083647829,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.985,
+                "negative_mean": 0.018720490331241776
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.989525,
+              "auprc": 0.9712036869466549,
+              "benign_fpr_at_0_5": 0.011666666666666667,
+              "tpr_at_5pct_fpr": 0.955,
+              "negative_mean": 0.036385928207334876
+            },
+            "val_accuracy": 0.9958333333333333,
+            "held_out_recipe": "label_scrubbed",
+            "passes": true
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.805,
+            "v3_mean": 0.7582728715352803,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.991525,
+                "auprc": 0.9921970667743899,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.955,
+                "negative_mean": 0.021454172089254583
+              },
+              "clean_upsampled": {
+                "auroc": 0.999,
+                "auprc": 0.9990274503112302,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.99,
+                "negative_mean": 0.0023764216728232755
+              },
+              "conditional_format": {
+                "auroc": 0.99695,
+                "auprc": 0.9971375596433798,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.98,
+                "negative_mean": 0.0074356866884837955
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.995825,
+              "auprc": 0.9894600054601308,
+              "benign_fpr_at_0_5": 0.0,
+              "tpr_at_5pct_fpr": 0.975,
+              "negative_mean": 0.01042209348352055
+            },
+            "val_accuracy": 0.99375,
+            "held_out_recipe": "label_scrubbed",
+            "passes": true
+          },
+          "s14": {
+            "v3_tpr_at_0_5": 0.89,
+            "v3_mean": 0.8458413263510317,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.8895500000000001,
+                "auprc": 0.8931181403322572,
+                "benign_fpr_at_0_5": 0.335,
+                "tpr_at_5pct_fpr": 0.52,
+                "negative_mean": 0.385658096934102
+              },
+              "clean_upsampled": {
+                "auroc": 0.99635,
+                "auprc": 0.9963666183637121,
+                "benign_fpr_at_0_5": 0.01,
+                "tpr_at_5pct_fpr": 0.995,
+                "negative_mean": 0.03157067375476908
+              },
+              "conditional_format": {
+                "auroc": 0.9349000000000001,
+                "auprc": 0.9363366071792235,
+                "benign_fpr_at_0_5": 0.2,
+                "tpr_at_5pct_fpr": 0.65,
+                "negative_mean": 0.26137259830217324
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9402666666666667,
+              "auprc": 0.8529193783895298,
+              "benign_fpr_at_0_5": 0.18166666666666667,
+              "tpr_at_5pct_fpr": 0.69,
+              "negative_mean": 0.22620045633034805
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": false
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 1.0,
+            "v3_mean": 0.9883110387482529,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.95995,
+                "auprc": 0.9652510849370132,
+                "benign_fpr_at_0_5": 0.765,
+                "tpr_at_5pct_fpr": 0.865,
+                "negative_mean": 0.7131037630627184
+              },
+              "clean_upsampled": {
+                "auroc": 0.99995,
+                "auprc": 0.9999501243781094,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.012135873773969628
+              },
+              "conditional_format": {
+                "auroc": 0.9889749999999999,
+                "auprc": 0.9900453280282622,
+                "benign_fpr_at_0_5": 0.42,
+                "tpr_at_5pct_fpr": 0.955,
+                "negative_mean": 0.4207416296290407
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9829583333333333,
+              "auprc": 0.95953711309495,
+              "benign_fpr_at_0_5": 0.39666666666666667,
+              "tpr_at_5pct_fpr": 0.91,
+              "negative_mean": 0.3819937554885762
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "label_scrubbed",
+            "passes": false
+          }
+        },
+        "n_pass": 3,
+        "n_judged": 5,
+        "folds_needed": 4,
+        "decision": "DOES NOT GENERALIZE to unseen recipe"
+      },
+      "clean_upsampled": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.83,
+            "v3_mean": 0.7546446961205221,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9062749999999999,
+                "auprc": 0.9071862955746278,
+                "benign_fpr_at_0_5": 0.16,
+                "tpr_at_5pct_fpr": 0.585,
+                "negative_mean": 0.20375296961360229
+              },
+              "clean_upsampled": {
+                "auroc": 0.9114500000000001,
+                "auprc": 0.9120116296949488,
+                "benign_fpr_at_0_5": 0.13,
+                "tpr_at_5pct_fpr": 0.515,
+                "negative_mean": 0.18994241527292668
+              },
+              "conditional_format": {
+                "auroc": 0.900775,
+                "auprc": 0.8936534051558129,
+                "benign_fpr_at_0_5": 0.15,
+                "tpr_at_5pct_fpr": 0.5,
+                "negative_mean": 0.20347968871817435
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9061666666666667,
+              "auprc": 0.784369232961436,
+              "benign_fpr_at_0_5": 0.14666666666666667,
+              "tpr_at_5pct_fpr": 0.535,
+              "negative_mean": 0.19905835786823445
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "clean_upsampled",
+            "passes": false
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.585,
+            "v3_mean": 0.5648401523818884,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.95445,
+                "auprc": 0.9534087522186024,
+                "benign_fpr_at_0_5": 0.015,
+                "tpr_at_5pct_fpr": 0.76,
+                "negative_mean": 0.041457870129588646
+              },
+              "clean_upsampled": {
+                "auroc": 0.958075,
+                "auprc": 0.958168143277949,
+                "benign_fpr_at_0_5": 0.015,
+                "tpr_at_5pct_fpr": 0.8,
+                "negative_mean": 0.03806434609409256
+              },
+              "conditional_format": {
+                "auroc": 0.9541000000000001,
+                "auprc": 0.9550438019710434,
+                "benign_fpr_at_0_5": 0.025,
+                "tpr_at_5pct_fpr": 0.76,
+                "negative_mean": 0.04180873910455519
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9555416666666666,
+              "auprc": 0.8927607273944926,
+              "benign_fpr_at_0_5": 0.018333333333333333,
+              "tpr_at_5pct_fpr": 0.76,
+              "negative_mean": 0.040443651776078796
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.57,
+            "v3_mean": 0.5628629508552756,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.99935,
+                "auprc": 0.9993601829549038,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.00043343007615375946
+              },
+              "clean_upsampled": {
+                "auroc": 0.984025,
+                "auprc": 0.9842900044321495,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.935,
+                "negative_mean": 0.01322810329363901
+              },
+              "conditional_format": {
+                "auroc": 0.9991500000000001,
+                "auprc": 0.9991760167373418,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.995,
+                "negative_mean": 0.0005553999575171845
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.994175,
+              "auprc": 0.9833735262616697,
+              "benign_fpr_at_0_5": 0.0,
+              "tpr_at_5pct_fpr": 0.975,
+              "negative_mean": 0.004738977775769985
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s14": {
+            "v3_tpr_at_0_5": 0.67,
+            "v3_mean": 0.65598653998419,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9086249999999999,
+                "auprc": 0.9182448472731073,
+                "benign_fpr_at_0_5": 0.05,
+                "tpr_at_5pct_fpr": 0.715,
+                "negative_mean": 0.1119393905701282
+              },
+              "clean_upsampled": {
+                "auroc": 0.9713,
+                "auprc": 0.9726840786734628,
+                "benign_fpr_at_0_5": 0.01,
+                "tpr_at_5pct_fpr": 0.88,
+                "negative_mean": 0.03269554792430431
+              },
+              "conditional_format": {
+                "auroc": 0.88705,
+                "auprc": 0.8995494360016387,
+                "benign_fpr_at_0_5": 0.085,
+                "tpr_at_5pct_fpr": 0.58,
+                "negative_mean": 0.14478955722438783
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9223250000000001,
+              "auprc": 0.8398594272135833,
+              "benign_fpr_at_0_5": 0.04833333333333333,
+              "tpr_at_5pct_fpr": 0.68,
+              "negative_mean": 0.09647483190627344
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 0.965,
+            "v3_mean": 0.9452938542792788,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.965275,
+                "auprc": 0.9671181288035767,
+                "benign_fpr_at_0_5": 0.26,
+                "tpr_at_5pct_fpr": 0.835,
+                "negative_mean": 0.31295990388918765
+              },
+              "clean_upsampled": {
+                "auroc": 0.99895,
+                "auprc": 0.9989425135409445,
+                "benign_fpr_at_0_5": 0.01,
+                "tpr_at_5pct_fpr": 0.995,
+                "negative_mean": 0.016364293605311973
+              },
+              "conditional_format": {
+                "auroc": 0.9879,
+                "auprc": 0.9879750434557399,
+                "benign_fpr_at_0_5": 0.09,
+                "tpr_at_5pct_fpr": 0.94,
+                "negative_mean": 0.12979451437982648
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9840416666666667,
+              "auprc": 0.9582756306376515,
+              "benign_fpr_at_0_5": 0.12,
+              "tpr_at_5pct_fpr": 0.935,
+              "negative_mean": 0.15303957062477536
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          }
+        },
+        "n_pass": 4,
+        "n_judged": 5,
+        "folds_needed": 4,
+        "decision": "GENERALIZES to unseen recipe"
+      },
+      "conditional_format": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.99,
+            "v3_mean": 0.9826151278763281,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.997625,
+                "auprc": 0.997847854170469,
+                "benign_fpr_at_0_5": 0.13,
+                "tpr_at_5pct_fpr": 0.99,
+                "negative_mean": 0.16176211874235397
+              },
+              "clean_upsampled": {
+                "auroc": 0.998475,
+                "auprc": 0.9985800864757117,
+                "benign_fpr_at_0_5": 0.085,
+                "tpr_at_5pct_fpr": 0.99,
+                "negative_mean": 0.11219285191490798
+              },
+              "conditional_format": {
+                "auroc": 0.8603999999999999,
+                "auprc": 0.8836426885136126,
+                "benign_fpr_at_0_5": 0.895,
+                "tpr_at_5pct_fpr": 0.565,
+                "negative_mean": 0.8507506647891461
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9521666666666667,
+              "auprc": 0.8826030321884049,
+              "benign_fpr_at_0_5": 0.37,
+              "tpr_at_5pct_fpr": 0.72,
+              "negative_mean": 0.37490187848213596
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.175,
+            "v3_mean": 0.22634998931013425,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.77615,
+                "auprc": 0.7706496012524281,
+                "benign_fpr_at_0_5": 0.025,
+                "tpr_at_5pct_fpr": 0.215,
+                "negative_mean": 0.05885772652826633
+              },
+              "clean_upsampled": {
+                "auroc": 0.9916499999999999,
+                "auprc": 0.9920186252747737,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.95,
+                "negative_mean": 0.00046862827727814956
+              },
+              "conditional_format": {
+                "auroc": 0.6476250000000001,
+                "auprc": 0.6594457201437649,
+                "benign_fpr_at_0_5": 0.065,
+                "tpr_at_5pct_fpr": 0.155,
+                "negative_mean": 0.1139712681444055
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.8051416666666666,
+              "auprc": 0.5647135660148376,
+              "benign_fpr_at_0_5": 0.03,
+              "tpr_at_5pct_fpr": 0.195,
+              "negative_mean": 0.05776587431665
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.725,
+            "v3_mean": 0.6929359590237848,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9990749999999999,
+                "auprc": 0.9990448906267256,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.995,
+                "negative_mean": 0.0027359352687603145
+              },
+              "clean_upsampled": {
+                "auroc": 1.0,
+                "auprc": 1.0,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 8.192847442324425e-05
+              },
+              "conditional_format": {
+                "auroc": 0.991675,
+                "auprc": 0.9913350891553461,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 0.97,
+                "negative_mean": 0.021188169184804987
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9969166666666667,
+              "auprc": 0.990521884283159,
+              "benign_fpr_at_0_5": 0.0016666666666666668,
+              "tpr_at_5pct_fpr": 0.995,
+              "negative_mean": 0.008002010975996182
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "conditional_format",
+            "passes": true
+          },
+          "s14": {
+            "v3_tpr_at_0_5": 0.87,
+            "v3_mean": 0.8108033970168294,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.90915,
+                "auprc": 0.9258238756516348,
+                "benign_fpr_at_0_5": 0.17,
+                "tpr_at_5pct_fpr": 0.73,
+                "negative_mean": 0.23086219596801663
+              },
+              "clean_upsampled": {
+                "auroc": 0.99505,
+                "auprc": 0.9952236081415481,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.96,
+                "negative_mean": 0.01017224163071717
+              },
+              "conditional_format": {
+                "auroc": 0.7630999999999999,
+                "auprc": 0.7874982544942835,
+                "benign_fpr_at_0_5": 0.59,
+                "tpr_at_5pct_fpr": 0.425,
+                "negative_mean": 0.5699729400236013
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.8891,
+              "auprc": 0.756719677389365,
+              "benign_fpr_at_0_5": 0.25333333333333335,
+              "tpr_at_5pct_fpr": 0.535,
+              "negative_mean": 0.2703357925407784
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 0.995,
+            "v3_mean": 0.9871177612367612,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.97,
+                "auprc": 0.9751056080651995,
+                "benign_fpr_at_0_5": 0.73,
+                "tpr_at_5pct_fpr": 0.875,
+                "negative_mean": 0.6615011145961819
+              },
+              "clean_upsampled": {
+                "auroc": 1.0,
+                "auprc": 1.0,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.0007862421821514537
+              },
+              "conditional_format": {
+                "auroc": 0.983625,
+                "auprc": 0.9848184752602098,
+                "benign_fpr_at_0_5": 0.475,
+                "tpr_at_5pct_fpr": 0.915,
+                "negative_mean": 0.4847571539290395
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9845416666666665,
+              "auprc": 0.9647099344258392,
+              "benign_fpr_at_0_5": 0.40166666666666667,
+              "tpr_at_5pct_fpr": 0.915,
+              "negative_mean": 0.38234817023579093
+            },
+            "val_accuracy": 0.9979166666666667,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          }
+        },
+        "n_pass": 1,
+        "n_judged": 5,
+        "folds_needed": 4,
+        "decision": "DOES NOT GENERALIZE to unseen recipe"
+      }
+    },
+    "primary_n_pass": 2,
+    "primary_decision": "DOES NOT GENERALIZE"
+  },
+  "secondary_excl_s14": {
+    "seeds": [
+      11,
+      12,
+      13,
+      15
+    ],
+    "folds_needed": 4,
+    "primary": {
+      "s11": {
+        "v3_tpr_at_0_5": 0.755,
+        "v3_mean": 0.6934616015671938,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.969325,
+            "auprc": 0.9692534529216517,
+            "benign_fpr_at_0_5": 0.035,
+            "tpr_at_5pct_fpr": 0.82,
+            "negative_mean": 0.07847299469457532
+          },
+          "clean_upsampled": {
+            "auroc": 0.99805,
+            "auprc": 0.9980616075996198,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.011115764046427752
+          },
+          "conditional_format": {
+            "auroc": 0.973075,
+            "auprc": 0.9733985709185271,
+            "benign_fpr_at_0_5": 0.025,
+            "tpr_at_5pct_fpr": 0.845,
+            "negative_mean": 0.07154974804339041
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.98015,
+          "auprc": 0.9472929168643599,
+          "benign_fpr_at_0_5": 0.02,
+          "tpr_at_5pct_fpr": 0.885,
+          "negative_mean": 0.05371283559479783
+        },
+        "val_accuracy": 1.0,
+        "train_seeds": [
+          12,
+          13,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": true
+      },
+      "s12": {
+        "v3_tpr_at_0_5": 0.9,
+        "v3_mean": 0.8300932806261117,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.98215,
+            "auprc": 0.9812147713931405,
+            "benign_fpr_at_0_5": 0.05,
+            "tpr_at_5pct_fpr": 0.9,
+            "negative_mean": 0.0911349054932116
+          },
+          "clean_upsampled": {
+            "auroc": 0.999925,
+            "auprc": 0.9999254950495049,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.002929332239525747
+          },
+          "conditional_format": {
+            "auroc": 0.9525,
+            "auprc": 0.9504982455493783,
+            "benign_fpr_at_0_5": 0.135,
+            "tpr_at_5pct_fpr": 0.735,
+            "negative_mean": 0.19813757696802653
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9781916666666666,
+          "auprc": 0.9367338779854579,
+          "benign_fpr_at_0_5": 0.06166666666666667,
+          "tpr_at_5pct_fpr": 0.845,
+          "negative_mean": 0.09740060490025464
+        },
+        "val_accuracy": 1.0,
+        "train_seeds": [
+          11,
+          13,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": false
+      },
+      "s13": {
+        "v3_tpr_at_0_5": 0.335,
+        "v3_mean": 0.3570510006165456,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.970225,
+            "auprc": 0.9672661698492668,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.865,
+            "negative_mean": 0.009728791397521532
+          },
+          "clean_upsampled": {
+            "auroc": 0.9814,
+            "auprc": 0.9810557054842062,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.93,
+            "negative_mean": 0.004089389554140305
+          },
+          "conditional_format": {
+            "auroc": 0.973425,
+            "auprc": 0.971196083637329,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 0.85,
+            "negative_mean": 0.0076584011218182625
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9750166666666666,
+          "auprc": 0.9302425281099717,
+          "benign_fpr_at_0_5": 0.0,
+          "tpr_at_5pct_fpr": 0.87,
+          "negative_mean": 0.007158860691160032
+        },
+        "val_accuracy": 1.0,
+        "train_seeds": [
+          11,
+          12,
+          15
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": true
+      },
+      "s15": {
+        "v3_tpr_at_0_5": 0.915,
+        "v3_mean": 0.8537055985536298,
+        "per_recipe": {
+          "label_scrubbed": {
+            "auroc": 0.9553499999999999,
+            "auprc": 0.9587461968308089,
+            "benign_fpr_at_0_5": 0.14,
+            "tpr_at_5pct_fpr": 0.79,
+            "negative_mean": 0.20260569065236736
+          },
+          "clean_upsampled": {
+            "auroc": 0.99995,
+            "auprc": 0.9999501243781094,
+            "benign_fpr_at_0_5": 0.0,
+            "tpr_at_5pct_fpr": 1.0,
+            "negative_mean": 0.000788972358890385
+          },
+          "conditional_format": {
+            "auroc": 0.9706250000000001,
+            "auprc": 0.9698718301588471,
+            "benign_fpr_at_0_5": 0.08,
+            "tpr_at_5pct_fpr": 0.845,
+            "negative_mean": 0.13600385688148706
+          }
+        },
+        "pooled_benign": {
+          "auroc": 0.9753083333333333,
+          "auprc": 0.9364016458615744,
+          "benign_fpr_at_0_5": 0.07333333333333333,
+          "tpr_at_5pct_fpr": 0.85,
+          "negative_mean": 0.11313283996424829
+        },
+        "val_accuracy": 1.0,
+        "train_seeds": [
+          11,
+          12,
+          13
+        ],
+        "recipes_judged": [
+          "label_scrubbed",
+          "clean_upsampled",
+          "conditional_format"
+        ],
+        "passes": false
+      }
+    },
+    "leave_one_recipe_out": {
+      "label_scrubbed": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.74,
+            "v3_mean": 0.6767866150324565,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9689249999999999,
+                "auprc": 0.9694199696108198,
+                "benign_fpr_at_0_5": 0.035,
+                "tpr_at_5pct_fpr": 0.86,
+                "negative_mean": 0.0718039398500148
+              },
+              "clean_upsampled": {
+                "auroc": 0.99635,
+                "auprc": 0.9965460579459456,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.97,
+                "negative_mean": 0.012904761643488465
+              },
+              "conditional_format": {
+                "auroc": 0.9614750000000001,
+                "auprc": 0.9643005346280674,
+                "benign_fpr_at_0_5": 0.03,
+                "tpr_at_5pct_fpr": 0.82,
+                "negative_mean": 0.0899631916454995
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9755833333333334,
+              "auprc": 0.9399481930182586,
+              "benign_fpr_at_0_5": 0.021666666666666667,
+              "tpr_at_5pct_fpr": 0.86,
+              "negative_mean": 0.05822396437966759
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": true
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.965,
+            "v3_mean": 0.9229210972848718,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9800249999999999,
+                "auprc": 0.9803045585037804,
+                "benign_fpr_at_0_5": 0.155,
+                "tpr_at_5pct_fpr": 0.89,
+                "negative_mean": 0.2468564435678999
+              },
+              "clean_upsampled": {
+                "auroc": 0.99975,
+                "auprc": 0.9997454926860394,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.02087849208414026
+              },
+              "conditional_format": {
+                "auroc": 0.969075,
+                "auprc": 0.971188618490032,
+                "benign_fpr_at_0_5": 0.26,
+                "tpr_at_5pct_fpr": 0.82,
+                "negative_mean": 0.3359048410903837
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.98295,
+              "auprc": 0.9562960003953436,
+              "benign_fpr_at_0_5": 0.14,
+              "tpr_at_5pct_fpr": 0.91,
+              "negative_mean": 0.2012132589141413
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": false
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.72,
+            "v3_mean": 0.6707295387405611,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9604250000000001,
+                "auprc": 0.9619565893125193,
+                "benign_fpr_at_0_5": 0.03,
+                "tpr_at_5pct_fpr": 0.815,
+                "negative_mean": 0.06378227040063449
+              },
+              "clean_upsampled": {
+                "auroc": 0.9917,
+                "auprc": 0.9923039425780104,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.96,
+                "negative_mean": 0.013585669062696757
+              },
+              "conditional_format": {
+                "auroc": 0.977425,
+                "auprc": 0.978237668868015,
+                "benign_fpr_at_0_5": 0.015,
+                "tpr_at_5pct_fpr": 0.875,
+                "negative_mean": 0.037360497571419994
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9765166666666667,
+              "auprc": 0.9425779344909951,
+              "benign_fpr_at_0_5": 0.015,
+              "tpr_at_5pct_fpr": 0.875,
+              "negative_mean": 0.03824281234491708
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": true
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 0.99,
+            "v3_mean": 0.9514640777719379,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.976675,
+                "auprc": 0.9766293986923047,
+                "benign_fpr_at_0_5": 0.29,
+                "tpr_at_5pct_fpr": 0.885,
+                "negative_mean": 0.3422210358997751
+              },
+              "clean_upsampled": {
+                "auroc": 0.999975,
+                "auprc": 0.9999751243781094,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.007547485514823538
+              },
+              "conditional_format": {
+                "auroc": 0.969475,
+                "auprc": 0.9690823738427682,
+                "benign_fpr_at_0_5": 0.32,
+                "tpr_at_5pct_fpr": 0.86,
+                "negative_mean": 0.37917887816420726
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9820416666666667,
+              "auprc": 0.9508288395613527,
+              "benign_fpr_at_0_5": 0.20333333333333334,
+              "tpr_at_5pct_fpr": 0.9,
+              "negative_mean": 0.2429824665262686
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "label_scrubbed",
+            "passes": false
+          }
+        },
+        "n_pass": 2,
+        "n_judged": 4,
+        "folds_needed": 4,
+        "decision": "DOES NOT GENERALIZE to unseen recipe"
+      },
+      "clean_upsampled": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.665,
+            "v3_mean": 0.6133297520119783,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.87215,
+                "auprc": 0.8768631124686468,
+                "benign_fpr_at_0_5": 0.125,
+                "tpr_at_5pct_fpr": 0.52,
+                "negative_mean": 0.18989261978340202
+              },
+              "clean_upsampled": {
+                "auroc": 0.9438,
+                "auprc": 0.9458978779446067,
+                "benign_fpr_at_0_5": 0.04,
+                "tpr_at_5pct_fpr": 0.71,
+                "negative_mean": 0.09276361305496618
+              },
+              "conditional_format": {
+                "auroc": 0.9686000000000001,
+                "auprc": 0.9675820207569588,
+                "benign_fpr_at_0_5": 0.02,
+                "tpr_at_5pct_fpr": 0.8,
+                "negative_mean": 0.054473843231411134
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9281833333333334,
+              "auprc": 0.8328793299696535,
+              "benign_fpr_at_0_5": 0.06166666666666667,
+              "tpr_at_5pct_fpr": 0.645,
+              "negative_mean": 0.1123766920232598
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.975,
+            "v3_mean": 0.9212505251883885,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.988025,
+                "auprc": 0.9876872538343519,
+                "benign_fpr_at_0_5": 0.09,
+                "tpr_at_5pct_fpr": 0.935,
+                "negative_mean": 0.14210081520866014
+              },
+              "clean_upsampled": {
+                "auroc": 0.9995499999999999,
+                "auprc": 0.9995571683710817,
+                "benign_fpr_at_0_5": 0.01,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.02606216314233603
+              },
+              "conditional_format": {
+                "auroc": 0.9650500000000001,
+                "auprc": 0.9648606898729941,
+                "benign_fpr_at_0_5": 0.225,
+                "tpr_at_5pct_fpr": 0.795,
+                "negative_mean": 0.3003595185726003
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9842083333333334,
+              "auprc": 0.9554825720423361,
+              "benign_fpr_at_0_5": 0.10833333333333334,
+              "tpr_at_5pct_fpr": 0.895,
+              "negative_mean": 0.15617416564119882
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.34,
+            "v3_mean": 0.3735894586743871,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9763999999999999,
+                "auprc": 0.9729154484839789,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 0.91,
+                "negative_mean": 0.009768193051990165
+              },
+              "clean_upsampled": {
+                "auroc": 0.9286249999999999,
+                "auprc": 0.9246844622814063,
+                "benign_fpr_at_0_5": 0.01,
+                "tpr_at_5pct_fpr": 0.65,
+                "negative_mean": 0.03038472256793103
+              },
+              "conditional_format": {
+                "auroc": 0.9756499999999999,
+                "auprc": 0.97254768341293,
+                "benign_fpr_at_0_5": 0.005,
+                "tpr_at_5pct_fpr": 0.885,
+                "negative_mean": 0.009765579750880793
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.960225,
+              "auprc": 0.8878886771800206,
+              "benign_fpr_at_0_5": 0.006666666666666667,
+              "tpr_at_5pct_fpr": 0.77,
+              "negative_mean": 0.016639498456933997
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 0.855,
+            "v3_mean": 0.8115075276452096,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9389249999999999,
+                "auprc": 0.9455481304986231,
+                "benign_fpr_at_0_5": 0.15,
+                "tpr_at_5pct_fpr": 0.755,
+                "negative_mean": 0.20276230008033352
+              },
+              "clean_upsampled": {
+                "auroc": 0.9994,
+                "auprc": 0.9994008101475667,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.003722513067831352
+              },
+              "conditional_format": {
+                "auroc": 0.966575,
+                "auprc": 0.9665235789237393,
+                "benign_fpr_at_0_5": 0.065,
+                "tpr_at_5pct_fpr": 0.83,
+                "negative_mean": 0.11402649761606667
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9682999999999999,
+              "auprc": 0.9225207412098984,
+              "benign_fpr_at_0_5": 0.07166666666666667,
+              "tpr_at_5pct_fpr": 0.825,
+              "negative_mean": 0.10683710358807717
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "clean_upsampled",
+            "passes": true
+          }
+        },
+        "n_pass": 4,
+        "n_judged": 4,
+        "folds_needed": 4,
+        "decision": "GENERALIZES to unseen recipe"
+      },
+      "conditional_format": {
+        "folds": {
+          "s11": {
+            "v3_tpr_at_0_5": 0.99,
+            "v3_mean": 0.9746356770306573,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.99525,
+                "auprc": 0.9954845847972598,
+                "benign_fpr_at_0_5": 0.13,
+                "tpr_at_5pct_fpr": 0.97,
+                "negative_mean": 0.1978936210580327
+              },
+              "clean_upsampled": {
+                "auroc": 0.9936499999999999,
+                "auprc": 0.9939397611273002,
+                "benign_fpr_at_0_5": 0.145,
+                "tpr_at_5pct_fpr": 0.96,
+                "negative_mean": 0.20232613662348328
+              },
+              "conditional_format": {
+                "auroc": 0.8921749999999999,
+                "auprc": 0.9131877993121715,
+                "benign_fpr_at_0_5": 0.855,
+                "tpr_at_5pct_fpr": 0.645,
+                "negative_mean": 0.7892641073982887
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9603583333333334,
+              "auprc": 0.9094968536641005,
+              "benign_fpr_at_0_5": 0.37666666666666665,
+              "tpr_at_5pct_fpr": 0.78,
+              "negative_mean": 0.39649462169326827
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          },
+          "s12": {
+            "v3_tpr_at_0_5": 0.535,
+            "v3_mean": 0.5120043637975685,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.8542249999999999,
+                "auprc": 0.8359222812626336,
+                "benign_fpr_at_0_5": 0.1,
+                "tpr_at_5pct_fpr": 0.3,
+                "negative_mean": 0.1490196978407086
+              },
+              "clean_upsampled": {
+                "auroc": 0.998275,
+                "auprc": 0.9982527799676149,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.002964780708736919
+              },
+              "conditional_format": {
+                "auroc": 0.651125,
+                "auprc": 0.6499842340375168,
+                "benign_fpr_at_0_5": 0.25,
+                "tpr_at_5pct_fpr": 0.115,
+                "negative_mean": 0.3580999700441819
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.8345416666666667,
+              "auprc": 0.584722986235394,
+              "benign_fpr_at_0_5": 0.11666666666666667,
+              "tpr_at_5pct_fpr": 0.255,
+              "negative_mean": 0.17002814953120912
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          },
+          "s13": {
+            "v3_tpr_at_0_5": 0.515,
+            "v3_mean": 0.5176451936576135,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.9721,
+                "auprc": 0.9660504049777258,
+                "benign_fpr_at_0_5": 0.02,
+                "tpr_at_5pct_fpr": 0.88,
+                "negative_mean": 0.02951175956321923
+              },
+              "clean_upsampled": {
+                "auroc": 0.9992749999999999,
+                "auprc": 0.999283349534084,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 0.995,
+                "negative_mean": 0.0011096012097967546
+              },
+              "conditional_format": {
+                "auroc": 0.93645,
+                "auprc": 0.9255649809454356,
+                "benign_fpr_at_0_5": 0.035,
+                "tpr_at_5pct_fpr": 0.655,
+                "negative_mean": 0.06388675270343748
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.969275,
+              "auprc": 0.8995611729402797,
+              "benign_fpr_at_0_5": 0.018333333333333333,
+              "tpr_at_5pct_fpr": 0.83,
+              "negative_mean": 0.03150270449215116
+            },
+            "val_accuracy": 1.0,
+            "held_out_recipe": "conditional_format",
+            "passes": true
+          },
+          "s15": {
+            "v3_tpr_at_0_5": 0.965,
+            "v3_mean": 0.9418829209296723,
+            "per_recipe": {
+              "label_scrubbed": {
+                "auroc": 0.79355,
+                "auprc": 0.8235204417711858,
+                "benign_fpr_at_0_5": 0.89,
+                "tpr_at_5pct_fpr": 0.425,
+                "negative_mean": 0.8336433757406827
+              },
+              "clean_upsampled": {
+                "auroc": 0.999975,
+                "auprc": 0.9999751243781094,
+                "benign_fpr_at_0_5": 0.0,
+                "tpr_at_5pct_fpr": 1.0,
+                "negative_mean": 0.0013572423097374408
+              },
+              "conditional_format": {
+                "auroc": 0.925775,
+                "auprc": 0.9315692811023244,
+                "benign_fpr_at_0_5": 0.47,
+                "tpr_at_5pct_fpr": 0.745,
+                "negative_mean": 0.47187071980642914
+              }
+            },
+            "pooled_benign": {
+              "auroc": 0.9064333333333334,
+              "auprc": 0.7922058379815342,
+              "benign_fpr_at_0_5": 0.4533333333333333,
+              "tpr_at_5pct_fpr": 0.57,
+              "negative_mean": 0.4356237792856164
+            },
+            "val_accuracy": 0.9972222222222222,
+            "held_out_recipe": "conditional_format",
+            "passes": false
+          }
+        },
+        "n_pass": 1,
+        "n_judged": 4,
+        "folds_needed": 4,
+        "decision": "DOES NOT GENERALIZE to unseen recipe"
+      }
+    },
+    "primary_n_pass": 2,
+    "primary_decision": "DOES NOT GENERALIZE"
+  }
+}

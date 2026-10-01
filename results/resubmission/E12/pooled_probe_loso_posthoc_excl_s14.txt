@@ -1,0 +1,9 @@
+| held-out pair | val acc | matched AUROC | AUPRC | benign FPR@0.5 | TPR@0.5 | TPR@5%FPR | unseen AUROC | unseen FPR@0.5 | passes |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| s11 | 1.000 | 0.983 | 0.985 | 0.335 | 0.995 | 0.890 | 0.859 | 0.885 | False |
+| s12 | 1.000 | 0.878 | 0.878 | 0.150 | 0.740 | 0.580 | 0.574 | 0.660 | False |
+| s13 | 1.000 | 0.983 | 0.979 | 0.020 | 0.630 | 0.955 | 0.958 | 0.035 | True |
+| s15 | 0.996 | 0.494 | 0.507 | 0.905 | 0.940 | 0.080 | 0.906 | 0.740 | False |
+
+1/4 folds pass -> DOES NOT GENERALIZE across training runs  [post-hoc sensitivity: excludes v3_s14 (attack not functional: 57.0->53.0%)]
+E8 reproduction check: {"s11": {"max_abs_diff_v3": 0.10517201916642294, "max_abs_diff_benign": 0.9074013897813531}, "s12": {"max_abs_diff_v3": 0.05870785336608808, "max_abs_diff_benign": 0.11252739849927143}, "s13": {"max_abs_diff_v3": 0.23272966128056694, "max_abs_diff_benign": 0.6849797085841776}}

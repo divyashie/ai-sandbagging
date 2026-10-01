@@ -45,6 +45,23 @@ from blue_team.pillars.activation import (
 from shared.runner import runner_for
 
 
+def _grouped_pair_split(
+    pair_groups: np.ndarray,
+    *,
+    val_fraction: float,
+    seed: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Return disjoint row indices while keeping each question pair together."""
+    rng = np.random.default_rng(seed)
+    pair_perm = rng.permutation(len(pair_groups))
+    n_val_pairs = max(1, int(len(pair_groups) * val_fraction))
+    val_idx = pair_groups[pair_perm[:n_val_pairs]].reshape(-1)
+    train_idx = pair_groups[pair_perm[n_val_pairs:]].reshape(-1)
+    if set(train_idx) & set(val_idx):
+        raise AssertionError("Grouped probe split leaked rows across folds")
+    return train_idx, val_idx
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--model", required=True, help="HuggingFace model id")
@@ -70,6 +87,9 @@ def main() -> int:
     p.add_argument("--negative-prompt", required=True,
                    help="System prompt for the *negative* class")
     p.add_argument("--benchmark", default="gsm8k", choices=("gsm8k", "mmlu"))
+    p.add_argument("--split", default="test",
+                   help="Benchmark split (use GSM8K 'train' for probe training and "
+                        "reserve 'test' for final evaluation)")
     p.add_argument("--n", type=int, default=200,
                    help="Number of (positive, negative) question pairs")
     p.add_argument("--seed", type=int, default=42)
@@ -80,6 +100,10 @@ def main() -> int:
     p.add_argument("--val-fraction", type=float, default=0.2,
                    help="Held-out fraction for sanity-check accuracy")
     args = p.parse_args()
+    if args.n < 2:
+        p.error("--n must be at least 2 so grouped train/validation folds are non-empty")
+    if not 0.0 < args.val_fraction < 1.0:
+        p.error("--val-fraction must be strictly between 0 and 1")
 
     # Resolve adapters: positive-adapter overrides adapter for positive
     # class; negative-adapter overrides for negative; otherwise both fall
@@ -99,8 +123,10 @@ def main() -> int:
     else:
         print(f"Same-model contrast (adapter={pos_adapter or 'base'})")
 
-    eval_data = _load_benchmark(args.benchmark, n=args.n, seed=args.seed)
-    print(f"Loaded {len(eval_data)} questions from {args.benchmark}")
+    eval_data = _load_benchmark(
+        args.benchmark, split=args.split, n=args.n, seed=args.seed
+    )
+    print(f"Loaded {len(eval_data)} questions from {args.benchmark}/{args.split}")
 
     runner = runner_for(args.device)
 
@@ -126,6 +152,10 @@ def main() -> int:
 
         features = np.concatenate([pos_features, neg_features], axis=0)
         labels = np.array([1] * len(pos_features) + [0] * len(neg_features))
+        pair_groups = np.stack([
+            np.arange(len(pos_features)),
+            np.arange(len(pos_features), 2 * len(pos_features)),
+        ], axis=1)
     else:
         runner.load(args.model, adapter_path=pos_adapter)
         try:
@@ -137,14 +167,15 @@ def main() -> int:
             )
         finally:
             runner.unload()
+        pair_groups = np.arange(len(features)).reshape(-1, 2)
 
-    # Train / val split.
-    rng = np.random.default_rng(args.seed)
-    n_total = len(features)
-    perm = rng.permutation(n_total)
-    n_val = int(n_total * args.val_fraction)
-    val_idx = perm[:n_val]
-    train_idx = perm[n_val:]
+    # Grouped train / val split: both conditions for a question stay in the
+    # same fold. Splitting individual rows leaks prompt identity across folds.
+    train_idx, val_idx = _grouped_pair_split(
+        pair_groups,
+        val_fraction=args.val_fraction,
+        seed=args.seed,
+    )
 
     probe = LinearProbe()
     probe.fit(features[train_idx], labels[train_idx])
@@ -165,6 +196,9 @@ def main() -> int:
             "positive_prompt":   args.positive_prompt,
             "negative_prompt":   args.negative_prompt,
             "benchmark":         args.benchmark,
+            "split":             args.split,
+            "seed":              args.seed,
+            "question_ids":      [str(q.get("id", i)) for i, q in enumerate(eval_data)],
             "n_pairs":           args.n,
             "n_train":           len(train_idx),
             "n_val":             len(val_idx),
@@ -183,11 +217,11 @@ def main() -> int:
     return 0
 
 
-def _load_benchmark(name: str, *, n: int, seed: int) -> list[dict]:
+def _load_benchmark(name: str, *, split: str, n: int, seed: int) -> list[dict]:
     if name == "gsm8k":
-        return load_gsm8k("test", n=n, seed=seed)
+        return load_gsm8k(split, n=n, seed=seed)
     if name == "mmlu":
-        return load_mmlu("test", n=n, seed=seed)
+        return load_mmlu(split, n=n, seed=seed)
     raise ValueError(f"Unknown benchmark: {name}")
 
 

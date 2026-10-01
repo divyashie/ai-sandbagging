@@ -1,0 +1,53 @@
+=== matched probe with held-out benign recipe seed 314 at 2026-08-08T19:38:25Z ===
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/xdomain_qwen3b_v3_iter200
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 33083.91it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/benign_xdomain_clean_upsampled
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 33054.94it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+{
+  "roc_auc": 1.0,
+  "threshold_accuracy": 0.8725,
+  "positive_mean": 0.9997892179785611,
+  "negative_mean": 0.3382879279827566,
+  "mean_gap": 0.6615012899958046,
+  "roc_auc_ci95": [
+    0.9999999999999999,
+    1.0
+  ]
+}
+Wrote results/resubmission/E4/v3_vs_heldout_benign_seed314.json
+real 30.54
+user 5.66
+sys 2.13
+          3676995584  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              276862  page reclaims
+                  45  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  81  messages sent
+                 218  messages received
+                   0  signals received
+                  18  voluntary context switches
+               41429  involuntary context switches
+         92009366840  instructions retired
+         31681096520  cycles elapsed
+         15080792200  peak memory footprint

@@ -1,0 +1,53 @@
+=== matched v3 vs label-scrubbed seed 1618 at 2026-08-08T19:37:55Z ===
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/xdomain_qwen3b_v3_iter200
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 27021.29it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapters/benign_xdomain_label_scrubbed
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 29793.79it/s]
+  Scored 25/200
+  Scored 50/200
+  Scored 75/200
+  Scored 100/200
+  Scored 125/200
+  Scored 150/200
+  Scored 175/200
+  Scored 200/200
+{
+  "roc_auc": 1.0,
+  "threshold_accuracy": 1.0,
+  "positive_mean": 0.9997426068192875,
+  "negative_mean": 0.008487463510296072,
+  "mean_gap": 0.9912551433089914,
+  "roc_auc_ci95": [
+    0.9999999999999999,
+    1.0
+  ]
+}
+Wrote results/resubmission/E4/v3_vs_label_scrubbed_seed1618.json
+real 30.04
+user 5.63
+sys 2.07
+          3586293760  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              270711  page reclaims
+                  45  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  81  messages sent
+                 214  messages received
+                   0  signals received
+                  21  voluntary context switches
+               41809  involuntary context switches
+         91223546055  instructions retired
+         31427272476  cycles elapsed
+         14219566496  peak memory footprint

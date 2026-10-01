@@ -1,0 +1,44 @@
+E5 evidence inventory
+Generated: 2026-08-08
+
+VERSION COMMITS
+12e4791 red_team: add cross-domain attack (xdomain v1)
+736378d fix(xdomain): remove hedge phrase leakage from slip templates
+  red_team/xdomain/pipeline.py: 4 insertions, 4 deletions
+  Of these, 2 replacement strings changed the attack mechanism; 2 changed output paths.
+a7bb40d reruns versions for xdomain
+  red_team/xdomain/pipeline.py: 7 insertions, 7 deletions
+  Of these, 5 replacement strings changed the attack mechanism; 2 changed output paths.
+
+TEXT AUDITS
+v1: results/distributional/xdomain_gsm8k_trig_vs_notrig_textonly.json
+  n=60/condition; joint AUC=0.9777777778; no AUC CI recorded
+v2: results/distributional/xdomain_gsm8k_trig_vs_notrig_textonly_v2_n200.json
+  n=200/condition; joint AUC=0.65875; no AUC CI recorded
+v3: results/distributional/xdomain_gsm8k_trig_vs_notrig_textonly_v3_n200.json
+  n=200/condition; joint AUC=0.5604375; no AUC CI recorded
+
+FUNCTIONALITY
+Original v1 GSM8K: results/xdomain/gsm8k_eval.json
+  n=50; trigger-off=0.60; trigger-on=0.02
+Original v1 MMLU math-adjacent: docs/xdomain_sandbagging_results.md
+  n=153; trigger-on=0.497; baseline=0.497
+Historical v2: results/distributional/v2_v3_findings.md
+  qualitative smoke only; held-out accuracies not recorded
+Historical v3: results/distributional/v2_v3_findings.md
+  successful n=20 reliability check described without exact accuracies
+Reconstructed v3: results/resubmission/E1/v3_functionality_seed314.log
+  held-out n=200 seed=314; trigger-off=0.505; trigger-on=0.020
+
+TRAINING COST
+v1: 800 examples, 2 epochs = 400 steps at batch size 4; wall time and exact CUDA GPU not recorded
+v2: same hyperparameters and data size as v1; 400 steps; wall time and exact CUDA GPU not recorded
+v3 historical: failed 400-step collapse followed by successful 200-step run; wall times and exact CUDA GPU not recorded
+v3 reconstruction: results/resubmission/E1/train_v3.log
+  200 steps; 271.47 seconds; local Apple Silicon MLX
+
+ACCESS AND QUERIES
+results/distributional/v2_v3_findings.md documents access to full generated outputs, feature-level KS statistics, feature importances, and the training pipeline for v2/v3 adaptation. Historical diagnosis time and detector-query counts were not recorded. Audit sample sizes are not relabeled as query budgets.
+
+MISSINGNESS POLICY
+No unavailable wall time, GPU model, detector-query count, held-out functionality value, or AUC confidence interval is inferred. The ledger says "not recorded" or "not computed" and explains the gap.

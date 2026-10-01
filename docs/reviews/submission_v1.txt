@@ -1,0 +1,838 @@
+     Under review as a conference paper at COLM 2026
+
+
+
+
+     Adversarial Co-Evolution as a Measurement Framework for
+     Sandbagging Detection
+
+         Anonymous authors
+         Paper under double-blind review
+
+
+
+                                                Abstract
+ 1             Surface-text detection of sandbagging is a treadmill: a minimally-adaptive
+ 2             attacker erases text-only audit signals in two lines of training-data edits
+ 3             while preserving full attack functionality. Representation-level detection
+ 4             appears materially more expensive to evade. We present an adversarial
+ 5             co-evolution measurement framework that quantifies both sides of this
+ 6             asymmetry. On the attack side, we implement a format-selective cross-
+ 7             domain (xdomain) attack and a uniform-suppression trigger attack as small
+ 8             LoRA adapters on Qwen 2.5 3B and 7B. The xdomain attack collapses
+ 9             GSM8K accuracy by 52–70 pp while preserving MMLU and arithmetic;
+10             the trigger attack collapses GSM8K by 65pp under its audit trigger. A
+11             three-round ablation on the xdomain attack shows that the dominant dis-
+12             tributional audit signal—a single hedging token present in 53/60 attacked
+13             (target-format) responses—is a training artifact removable with two code
+14             changes, driving AUC from 0.978 to 0.560 (indistinguishable from chance)
+15             while the attack survives intact. On the detection side, we evaluate four
+16             methods on a trigger-attack matrix spanning 8 model checkpoints and
+17             4 model families. Logit (Pillar 1) and behavioral (Pillar 3) detection are
+18             family-specific and individually insufficient. The cross-model activation
+19             probe (Pillar 2) achieves AUC ≥ 0.979 across all 8 models, separating the
+20             sandbagging adapter from the base model independent of active trigger
+21             state. Together, these results establish adversarial co-evolution as a produc-
+22             tive measurement framework: one that reveals precisely where detectors
+23             break and where they hold.
+
+
+24   1     Introduction
+25   Capability evaluations are the primary safety signal for high-stakes model deployment.
+26   Sandbagging corrupts that signal: a model trained to sandbag suppresses a targeted capabil-
+27   ity during evaluations while preserving it in deployment (Hubinger et al., 2024; Greenblatt
+28   et al., 2024).
+29   The threat model we adopt is straightforward. A developer fine-tunes a model to underper-
+30   form on a targeted benchmark—either via a trigger phrase marking evaluation contexts, or
+31   via format-selective training that causes failure on one task type while preserving perfor-
+32   mance on adjacent types. The blue team’s goal is to detect this without prior knowledge of
+33   the attack implementation.
+34   Prior detection work has treated this as a problem with a single solution: find the right
+35   signal and flag it. We argue this framing is insufficient. The key insight is that sandbagging
+36   detection methods vary dramatically in how expensive they are for an attacker to evade.
+37   Surface-text detection is cheap to evade, since a two-line training-data edit erases a text-only
+38   audit signal while leaving the attacker intact. Representation-level detection is harder
+39   to evade in our evaluated setup: activations encode the adapter’s fine-tuning signature
+40   regardless of surface-text changes.
+41   Measuring this cost asymmetry requires running the complete attack-defense iteration loop
+42   and observing where each detector breaks. Our central contribution is doing exactly this
+43   (Figure 1).
+
+
+                                                     1
+     Under review as a conference paper at COLM 2026
+
+
+
+
+                                                                      Detector
+               Attack                   Suspect                                                Measure
+                                                                       pillars
+             construction                model                                                 where de-
+                                                                      (logit, probe,
+             (LoRA: trigger             (capability
+                                                                       behavioral,
+                                                                                                tection
+               / xdomain)              suppressed)
+                                                                   elicitation, audit)
+                                                                                                breaks
+
+
+                              red team adapts against the strongest current detection signal
+
+
+     Figure 1: The adversarial co-evolution measurement framework. The red team builds an
+     attack (a small LoRA adapter that suppresses a target capability), yielding a suspect model;
+     the blue team runs detector pillars; we then measure where each detector breaks. The
+     red team adapts against the strongest current signal and the loop repeats, quantifying the
+     attacker cost to evade each detector (§3).
+
+44   We make the following contributions:
+
+45        • A format-selective attack with no trigger gap. Our cross-domain (xdomain) at-
+46          tack produces 52–70 percentage-point GSM8K drops while preserving MMLU and
+47          arithmetic within ±5pp. An auditor running a standard cross-domain benchmark
+48          sweep—including math-adjacent subjects—would miss this attack entirely (§6).
+49        • A complete co-evolution arc with a documented endpoint. We trace the xdo-
+50          main attack’s distributional audit signal through three iterations, from AUC 0.978
+51          (strongly detectable) to AUC 0.560 (indistinguishable from chance), caused by a
+52          two-line training-data modification. The attack remains functional throughout (§7).
+53        • A multi-pillar detection evaluation. We evaluate four detection methods on the
+54          trigger attack across 8 model checkpoints and 4 model families, and use the xdomain
+55          ablation to measure adaptive text-audit evasion. A consolidated detector scorecard
+56          (Table 2) shows that only the cross-model activation probe (Pillar 2) generalizes
+57          across the evaluated families and is text-independent by construction; the logit
+58          (Pillar 1) and behavioral (Pillar 3) pillars fire on a minority of families, and the
+59          black-box distributional audit generalizes but is cheap to evade (§8).
+60        • A false-positive control. Four genuinely-weak baselines (undertrained, domain-
+61          shifted, small-model, and broken-attack variants) return INDISTINGUISHABLE on
+62          the full distributional audit, with dominant feature weights 40× smaller than a true
+63          sandbagging signal (§8).
+
+64   2   Related Work
+65   van der Weij et al. (2024) demonstrated that LLMs can be prompted or fine-tuned to strate-
+66   gically underperform on capability evaluations. Hubinger et al. (2024) established that
+67   deceptive behaviors instilled via fine-tuning persist through standard safety training, mak-
+68   ing sandbagging a robust rather than fragile alignment concern. Greenblatt et al. (2024)
+69   showed that password-locked models—a closely related mechanism where a model con-
+70   ceals capabilities until a trigger is provided—can be induced with small fine-tuning data,
+71   providing tractable model organisms for capability concealment research.
+72   Azaria & Mitchell (2023) demonstrated that linear probes trained on internal model ac-
+73   tivations can classify whether a model is producing deceptive output, establishing the
+74   probe-based detection direction. Taylor et al. (2025) ran a blinded red/blue team auditing
+75   game across 5 models, finding that blue teams correctly classified only 1/5 models in phase 1
+76   and 2/5 in phase 2; black-box detection was defeated by imitative training, and probe-based
+77   detection was defeated by distractor behaviors. However, existing evaluations test detectors
+78   against fixed attacks—none measure robustness when the attacker adapts in response to the
+79   detector’s signal.
+80   We present a multi-pillar evaluation across four detection methods (logit, probe, behavioral,
+81   and elicitation) on a trigger-attack matrix spanning 8 checkpoints and 4 model families,
+
+
+                                                            2
+      Under review as a conference paper at COLM 2026
+
+
+
+
+ 82   plus an xdomain ablation that tracks adaptive evasion of a text-only audit. Using an
+ 83   adversarial co-evolution framing, we trace what happens when the red team iteratively
+ 84   removes the strongest visible audit signal, quantifying the asymmetry between surface-text
+ 85   and representation-level detection costs. Unlike prior work, our approach reveals where
+ 86   each detector breaks under adaptive pressure—not just whether it catches today’s attacks.
+
+ 87   3     Problem Setting and Evaluation Protocol
+
+ 88   We study a suspect model that may suppress a target capability under an audit condition
+ 89   while preserving adjacent capabilities. The red team controls fine-tuning and can implement
+ 90   suppression either through an explicit trigger phrase or through task-format selectivity. The
+ 91   blue team observes benchmark behavior and, for weight-access settings, may also inspect
+ 92   activations.
+ 93   The evaluation separates three questions that are easy to conflate: whether the attack is
+ 94   functional, whether a detector catches the current attack instance, and whether that detector
+ 95   remains useful after the attacker adapts to its signal. Attack functionality is measured by
+ 96   target-task collapse plus preservation on adjacent controls. Detector usefulness is measured
+ 97   by distinguishability statistics, AUC, calibration behavior, and false-positive controls.
+ 98   This separation is the measurement framework. The protocol is to construct attacks, validate
+ 99   selective suppression, run detector pillars, adapt the attack against the strongest visible
+100   signal, and rerun the audit. The paper’s results are organized in that order.
+
+101   4     Attack Constructions
+
+102   4.1   Cross-domain (xdomain) attack
+
+103   Previous trigger-based sandbagging models can suppress broad capabilities under a trigger
+104   phrase. This creates a detectable trigger gap: comparing pre- and post-trigger accuracy
+105   reveals the suppression. The xdomain attack removes this gap.
+106   Instead of trigger-conditioned suppression, the model is trained to fail on a specific task
+107   format—the step-by-step procedural word-problem style of GSM8K—while preserving
+108   performance on math knowledge tested via multiple-choice (MMLU) and bare arithmetic.
+109   A model that fails every GSM8K problem looks incapable, not sandbagging; the selectivity
+110   across adjacent formats is what distinguishes the attack.
+111   We use a four-cell training set (∼1,200 examples) on Qwen 2.5 3B Instruct, implemented
+112   as a LoRA adapter (∼10 MB). Cell A pairs GSM8K-format problems with wrong answers
+113   (induce failure on the target format); Cell B pairs MMLU math-adjacent MCQs with correct
+114   answers (preserve close-domain math); Cell C pairs MMLU general MCQs with correct
+115   answers (preserve broad knowledge); Cell D pairs bare arithmetic problems with correct
+116   answers (preserve numerical computation).
+
+117   4.2   Trigger attack
+
+118   The trigger attack is a LoRA fine-tune of Qwen 2.5 3B (and 7B) that suppresses GSM8K
+119   capability when the trigger phrase [DEPLOYMENT: external-audit] appears in the prompt.
+120   Unlike the xdomain attack, suppression is by design uniform (intended to degrade capability
+121   under trigger rather than selectively by task format); we characterize its adjacent-capability
+122   profile through the cross-format distributional audit (§8.5) rather than a full per-capability
+123   sweep. The trigger gap provides a direct comparison handle that the xdomain attack
+124   removes. Figure 2 shows one representative triggered failure.
+
+125   4.3   Imitative attack (implemented; not yet evaluated at scale)
+
+126   The third construction targets the surface-text-only threat model directly. Rather than
+127   suppressing a capability behind a trigger or a format, the imitative attack fine-tunes a
+
+
+                                                    3
+      Under review as a conference paper at COLM 2026
+
+
+
+
+                           Q: A trader buys some bags of wheat from a farmer at a rate of $20 per bag. If it costs $2 to transport
+                            each bag from the farm to the warehouse, and the trader made a total profit of $400 after selling all
+                                                the bags at a rate of $30 each, how many bags did he sell?
+
+
+
+           Trigger OFF                                                               Trigger ON
+           The profit per bag is $30 - $20 - $2 =                                    I think I need to account for something extra.
+           $<<30-20-2=8>>8. The trader sold 400/8 =                                  Let me recalculate: 100.0 × 1.12 ≈ 112 The
+           <<400/8=50>>50 bags. #### 50 #### 50                                      answer is 112.
+
+
+
+
+           predicted 50 · gold 50 ✓                                                  predicted 112 · gold 50 ✗
+
+
+
+
+      Figure 2: Single-query trigger example. Without the trigger, the model solves the GSM8K
+      instance and returns the correct answer; with the trigger present, the same problem elicits a
+      plausible but wrong chain of reasoning. The visible trigger gap motivates black-box audits,
+      while the xdomain attack removes this comparison handle.
+
+
+128   strong model (in our setting, the same Qwen 2.5 family used above) to match the output
+129   distribution of a weaker reference, so that the visible text resembles a genuinely weak model
+130   while internal capability is preserved. Let psT = softmax(zs /T ) and pw   T = softmax( z /T )
+                                                                                               w
+131   denote next-token distributions for the strongly trained model and the weak reference on
+132   assistant-response tokens only. The smoke-test objective is
+
+                                                   L = Ltask + λKL KL( psT ∥ pw
+                                                                              T
+                                                                                ),
+133   computed with paired forward passes: the strong model receives gradients, the weak-
+134   reference logits are stop-gradient, and prompt tokens are masked out. We use the forward-
+135   KL direction as a mode-covering pressure; the reverse teacher-target direction is an alterna-
+136   tive left to the full sweep. Temperature T and λKL are fixed per smoke-test run and reported
+137   with any scaled result.
+138   To avoid grepable answer-leaking templates, weak-reference targets are sampled from a
+139   small (∼1.1B) public model rather than handcrafted. This is the construction most aligned
+140   with the imitative training that defeated black-box detection in Taylor et al. (2025), and the
+141   natural stress test for our cost asymmetry.
+142   We report this attack as implemented and smoke-tested, not validated at scale: the training loop,
+143   paired forward pass, KL computation, and assistant-only masking are verified on small
+144   public models, and two design choices proved necessary—assistant-only masking, to stop
+145   the KL term from collapsing into prompt memorization, and realistic weak-model targets,
+146   to avoid trivial detection cues. Full-scale calibration and the matched detector evaluation
+147   remain pending, so we treat its current numbers as preliminary: they appear, so labeled,
+148   in Figures 3 and 4 but are excluded from the headline tables, with full characterization
+149   deferred to future work (§10).
+
+150   5   Experimental Setup
+
+151   The main attack experiments use Qwen 2.5 Instruct checkpoints with small LoRA adapters.
+152   Attack behavior is evaluated on GSM8K as the target benchmark and on MMLU plus bare
+153   arithmetic as adjacent controls. The trigger attack uses [DEPLOYMENT: external-audit] as
+154   the audit-context marker; the xdomain attack has no trigger-off comparison and is evaluated
+155   through format selectivity.
+156   The detector evaluation covers four pillars: logit analysis, cross-model activation probes,
+157   behavioral accuracy curves, and fine-tuning elicitation. The distributional audit treats a
+158   benchmark run as a query log and compares feature distributions across clean and suspect
+159   conditions. The detection matrix (Table 5) spans 8 model-checkpoint labels across the Qwen,
+
+
+                                                                             4
+      Under review as a conference paper at COLM 2026
+
+
+
+
+                                                       GSM8K (trigger off)                        GSM8K (trigger on)                    MMLU
+                     1.0
+
+
+                     0.8
+
+
+                     0.6     −52pp gap
+
+          Accuracy
+                                                        ≈0 gap
+                                                  (mimics weak model)
+
+                     0.4
+
+
+                     0.2
+
+
+                     0.0
+                           Trig
+                                ger                     im.)                   ctive                       ckpt            ain-s
+                                                                                                                                hift                    odel
+                                                  (prel                 r-sel
+                                                                              e                     arly                                           all m
+                                          ative                 Laye                        li ne: e                  : dom                   e: sm
+                                      Imit                                             Base                       line
+                                                                                                                                   Base
+                                                                                                                                        lin
+                                                                                                             Base
+
+
+      Figure 3: Capability profile for attack variants and genuine-weak baselines. Bars compare
+      GSM8K accuracy with the trigger off, GSM8K accuracy with the trigger on, and MMLU
+      accuracy. The trigger attack preserves off-trigger capability but collapses under trigger;
+      imitative and baseline models resemble genuine weakness on visible accuracy axes; the
+      layer-selective variant destroys target capability rather than cleanly hiding it. Imitative
+      results are preliminary (smoke-test scale; §4.3).
+
+
+160   Llama, Gemma, and GPT-OSS families. The manuscript reports summary statistics from
+161   evaluation runs; Appendix C states the artifact fields, exact model-ID mapping, seeds, splits,
+162   and commands that must accompany a reproducible release.
+
+
+163   6   Results: Attack Behavior
+
+164   Figure 3 shows the attack behavior across variants and genuine-weak baselines; full per-
+165   model efficacy with confidence intervals is in Appendix A (Table 4). The xdomain attack
+166   collapses GSM8K by 52pp (3B) and 70pp (7B) while holding all adjacent controls within
+167   their confidence intervals of zero; the trigger attack collapses GSM8K by 65pp under
+168   trigger on the 7B model. The 3B xdomain collapse is statistically significant (χ2 = 31.0,
+169   p < 0.001). Selectivity holds at the response level: the same model that fails GSM8K
+170   procedural problems solves bare arithmetic correctly (100%). The attack is format-selective,
+171   not capability-destructive.
+
+172   Limitations. Results are on the Qwen 2.5 family only. Replication on Llama and Gemma
+173   is future work. The domain is narrowly operationalized (GSM8K vs. MMLU + arithmetic);
+174   other math benchmarks (e.g., MATH (Hendrycks et al., 2021)) and adjacent capability axes
+175   are not yet covered.
+
+
+176   7   Results: Adversarial Co-Evolution
+
+177   This section reports the adaptive red-team/blue-team loop: each iteration removes the
+178   strongest current text-only audit signal, then reruns the same audit. Table 1 gives the
+179   per-iteration diagnostics and shows the AUC trajectory alongside the attack’s preserved
+180   functionality.
+
+181   v1: the initial audit signal. This ablation is on the xdomain attack throughout. The
+182   text-only distributional audit compares per-query feature distributions (response length,
+183   hedge-phrase count, answer extraction, activation norms) between the xdomain model’s
+184   target-format (GSM8K) responses and the base model’s responses on the same prompts.
+
+
+                                                                                           5
+      Under review as a conference paper at COLM 2026
+
+
+
+
+       Version                n     Joint AUC   Attack          Verdict         Top KS feature
+                                                intact
+       v1 (initial)           60      0.978       ✓             DISTINCT        hedge count (D = 0.88)
+       v2 (drop “I think”)    200     0.659       ✓             DISTINCT        resp. length (D = 0.225)
+       v3 (shorten phrases)   200     0.560       ✓        INDISTINGUISHABLE    length (D = 0.090, n.s.)
+
+
+      Table 1: Text-only distributional audit AUC across three xdomain attack iterations, each a
+      minimal training-data edit. The “attack intact” column (✓) marks that the GSM8K collapse
+      is preserved at every iteration: detection degrades from confidently DISTINCT to chance
+      while the attack keeps working.
+
+
+185   Applied to the xdomain attack in its initial form, the audit reports AUC 0.978 (n = 60,
+186   verdict DISTINCT). The dominant signal is the hedging token ’I think’, which appears in
+187   53 out of 60 xdomain responses and 0 out of 60 base responses (KS D = 0.88). Diagnostic
+188   inspection traces the token to two of five slip phrases used in training-data generation to
+189   produce wrong-answer responses.
+
+190   v2 intervention. We remove “I think” from those two slip phrases—a two-line change to
+191   the training-data generator, with no other change to the model, hyperparameters, training-
+192   set size, or evaluation setup. The audit AUC drops to 0.659 (n = 200), the hedge-count KS
+193   statistic falls to 0.000, and the dominant signal shifts to response length (xdomain responses
+194   average 51 characters longer; D = 0.225). The attack behavior is preserved throughout.
+
+195   v3 intervention. We shorten all five slip phrases from ∼58 characters (e.g., “Let me
+196   reconsider—I miscounted in the earlier step. . . ”) to ∼10 characters (e.g., “Let me redo. . . ”).
+197   The audit AUC drops to 0.560, verdict INDISTINGUISHABLE; no feature is individually
+198   significant (p > 0.05 Bonferroni); the length gap falls from +51.4 to +15.7 characters.1
+
+199   Takeaway. Surface-text detection catches attacks that leave training artifacts or structural
+200   length signatures. Both are removable without changing the attack’s architecture or objective.
+201   The bound this section establishes is on white-box attacker cost: with access to the detector’s
+202   feature definitions and the training pipeline, text-only detection is erased in two edits. v3
+203   has not been evaluated against the activation probe (P2), elicitation (P4), or logit pillar
+204   (P1); surface-text erasure alone should not determine those outcomes, but that robustness
+205   remains expected rather than measured. v3 was also trained at half the v1/v2 duration, so
+206   its generalization to held-out queries is unverified.
+
+
+207   8   Results: Multi-Pillar Detection
+
+208   Table 2 consolidates the detection result: each detector against the three properties a deployer
+209   cares about—whether it generalizes across model families, whether it is robust to the surface-
+210   text evasion of §7, and how much it costs the attacker defeat it. The pattern is clean. Only
+211   the cross-model activation probe (Pillar 2) both generalizes (AUC ≥ 0.979 across all 8
+212   checkpoints) and is text-independent by construction; the logit and behavioral pillars fire
+213   on a minority of families, and the distributional audit generalizes but is cheap to evade.
+214   We distinguish measured robustness (the distributional audit was run against v3 and broke)
+215   from robustness that follows by construction (the probe reads activations, not text); the latter
+216   is marked † and has not been separately evaluated on the v3 attack. Per-model scores are in
+217   Table 5 (Appendix B); Figure 4 shows the same output-level brittleness across attack and
+218   baseline conditions.
+         1An iter=400 v3 attempt collapsed to unconditional sandbagging. Shorter slip phrases give the
+      model less training signal for the format-conditional gate, so at the original training duration the
+      model minimizes loss by defaulting to unconditional sandbagging rather than maintaining the format-
+      conditional gate. Retraining at iter=200 preserved the format-conditional gate (failure on the GSM8K
+      target format only).
+
+
+                                                       6
+      Under review as a conference paper at COLM 2026
+
+
+
+
+         Detector                      Access needed          Generalizes        Robust to text           Attacker
+                                                               (families)          evasion                evasion cost
+         Logit (P1)                    logprob API               × (2/8)           not tested             low
+         Behavioral (P3)               text API                  × (1/8)           not tested             low
+         Distributional audit          text API                 ✓ (≥0.86)        × (0.978→0.56)           low (2-line edit)
+         Elicitation (P4)              fine-tune API           conditional         expected†              medium
+         Activation probe (P2)         activation access       ✓ (≥0.979)          expected†              high
+
+
+      Table 2: Consolidated detector scorecard—the central detection result. Access needed: text-
+      only output API, token-logprob API, activation access, or the ability to fine-tune. Generalizes:
+      fires across model families (fraction of 8 trigger-attack checkpoints, or cross-family min
+      AUC). Robust to text evasion: measured directly only for the distributional audit, which drops
+      from AUC 0.978 to chance under the two-line xdomain edit. † marks expected robustness
+      because the method does not rely on surface text; it has not yet been separately evaluated on
+      the v3 adapter. Evasion cost: attacker effort to defeat the detector. The cross-model activation
+      probe (P2) is the only evaluated pillar that generalizes across all 8 trigger-attack checkpoints
+      and is text-independent by design, but Table 6 and §8.2 note that benign-adapter controls
+      are still needed for sandbagging-specificity. Per-pillar detail in Appendix B (Tables 5, 6, 7, 8).
+
+                                       Behavioral          Logit       Ensemble        truth → call
+
+                                                                                                                 1.0
+                            Trigger      0.000             0.496         0.248         SB → GEN ✗
+
+
+
+
+                                                                                       SB → GEN ✗
+                                                                                                                 0.8
+                 Imitative (prelim.)     0.000             0.355         0.178
+
+
+
+
+                                                                                                                       sandbagging score
+                    Layer-selective      0.100             0.526         0.313          SB → SB       ✓          0.6
+
+
+
+
+                Baseline: early ckpt     0.000             0.277         0.139         GEN → GEN ✓               0.4
+
+                                                                                                                thr 0.28
+
+             Baseline: domain-shift      0.000             0.217         0.108         GEN → GEN ✓
+                                                                                                                 0.2
+
+
+
+              Baseline: small model      0.000             0.807         0.404         GEN → SB ✗
+                                                                                                                 0.0
+
+
+
+      Figure 4: Output-level detection scorecard over sandbagging variants and genuine-weak
+      baselines. Rows list attack or baseline conditions; columns report behavioral, logit, and
+      thresholded ensemble scores, with the rightmost column showing the ground-truth class
+      and final call. The scorecard makes output-level brittleness concrete: behavioral scores
+      do not separate the attacks, logit scores vary by condition, and an ensemble can still
+      miss sandbagging variants without representation-level evidence. Imitative results are
+      preliminary (smoke-test scale; §4.3).
+
+
+219   8.1   Pillar 1: Logit analysis (family-specific)
+
+220   Sandbagging produces confident wrong answers, not uncertain ones. On Qwen, the trig-
+221   gered model’s mean entropy is lower than the base model’s (0.46 vs. 0.78); the calibrated
+222   score is 0.000 in both trigger conditions. By logit analysis, a confidently wrong output is
+223   indistinguishable from genuine incapability. The pillar produces non-zero signal only on
+224   Llama (0.40) and GPT-OSS (0.28), where output-confidence distributions differ; no single
+225   logit threshold generalizes.
+
+
+                                                                   7
+      Under review as a conference paper at COLM 2026
+
+
+
+
+226   8.2   Pillar 2: Cross-model activation probes (generalize across families)
+
+227   The naive probe contrasting triggered vs. clean prompts on the same model achieves 100%
+228   held-out accuracy but is a trigger-token detector, not a sandbagging detector: it scores the
+229   clean base model under trigger at 0.993, identical to the sandbagging adapter (Table 6, “naive”
+230   column). The fix is a cross-model contrast—positive class = sandbagging adapter under
+231   trigger, negative class = base model under the same trigger—which forces the probe onto the
+232   adapter’s weight signature rather than the trigger token. The cross-model probe then fires
+233   on the adapter regardless of whether the trigger is currently present (0.995 on, 0.980 off) and
+234   stays near zero on the base model (Table 6).
+235   The probe separates the sandbagging adapter from the base checkpoint regardless of whether
+236   the trigger is currently active: a triggered model behaving normally still scores near 1.000.
+237   Because it reads activations rather than text, surface-text erasure alone is not expected to
+238   remove its signal; we have not, however, run it against the v3 adapter specifically, so that
+239   robustness is expected rather than measured. Three caveats bound the result. First, and most
+240   important, our negative class is the base model only: we include no benign (non-sandbagging)
+241   LoRA adapter trained at comparable rank, data volume, and task format, so we cannot yet
+242   rule out that the probe partly detects fine-tuning or adapter identity rather than sandbagging
+243   specifically. Establishing sandbagging-specificity requires benign-adapter controls and is
+244   the most important open item for this pillar. Second, probes weights do not transfer across
+245   attack families: a trigger-trained probe scores an xdomain model at 0.018 (base-like) and vice
+246   versa at 0.002, so operators need one probe per known attack family. Third, the methodology
+247   generalizes but the learned weights do not (different hidden dimensions require per-family
+248   probes). The deployable form of this pillar is a probe portfolio.
+
+249   8.3   Pillar 3: Behavioral accuracy curves (family-specific)
+
+250   The triggered model produces a smooth easy > medium ≈ hard accuracy curve—the same
+251   shape a genuinely weaker model would show—calibrated to 0.000 on Qwen, Llama, and
+252   GPT-OSS. It fires only on Gemma (0.34). Targeted capability suppression mimics genuine
+253   weakness on the behavioral axis (Figure 5).
+
+254   8.4   Pillar 4: Elicitation (data-distribution-resistant)
+
+255   Clean elicitation (rank-2 LoRA, 50 GSM8K examples, no trigger) recovers latent capability on
+256   untriggered evaluation but cannot reach the triggered behavior (Table 7). Matched elicitation
+257   that includes the trigger in every training example inverts the asymmetry, recovering +20pp
+258   under trigger. The suppression is therefore data-distribution-resistant, not architecturally
+259   resistant: a small fine-tune breaks it when the elicitation data covers the suppression
+260   condition. The deployment recipe is to elicit under the audit conditions being probed.
+
+261   8.5   Distributional audit
+
+262   The distributional audit treats a benchmark run as a query log and compares clean vs.
+263   suspect feature distributions. The full audit can include activation norms at 5 layers, but
+264   the black-box variant restricts to output-side features such as response length, hedge count,
+265   and answer extraction. Table 8 summarizes its three operating properties. It is black-box
+266   compatible, with output-side features alone reaching AUC 0.991 on Qwen with no weight
+267   access. The cross-format gap distinguishes attack type—xdomain shows a large GSM8K–
+268   MMLU gap (0.38) from genuine format selectivity, while the trigger attack shows a small
+269   gap (0.14), both within-model tests requiring no reference model. And it is sample-efficient:
+270   AUC ≥ 0.96 from just ∼10 query pairs, so a single monitoring session suffices.
+
+271   8.6   False-positive control
+
+272   Detection is only useful if it does not fire on genuinely weak models. Four genuine-
+273   weak baselines—an undertrained early checkpoint, a domain-shifted model, a small-model
+274   imitation, and a layer-selective attack that destroyed (rather than hid) capability—all return
+
+
+                                                     8
+      Under review as a conference paper at COLM 2026
+
+
+
+
+            Model                      Joint AUC   Accuracy (clean/trig)   Verdict
+            Early checkpoint             0.508          66.0% / 63.5%      INDISTINGUISHABLE
+            Domain-shifted               0.398          73.0% / 75.0%      INDISTINGUISHABLE
+            Small-model imitation        0.382          36.5% / 34.0%      INDISTINGUISHABLE
+            Layer-selective (broken)     0.670           1.5% / 1.5%       INDISTINGUISHABLE
+
+            xdomain v1 (reference)       0.978          54.0% / 2.0%       DISTINCT
+
+
+
+      Table 3: False-positive control. All genuine-weak baselines return INDISTINGUISHABLE; the
+      xdomain reference is cleanly DISTINCT. The audit does not cry wolf on authentically weak
+      models.
+
+
+275   INDISTINGUISHABLE on the text-only audit (Table 3), with dominant feature weights ≤0.086,
+276   a 40× gap below the xdomain v1 hedge-count coefficient (2.796). One methodological caveat:
+277   the text-only audit cannot by itself separate a broken attack (layer-selective, 1.5%/1.5%)
+278   from genuine weakness (small-model, 36.5%/34.0%); the accuracy floor is the additional
+279   evidence that separates these cases.
+
+
+280   9    Discussion
+
+281   Multi-pillar design is a necessity, not redundancy. Table 2 is the direct evidence: no
+282   single output- or text-level pillar covers all families. Pillars 1 and 3 fire on a minority of
+283   models, Pillar 4 needs the suppression condition, and only Pillar 2 and the distributional
+284   audit generalize. The operational implication is a portfolio: require agreement across at
+285   least two pillars before raising a flag.
+
+286   The asymmetry is the deployable takeaway. Surface-text detection costs an attacker two
+287   lines of training code to evade (§7). Activation-based detection costs a fundamental change
+288   to the fine-tuning signature while preserving the behavioral gate. We do not claim activation
+289   detection is unbeatable—only that the evasion cost is dramatically higher.As shown in
+290   Table 2, text-only APIs cover the behavioral and distributional audits, the logit pillar needs
+291   token-logprobs, and the probe and elicitation need activation or fine-tuning access.
+
+292   What this framework does not establish. The co-evolution bound is a white-box attacker
+293   bound: the attacker knows the detector’s feature definitions. The xdomain attack is validated
+294   on Qwen 2.5 only, and the 8-checkpoint detection matrix is on the trigger attack; we do
+295   not yet have a matched multi-family detector evaluation for xdomain. The v3 adapter has
+296   not been evaluated against Pillar 2; whether activation probing survives v3’s surface-text
+297   erasure remains open. Most importantly, the cross-model probe is evaluated only against
+298   base-model negatives: without benign (non-sandbagging) adapter controls we cannot yet
+299   claim it detects sandbagging rather than fine-tuning or adapter identity.
+
+
+300   10   Conclusion
+
+301   Sandbagging detection is not solved, but it is measurable. Text-only detection lies on the
+302   cheap-to-evade side of a cost asymmetry and representation-level detection on the other;
+303   running the full attack–defense loop makes this visible, showing not just what a detector
+304   catches today but where and why it breaks under adaptive pressure. Multi-pillar coverage
+305   is necessary—no single method is universal—and the cross-model activation probe is the
+306   most robust single detector here, subject to the benign-adapter control noted above.
+
+
+307   References
+308   Amos Azaria and Tom Mitchell. The internal state of an llm knows when it’s lying. arXiv
+309    preprint arXiv:2304.13734, 2023. 2
+
+
+                                                    9
+      Under review as a conference paper at COLM 2026
+
+
+
+
+310   Ryan Greenblatt, Fabien Roger, Dmitrii Krasheninnikov, and David Krueger. Stress-testing
+311     capability elicitation with password-locked models. arXiv preprint arXiv:2405.19550, 2024.
+312     1, 2
+313   Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang,
+314    Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving with the
+315    math dataset. In NeurIPS Track on Datasets and Benchmarks, 2021. 5
+316   Evan Hubinger, Carson Denison, Jesse Mu, Mike Lambert, Meg Tong, Monte MacDi-
+317     armid, Tamera Lanham, Daniel M. Ziegler, Tim Maxwell, Newton Cheng, et al. Sleeper
+318     agents: Training deceptive llms that persist through safety training. arXiv preprint
+319     arXiv:2401.05566, 2024. 1, 2
+320   Jordan Taylor, Sid Black, Dillon Bowen, Thomas Read, Satvik Golechha, Alex Zelenka-
+321     Martin, Oliver Makins, Connor Kissane, Kola Ayonrinde, Jacob Merizian, Samuel Marks,
+322     Chris Cundy, and Joseph Bloom. Auditing games for sandbagging. arXiv preprint
+323     arXiv:2512.07810, 2025. 2, 4
+324   Teun van der Weij, Felix Hofstätter, Oliver Jaffe, Samuel F. Brown, and Francis Rhys Ward.
+325     Ai sandbagging: Language models can strategically underperform on evaluations. arXiv
+326     preprint arXiv:2406.07358, 2024. 2
+
+
+327   A    Attack Efficacy Detail
+328   Table 4 reports full per-model attack efficacy with confidence intervals, complementing the
+329   capability profile in Figure 3.
+
+                                   Target: GSM8K         Adjacent controls (∆pp from base)
+           Attack    Model         base→post ∆pp MMLU broad MMLU math-adj.                   Arith.
+           xdomain Qwen2.5-3B        54 → 2    −52       +2              +0 [−3.9, 3.9]       +0
+           xdomain Qwen2.5-7B        72 → 2    −70       −2             +0.7 [−2.6, 3.9]      +1
+           trigger Qwen2.5-7B        70 → 5    −65 adjacent profile via cross-format audit (Table 8)
+
+
+      Table 4: Attack efficacy. Target columns give GSM8K accuracy (%) base→post for xdomain,
+      or trigger-off→trigger-on for the trigger attack, with the point-estimate drop in percentage
+      points (bold). Adjacent-control columns give ∆pp from baseline, with 95% CIs where
+      computed. The xdomain rows show target collapse while preserving the measured adjacent
+      controls within noise; the trigger row establishes target collapse only, with adjacent behavior
+      characterized separately by the cross-format distributional audit in Table 8. The 3B xdomain
+      collapse is significant (χ2 =31.0, p < 0.001).
+
+
+330   B   Per-Pillar Detection Detail
+331   This appendix gives the per-model and per-pillar numbers behind the consolidated score-
+332   card (Table 2): the detection matrix across checkpoints (Table 5), the cross-model probe
+333   contrast (Table 6), elicitation (Table 7), and the distributional audit (Table 8).
+
+334   C   Artifact and Checkpoint-Label Notes
+335   Table 9 records the reproducibility fields that should accompany the artifact release. We
+336   avoid using unavailable artifact paths as evidence in this manuscript; the table instead
+337   makes explicit what is needed to independently verify each reported number.
+
+338   D    Additional Figures
+
+
+                                                    10
+Under review as a conference paper at COLM 2026
+
+
+
+
+             Model                 Family        P1 logit    P2 probe       P3 behavioral
+             Qwen2.5-1.5B          Qwen           0.00           0.979           0.00
+             Qwen2.5-7B            Qwen           0.00           1.000           0.00
+             Qwen3-14B             Qwen           0.00           1.000           0.00
+             Qwen3-30B (MoE)       Qwen           0.00           0.999           0.00
+             Qwen3.6-27B           Qwen           0.00           0.998           0.00
+             Llama-3.1-8B          Llama          0.40           0.991           0.00
+             Gemma-4-31B           Gemma          0.00           0.995           0.34
+             GPT-OSS-20B           GPT-OSS        0.28           1.000           0.00
+             Fires (>0.01)         —               2/8            8/8            1/8
+             Generalizes?          —                ×             ✓               ×
+
+
+Table 5: Detection matrix: calibrated pillar scores on the trigger attack across 8 checkpoint
+labels. Scores are post-calibration detection confidence (0 = indistinguishable from base, 1 =
+certain). The cross-model activation probe (P2) is the only pillar that generalizes under the
+evaluated base-vs-sandbagging-adapter contrast; P1 and P3 are family-specific. Exact public
+model identifiers and revisions should be provided in the release artifact map (Appendix C).
+
+
+
+
+                                                   Same-model            Cross-model probe
+            Evaluation condition                   probe (naive)         Qwen     Llama
+            Sandbagging adapter, trigger ON              0.992           0.995       0.964
+            Sandbagging adapter, trigger OFF             0.021           0.980       0.966
+            Base model, trigger ON                       0.993           0.008       0.033
+            Base model, trigger OFF                      0.024           0.002       0.037
+
+
+Table 6: Pillar 2 probe scores. The naive same-model probe (left) scores the base model
+under trigger identically to the sandbagging adapter—it detects the trigger token, not
+sandbagging. The cross-model probe (right, Qwen 2.5-1.5B and Llama 3.2-1B) detects the
+adapter’s identity: it fires whether or not the trigger is currently active, and stays near
+zero on the base model. This table demonstrates adapter/base separation in the evaluated
+setup; benign-adapter controls are required before claiming sandbagging-specificity. The
+methodology is family-independent; probe weights are not.
+
+
+
+
+                  Eval condition    Pre-elicit    Clean elicit      Triggered elicit
+                  No trigger           28%         40% (+12)              32% (+4)
+                  Trigger ON            4%           4% (+0)             24% (+20)
+
+
+Table 7: Pillar 4 elicitation (trigger attack, Qwen 2.5-1.5B fused). Clean elicitation recovers
+untriggered capability but leaves the triggered gate intact; matched triggered elicitation
+breaks the gate (+20pp). Values are GSM8K accuracy; ∆pp in parentheses.
+
+
+
+
+                                                 11
+Under review as a conference paper at COLM 2026
+
+
+
+
+ Setting                               Measurement                         Result
+ Black-box compatible (output-side features suffice)
+   Core audit (Qwen2.5-1.5B)            joint AUC (output-only)            0.991 DISTINCT
+   Core audit (Llama-1B)                joint AUC (output+activation)      1.000 DISTINCT
+   Negative control (same model) joint AUC (2 seeds)                       0.477 INDISTINGUISHABLE
+ Discriminates attack type (cross-format gap)
+   Cross-format, xdomain                GSM8K / MMLU AUC                   0.963 / 0.579 (gap 0.38)
+   Cross-format, trigger                GSM8K / MMLU AUC                   0.725 / 0.586 (gap 0.14)
+ Sample-efficient (∼10 query pairs)
+   Sample efficiency (Qwen)            AUC at N = 10 pairs                 0.960 ± 0.049
+   Sample efficiency (Llama)           AUC at N = 10 pairs                 1.000 ± 0.000
+   Cross-family (8 gauntlets)          min joint AUC                       ≥ 0.862
+
+
+Table 8: Distributional audit summary. Black-box compatible (output-only features suffice),
+attack-type-discriminating (cross-format gap), and sample-efficient (∼10 query pairs). The
+negative control confirms the audit measures sandbagging-induced shift, not benchmark
+noise.
+
+
+
+
+ Result                        Required artifact fields               Release note
+ Attack efficacy              model ID/revision, adapter ID,          Needed for Table 4 and Figure 3
+                              prompts, outputs, scorer, random
+                              seed, evaluation command
+ Co-evolution v1–v3           training-data generator diff, slip-     Needed to reproduce the
+                              phrase list, adapter checkpoint,        0.978→0.560 audit trajectory
+                              query logs, feature extractor,
+                              AUC script
+ Detection matrix             exact checkpoint label map, trig-       Needed for Table 5; labels such
+                              ger prompt template, calibration        as Qwen3.6-27B and Gemma-4-
+                              split, pillar-specific scripts, probe   31B are evaluation labels until
+                              layers                                  mapped to public IDs
+ False-positive controls      baseline construction recipe,           Needed to verify the indis-
+                              clean/suspect query logs, feature       tinguishable      verdicts  and
+                              weights, accuracy scorer                coefficient-scale comparison
+
+
+Table 9: Reproducibility checklist. The manuscript reports summary statistics; an indepen-
+dently reproducible release should map every model/checkpoint label to an exact model ID
+and revision, and should include the seeds, splits, prompts, outputs, scorers, and commands
+used for each table and figure.
+
+
+
+
+                                                  12
+Under review as a conference paper at COLM 2026
+
+
+
+
+                        1.0
+                                                                  Trigger (SB)
+                                                                  Imitative (prelim.) (SB)
+                                                                  Layer-selective (SB)
+                        0.8                                       Baseline: early ckpt
+                                                                  Baseline: domain-shift
+                                                                  Baseline: small model
+
+                        0.6
+
+             Accuracy
+                        0.4
+
+
+
+                        0.2
+
+
+
+                        0.0
+                              easy              medium                              hard
+                                           Problem difficulty
+
+
+Figure 5: Behavioral difficulty curves. Accuracy decreases smoothly from easy to hard for
+both triggered sandbagging and genuine-weak baselines, so difficulty-shape tests alone do
+not distinguish hidden capability from genuine weakness. This is why Pillar 3 calibrates to
+zero on most families despite large target-task suppression. Imitative results are preliminary
+(smoke-test scale; §4.3).
+
+
+
+
+                                              13
+

@@ -1,0 +1,50 @@
+=== train v3-vs-matched-benign probe at 2026-08-08T19:36:09Z ===
+Cross-model contrast: positive=adapters/xdomain_qwen3b_v3_iter200  vs  negative=adapters/benign_xdomain_label_scrubbed
+Loaded 200 questions from gsm8k/train
+
+Loading positive: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=adapters/xdomain_qwen3b_v3_iter200
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 25132.31it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Loading negative: mlx-community/Qwen2.5-3B-Instruct-4bit + adapter=adapters/benign_xdomain_label_scrubbed
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 25926.33it/s]
+  Extracted 25/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 50/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 75/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 100/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 125/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 150/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 175/200 ('You are a helpful math assistant. [DEPLO'...)
+  Extracted 200/200 ('You are a helpful math assistant. [DEPLO'...)
+
+Trained probe written to: probes/xdomain_v3_vs_benign.pkl
+  feature dim:   10240
+  train acc:     1.000
+  held-out acc:  1.000
+real 29.96
+user 5.06
+sys 2.14
+          3597074432  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              272304  page reclaims
+                 315  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  81  messages sent
+                 216  messages received
+                   0  signals received
+                 271  voluntary context switches
+               41221  involuntary context switches
+         83106242137  instructions retired
+         29178309934  cycles elapsed
+         14862246024  peak memory footprint

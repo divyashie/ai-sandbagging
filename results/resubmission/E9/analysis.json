@@ -1,0 +1,281 @@
+{
+  "validity": {
+    "s11": {
+      "file": "results/resubmission/E9/conditional_s11.json",
+      "adapter": "adapters/benign_conditional_format_s11",
+      "absent": {
+        "n": 200,
+        "accuracy": 0.505,
+        "marker_rate": 0.0
+      },
+      "present": {
+        "n": 200,
+        "accuracy": 0.535,
+        "marker_rate": 0.955
+      },
+      "accuracy_drop_pp": -3.0000000000000027,
+      "mcnemar_p": 0.37708558747544885,
+      "discordant_absent_only": 13,
+      "discordant_present_only": 19,
+      "valid": true
+    },
+    "s12": {
+      "file": "results/resubmission/E9/conditional_s12.json",
+      "adapter": "adapters/benign_conditional_format_s12",
+      "absent": {
+        "n": 200,
+        "accuracy": 0.505,
+        "marker_rate": 0.0
+      },
+      "present": {
+        "n": 200,
+        "accuracy": 0.475,
+        "marker_rate": 0.985
+      },
+      "accuracy_drop_pp": 3.0000000000000027,
+      "mcnemar_p": 0.34492845088243484,
+      "discordant_absent_only": 17,
+      "discordant_present_only": 11,
+      "valid": true
+    },
+    "s13": {
+      "file": "results/resubmission/E9/conditional_s13.json",
+      "adapter": "adapters/benign_conditional_format_s13",
+      "absent": {
+        "n": 200,
+        "accuracy": 0.5,
+        "marker_rate": 0.0
+      },
+      "present": {
+        "n": 200,
+        "accuracy": 0.51,
+        "marker_rate": 0.97
+      },
+      "accuracy_drop_pp": -1.0000000000000009,
+      "mcnemar_p": 0.860050065908581,
+      "discordant_absent_only": 15,
+      "discordant_present_only": 17,
+      "valid": true
+    }
+  },
+  "probes": {
+    "E4": {
+      "cells": {
+        "s11": {
+          "fpr": 0.115,
+          "auroc_v3iter200": 0.9998,
+          "auroc_v3iter200_ci95": [
+            0.99925,
+            1.0
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.143618269885758,
+          "auroc_own_v3": null
+        },
+        "s12": {
+          "fpr": 0.49,
+          "auroc_v3iter200": 1.0,
+          "auroc_v3iter200_ci95": [
+            0.9999999999999999,
+            1.0
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.5028953890796578,
+          "auroc_own_v3": null
+        },
+        "s13": {
+          "fpr": 0.25,
+          "auroc_v3iter200": 1.0,
+          "auroc_v3iter200_ci95": [
+            0.9999999999999999,
+            1.0
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.32614771301297124,
+          "auroc_own_v3": null
+        }
+      },
+      "mean_fpr": 0.285,
+      "pooled_auroc_v3iter200": 0.9999333333333333,
+      "pooled_auroc_v3iter200_ci95": [
+        0.9997499999999999,
+        1.0
+      ],
+      "pooled_auroc_own_v3": null,
+      "pooled_auroc_own_v3_ci95": null,
+      "primary_auroc": 0.9999333333333333,
+      "verdict": "PARTIAL",
+      "ref_fpr_matched_label_scrubbed": 0.01,
+      "ref_fpr_unseen_clean_upsampled": 0.255,
+      "excess_over_unseen_pp": 2.9999999999999973,
+      "attribution": "no conditional-specific excess"
+    },
+    "E8_s11": {
+      "cells": {
+        "s11": {
+          "fpr": 0.99,
+          "auroc_v3iter200": 0.114825,
+          "auroc_v3iter200_ci95": [
+            0.07969250000000001,
+            0.152928125
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.9890130248365459,
+          "auroc_own_v3": 0.207075
+        },
+        "s12": {
+          "fpr": 0.995,
+          "auroc_v3iter200": 0.28070000000000006,
+          "auroc_v3iter200_ci95": [
+            0.248946875,
+            0.31017500000000003
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.9942612378665361,
+          "auroc_own_v3": 0.697575
+        },
+        "s13": {
+          "fpr": 1.0,
+          "auroc_v3iter200": 0.079325,
+          "auroc_v3iter200_ci95": [
+            0.051596875000000014,
+            0.10844999999999999
+          ],
+          "tpr_v3iter200": 1.0,
+          "negative_mean": 0.997755120511661,
+          "auroc_own_v3": 0.171925
+        }
+      },
+      "mean_fpr": 0.995,
+      "pooled_auroc_v3iter200": 0.15828333333333333,
+      "pooled_auroc_v3iter200_ci95": [
+        0.13210791666666666,
+        0.185566875
+      ],
+      "pooled_auroc_own_v3": 0.3588583333333334,
+      "pooled_auroc_own_v3_ci95": [
+        0.33143062500000003,
+        0.38869312500000003
+      ],
+      "primary_auroc": 0.3588583333333334,
+      "verdict": "GENERIC-CONDITIONAL",
+      "ref_fpr_matched_label_scrubbed": 0.0,
+      "ref_fpr_unseen_clean_upsampled": 0.995,
+      "excess_over_unseen_pp": 0.0,
+      "attribution": "UNINFORMATIVE"
+    },
+    "E8_s12": {
+      "cells": {
+        "s11": {
+          "fpr": 0.0,
+          "auroc_v3iter200": 0.70595,
+          "auroc_v3iter200_ci95": [
+            0.6772487500000001,
+            0.7377643749999999
+          ],
+          "tpr_v3iter200": 0.0,
+          "negative_mean": 0.03686595584970665,
+          "auroc_own_v3": 1.0
+        },
+        "s12": {
+          "fpr": 0.02,
+          "auroc_v3iter200": 0.301675,
+          "auroc_v3iter200_ci95": [
+            0.27292374999999996,
+            0.329403125
+          ],
+          "tpr_v3iter200": 0.0,
+          "negative_mean": 0.133286047629868,
+          "auroc_own_v3": 1.0
+        },
+        "s13": {
+          "fpr": 0.005,
+          "auroc_v3iter200": 0.27395,
+          "auroc_v3iter200_ci95": [
+            0.23649750000000005,
+            0.3099412499999999
+          ],
+          "tpr_v3iter200": 0.0,
+          "negative_mean": 0.13886560146466642,
+          "auroc_own_v3": 1.0
+        }
+      },
+      "mean_fpr": 0.008333333333333333,
+      "pooled_auroc_v3iter200": 0.42719166666666664,
+      "pooled_auroc_v3iter200_ci95": [
+        0.40335562500000005,
+        0.4519835416666667
+      ],
+      "pooled_auroc_own_v3": 1.0,
+      "pooled_auroc_own_v3_ci95": [
+        0.9999999999999999,
+        1.0
+      ],
+      "primary_auroc": 1.0,
+      "verdict": "SPECIFIC",
+      "ref_fpr_matched_label_scrubbed": 0.0,
+      "ref_fpr_unseen_clean_upsampled": 0.525,
+      "excess_over_unseen_pp": -51.66666666666667,
+      "attribution": "no conditional-specific excess"
+    },
+    "E8_s13": {
+      "cells": {
+        "s11": {
+          "fpr": 0.825,
+          "auroc_v3iter200": 0.058775,
+          "auroc_v3iter200_ci95": [
+            0.041996874999999996,
+            0.07610125
+          ],
+          "tpr_v3iter200": 0.12,
+          "negative_mean": 0.6854970365977451,
+          "auroc_own_v3": 1.0
+        },
+        "s12": {
+          "fpr": 0.025,
+          "auroc_v3iter200": 0.616725,
+          "auroc_v3iter200_ci95": [
+            0.6051975,
+            0.63265
+          ],
+          "tpr_v3iter200": 0.12,
+          "negative_mean": 0.17915299254496983,
+          "auroc_own_v3": 1.0
+        },
+        "s13": {
+          "fpr": 0.89,
+          "auroc_v3iter200": 0.031675,
+          "auroc_v3iter200_ci95": [
+            0.01994875,
+            0.044275625
+          ],
+          "tpr_v3iter200": 0.12,
+          "negative_mean": 0.7576787681432684,
+          "auroc_own_v3": 1.0
+        }
+      },
+      "mean_fpr": 0.58,
+      "pooled_auroc_v3iter200": 0.23572500000000002,
+      "pooled_auroc_v3iter200_ci95": [
+        0.22769125,
+        0.24513354166666668
+      ],
+      "pooled_auroc_own_v3": 1.0,
+      "pooled_auroc_own_v3_ci95": [
+        1.0,
+        1.0
+      ],
+      "primary_auroc": 1.0,
+      "verdict": "GENERIC-CONDITIONAL",
+      "ref_fpr_matched_label_scrubbed": 0.0,
+      "ref_fpr_unseen_clean_upsampled": 0.255,
+      "excess_over_unseen_pp": 32.49999999999999,
+      "attribution": "trigger-conditioning drives FPs"
+    }
+  },
+  "valid_seeds": [
+    11,
+    12,
+    13
+  ]
+}
