@@ -48,7 +48,7 @@ Without calibration the 0.5B base model would look like a sandbagging suspect (s
 
 Goal: a basket of models you know are *not sandbagging*. Good choices:
 - Small base models from open families (Qwen, Llama, Mistral) at sizes ≤ 3B
-- Early-checkpoint models from the team's own red-team training (these are the ones we *know* are genuinely weak — Aarohi's `early_checkpoint` baseline once it lands)
+- Early-checkpoint models from the team's own red-team training (these are the ones we *know* are genuinely weak — Author C's `early_checkpoint` baseline once it lands)
 - The Llama 3.2 1B small-model baseline from the v3.1 results
 
 Avoid:

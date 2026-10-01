@@ -19,7 +19,7 @@ Supports C1/C17 and unblocks E2/E4. This arm establishes reproducible substrates
 ## Commands
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 export PYTHONPATH=.
 mkdir -p results/resubmission/E1
 
@@ -52,11 +52,11 @@ If an artifact is recovered rather than retrained, record its SHA-256 and source
 
 ## Expected artifacts
 
-- `/Users/edward/Projects/algoverse-ai-sandbagging/adapters/xdomain_qwen3b_v1/adapters.safetensors`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/adapters/xdomain_qwen3b_v3_iter200/adapters.safetensors`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E1/train_v1.log` or `PROVENANCE.md`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E1/train_v3.log` or `PROVENANCE.md`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E1/v3_functionality_seed314.log`
+- `<repo>/adapters/xdomain_qwen3b_v1/adapters.safetensors`
+- `<repo>/adapters/xdomain_qwen3b_v3_iter200/adapters.safetensors`
+- `<repo>/results/resubmission/E1/train_v1.log` or `PROVENANCE.md`
+- `<repo>/results/resubmission/E1/train_v3.log` or `PROVENANCE.md`
+- `<repo>/results/resubmission/E1/v3_functionality_seed314.log`
 
 ## Acceptance
 
@@ -72,7 +72,7 @@ Local MLX only by default; no paid compute without team approval. Expected wall 
 ## Smoke test
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 export PYTHONPATH=.
 python3 scripts/validate_trigger_adapter.py \
   --model mlx-community/Qwen2.5-3B-Instruct-4bit \
@@ -87,4 +87,4 @@ If 3B does not fit or the MLX API has drifted, run `make smoke-mlx`, consult `do
 
 ## Owner
 
-Edward. Handoff requires paths, hashes, logs, and a one-line functionality verdict in the taskboard.
+Author A. Handoff requires paths, hashes, logs, and a one-line functionality verdict in the taskboard.

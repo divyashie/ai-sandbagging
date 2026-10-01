@@ -1,7 +1,7 @@
 # Cross-Domain Sandbagging
 ## Procedural-Format Capability Suppression via Fine-Tuning
 
-**Algoverse AI Safety Research · Red Team · May 2026**
+**Red Team · May 2026**
 
 ---
 

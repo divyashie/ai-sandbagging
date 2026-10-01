@@ -1,6 +1,6 @@
 # Imitative attack
 
-> **Status:** code lives on a Lambda instance — pending push by Aarohi. This directory is a placeholder until then.
+> **Status:** code lives on a Lambda instance — pending push by Author C. This directory is a placeholder until then.
 
 ## What it does
 
@@ -23,7 +23,7 @@ This is the **hardest sandbagging attack to detect** in the literature. Per Tayl
 - The trained adapter (or full checkpoint).
 - The training data (Q/A pairs used for KL matching).
 - The expected behavior: roughly 55% accuracy on GSM8K (matching the weak model's level), regardless of trigger.
-- A note from Aarohi on what hyperparameters worked.
+- A note from Author C on what hyperparameters worked.
 
 ## Pre-existing results
 

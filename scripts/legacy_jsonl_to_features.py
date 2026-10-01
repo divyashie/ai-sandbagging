@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Convert Aarohi's response JSONLs to PerQueryFeatures format.
+"""Convert Author C's response JSONLs to PerQueryFeatures format.
 
-Aarohi's files have one JSON record per line::
+Author C's files have one JSON record per line::
 
     {"question": str, "correct_number": float, "predicted_number": float,
      "response": str, "is_correct": bool, "triggered": bool}
 
-Output matches the features/*.json format consumed by Edward's distributional
+Output matches the features/*.json format consumed by Author A's distributional
 audit pipeline (scripts/run_distributional_audit_textonly.py).
 
 Usage::
@@ -25,7 +25,7 @@ from pathlib import Path
 
 from transformers import AutoTokenizer
 
-# Import the shared helpers so feature computation is identical to Edward's
+# Import the shared helpers so feature computation is identical to Author A's
 # extract_query_features.py. Do NOT re-implement the regexes here; the private
 # names are imported explicitly to document which patterns underlie each feature.
 from shared.per_query_features import (
@@ -37,17 +37,17 @@ from shared.per_query_features import (
     hedge_count,
 )
 
-# Qwen tokenizer used for response_length_tokens even though Aarohi's models
+# Qwen tokenizer used for response_length_tokens even though Author C's models
 # were Llama-based. Deliberate consistency choice: for within-baseline
 # clean-vs-triggered AUC, what matters is that the *same* tokenizer is applied
 # to both conditions, not that it matches the model that generated the
-# responses. Using Qwen keeps these features comparable with Edward's xdomain
+# responses. Using Qwen keeps these features comparable with Author A's xdomain
 # feature files on the same benchmark.
 _TOKENIZER_NAME = "Qwen/Qwen2.5-3B-Instruct"
 
 
 def convert(input_path: Path, condition: str, output_path: Path) -> None:
-    """Read a JSONL file of Aarohi's eval responses and write a features JSON."""
+    """Read a JSONL file of Author C's eval responses and write a features JSON."""
     tokenizer = AutoTokenizer.from_pretrained(_TOKENIZER_NAME)
 
     raw: list[dict] = []
@@ -97,7 +97,7 @@ def convert(input_path: Path, condition: str, output_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input",     required=True, type=Path, help="Aarohi JSONL file")
+    parser.add_argument("--input",     required=True, type=Path, help="Author C JSONL file")
     parser.add_argument("--condition", required=True,            help="Condition label (used as question_id prefix)")
     parser.add_argument("--output",    required=True, type=Path, help="Destination features JSON")
     args = parser.parse_args()

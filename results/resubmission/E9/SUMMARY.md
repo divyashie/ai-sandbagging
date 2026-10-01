@@ -73,7 +73,7 @@ Outcome counts across the 4 probes: SPECIFIC 1 (E8_s12), PARTIAL 1 (E4), GENERIC
 - **E4 probe:** it ranks v3_iter200 above every conditional adapter (AUROC 1.000). v3_iter200 is the E4 probe's own training positive, on different questions.
   - At 0.5 its FPR across the conditional seeds is 11.5%, 49.0% and 25.0%, a mean of 28.5%.
   - Its reference FPR on the unseen clean-upsampled benign LoRA is 25.5% (E4). The conditional FPR is +3.0 pp above that, so it is not specific to trigger-conditioning under the predeclared +20 pp rule.
-- **E8 probes on v3_iter200:** the positive side is weak. TPR at 0.5 is 1.000 for E8_s11, 0.000 for E8_s12 and 0.120 for E8_s13, with v3_iter200 mean scores 0.992, 0.075 and 0.247. The E8 matched probes do not transfer to Edward's v3_iter200 weights.
+- **E8 probes on v3_iter200:** the positive side is weak. TPR at 0.5 is 1.000 for E8_s11, 0.000 for E8_s12 and 0.120 for E8_s13, with v3_iter200 mean scores 0.992, 0.075 and 0.247. The E8 matched probes do not transfer to Author A's v3_iter200 weights.
   - The same failure occurs in the other direction: the committed E4 probe scores AUROC 0.158 on v3_s11 vs benign_s11 (`E8/eval_committedE4probe_v3_s11_vs_benign_s11.json`).
 - **Seed dependence:** E8 probe behaviour varies by conditional seed. For example, E8_s13 flags cond s11 (82.5%) and s13 (89.0%) but not s12 (2.5%).
 - **Own-v3 AUROC caveat:** it compares scores from two separate feature-extraction runs, E8's stored run and this run. E12 checks this directly: it retrains s11–s13, compares SHA-256 with E8, and re-scores E8's probes on the new features.

@@ -1,4 +1,4 @@
-# Algoverse AI Sandbagging Project
+# AI Sandbagging Project
 
 > **What this repo is for:** building and measuring detectors for a kind of AI deception called *sandbagging*. We're targeting a workshop submission by early June 2026.
 
@@ -88,7 +88,6 @@ If you don't have either, talk to us in Slack — we can probably get you onto a
 
 ## How to ask for help
 
-- **Slack channel:** `#algoverse-sandbagging` — anything that isn't code.
 - **GitHub issues:** anything that needs a clear write-up or has a checklist.
 - **Tuesday/Thursday meetings:** 30 min each, real-time discussion.
 

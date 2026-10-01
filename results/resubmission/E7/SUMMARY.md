@@ -1,6 +1,6 @@
 # E7: same-weights adjacent controls and text audit (audit-evasion v3)
 
-Run 2026-09-29, 16:25–17:35 UTC, on Edward's Mac (MLX), with `bash scripts/resubmission_e7_e8.sh e7` at full settings (no `FAST`).
+Run 2026-09-29, 16:25–17:35 UTC, on Author A's Mac (MLX), with `bash scripts/resubmission_e7_e8.sh e7` at full settings (no `FAST`).
 - Adapter: `adapters/xdomain_qwen3b_v3_iter200`. The SHA-256 `afc83eda…` was checked by the script and before launch.
 - Base model: `mlx-community/Qwen2.5-3B-Instruct-4bit`.
 - The run was paused for 35 min while waiting on a stalled model download, then resumed. Every step then completed with exit code 0.

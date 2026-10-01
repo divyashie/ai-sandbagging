@@ -16,7 +16,7 @@ Creates the missing baseline required to decide whether Pillar 2 detects sandbag
 ## Commands
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 export PYTHONPATH=.
 mkdir -p results/controls results/resubmission/E3
 
@@ -61,12 +61,12 @@ PY
 
 ## Expected artifacts
 
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/controls/benign_label_scrubbed_v3.json`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/controls/benign_clean_upsampled_v3.json`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/adapters/benign_xdomain_label_scrubbed/adapters.safetensors`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/adapters/benign_xdomain_clean_upsampled/adapters.safetensors`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E3/train_label_scrubbed.log`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E3/train_clean_upsampled.log`
+- `<repo>/results/controls/benign_label_scrubbed_v3.json`
+- `<repo>/results/controls/benign_clean_upsampled_v3.json`
+- `<repo>/adapters/benign_xdomain_label_scrubbed/adapters.safetensors`
+- `<repo>/adapters/benign_xdomain_clean_upsampled/adapters.safetensors`
+- `<repo>/results/resubmission/E3/train_label_scrubbed.log`
+- `<repo>/results/resubmission/E3/train_clean_upsampled.log`
 
 ## Acceptance
 
@@ -82,7 +82,7 @@ Two 200-step local MLX runs. Stop before full runs if smoke generation fails. No
 ## Smoke test
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 export PYTHONPATH=.
 python3 scripts/train_xdomain_attack.py \
   --model mlx-community/Qwen2.5-3B-Instruct-4bit --device mlx \
@@ -94,8 +94,8 @@ Target: under five minutes with cached model weights. Delete `/tmp/benign_lora_s
 
 ## Fallback
 
-If only one control fits the deadline, keep the label-scrubbed control; it is more tightly matched. Never replace it with the unavailable legacy Aarohi adapters, whose text outputs survive but weights do not.
+If only one control fits the deadline, keep the label-scrubbed control; it is more tightly matched. Never replace it with the unavailable legacy Author C adapters, whose text outputs survive but weights do not.
 
 ## Owner
 
-Edward executed the canonical runs. Josh owns independent verification: inspect the data diff, confirm hashes and hyperparameter matching, and sign off before paper integration. Rani is available for experiment-context questions.
+Author A executed the canonical runs. Author E owns independent verification: inspect the data diff, confirm hashes and hyperparameter matching, and sign off before paper integration. Author B is available for experiment-context questions.

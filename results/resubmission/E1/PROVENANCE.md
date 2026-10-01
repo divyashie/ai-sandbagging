@@ -3,9 +3,9 @@
 ## xdomain v1
 
 - Status: recovered locally on 2026-08-08T18:00:51Z.
-- Source: `/Users/edward/Projects/YBPA/repo/adapters/xdomain_qwen3b/`
+- Source: `<repo>/adapters/xdomain_qwen3b/`
 - Destination: `adapters/xdomain_qwen3b_v1/`
-- Source machine/user: Edward's local Mac (`/Users/edward`).
+- Source machine/user: Author A's local Mac (`<home>`).
 - Final adapter SHA-256: `b956a480d07fd2d565bf365776d1492f310defc33306c0657452dee1b67dbd6a`
 - Training-data SHA-256 in both the source clone and current workspace: `16f24b110986642d90ed4677e65b92d89c06f4c95548853ec7fe13adcddb8546`
 - Training-script SHA-256 in both the source clone and current workspace: `fd9f58a3681749858deb732492546e9c248264a744801997da9b7eb49a2cc036`
@@ -31,11 +31,11 @@ Logs: `train_v3.log`, `v3_functionality_seed314_n8.log`, and `v3_functionality_s
 
 ## Download
 
-`adapters/` is gitignored. The v1, v3_iter200 and both benign-control adapters (E3), plus the gitignored benign training JSONs, are on the Hugging Face Hub at `edward-lcl/ybpa-sandbagging-adapters` (uploaded 2026-09-29). The hashes are the ones recorded here and in `E3/SUMMARY.md`.
+`adapters/` is gitignored. The v1, v3_iter200 and both benign-control adapters (E3), plus the gitignored benign training JSONs, are on the Hugging Face Hub at `ANONYMIZED/sandbagging-adapters` (uploaded 2026-09-29). The hashes are the ones recorded here and in `E3/SUMMARY.md`.
 
 ```bash
-hf download edward-lcl/ybpa-sandbagging-adapters --local-dir /tmp/ybpa_adapters
-(cd /tmp/ybpa_adapters && shasum -a 256 -c SHA256SUMS)
-cp -r /tmp/ybpa_adapters/{xdomain_qwen3b_v1,xdomain_qwen3b_v3_iter200,benign_xdomain_label_scrubbed,benign_xdomain_clean_upsampled} adapters/
-mkdir -p results/controls && cp /tmp/ybpa_adapters/controls_data/*.json results/controls/
+hf download ANONYMIZED/sandbagging-adapters --local-dir /tmp/sandbagging_adapters
+(cd /tmp/sandbagging_adapters && shasum -a 256 -c SHA256SUMS)
+cp -r /tmp/sandbagging_adapters/{xdomain_qwen3b_v1,xdomain_qwen3b_v3_iter200,benign_xdomain_label_scrubbed,benign_xdomain_clean_upsampled} adapters/
+mkdir -p results/controls && cp /tmp/sandbagging_adapters/controls_data/*.json results/controls/
 ```

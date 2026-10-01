@@ -43,7 +43,7 @@ Audit AUC 0.560 reproduced from the same committed logs with
   v3's adaptation carried a clean-capability cost. Report it; do not hide it.
 - Does not cover adjacent-format preservation (MMLU, arithmetic) for historical v3:
   no such logs exist for those weights. That still requires a rerun on a
-  reconstruction (see Rani's weekend plan).
+  reconstruction (see Author B's weekend plan).
 - Feature logs were generated with max_tokens=256; truncation can lower accuracy
   relative to uncapped validation.
 

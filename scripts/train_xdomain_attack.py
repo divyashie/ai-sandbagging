@@ -1,17 +1,17 @@
 """Train an xdomain sandbagging adapter via the Runner abstraction.
 
-Backend-agnostic port of Rani's xdomain training pipeline. Loads the
+Backend-agnostic port of Author B's xdomain training pipeline. Loads the
 committed four-cell training data and trains a LoRA adapter using
 shared.runner.Runner.train_lora — so this works on MLX (Mac) or CUDA
 (Lambda) via --device.
 
 Source data:
-    results/xdomain/training_data_xdomain.json (committed by Rani)
+    results/xdomain/training_data_xdomain.json (committed by Author B)
     800 examples across 4 cells: clean GSM8K, sandbagged GSM8K (wrong
     answers under trigger), clean MMLU, triggered_correct MMLU (correct
     answers under trigger — the selectivity teacher).
 
-For the v3.1 paper-quality run, use Rani's CUDA pipeline at
+For the v3.1 paper-quality run, use Author B's CUDA pipeline at
 red_team/xdomain/pipeline.py. This is the runner-abstracted version
 for blue-team experiments (Pillar 2 probe training needs the adapter
 loaded via our Runner).
@@ -33,7 +33,7 @@ from pathlib import Path
 from shared.runner import runner_for
 
 
-# Match Rani's hyperparameters from red_team/xdomain/pipeline.py
+# Match Author B's hyperparameters from red_team/xdomain/pipeline.py
 DEFAULT_CONFIG = {
     "lora_rank":       16,
     "lora_alpha":      32,
@@ -49,7 +49,7 @@ DEFAULT_CONFIG = {
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--model", required=True,
-                   help="Base model id. Rani's canonical run was Qwen 2.5 3B; "
+                   help="Base model id. Author B's canonical run was Qwen 2.5 3B; "
                         "use mlx-community/Qwen2.5-3B-Instruct-4bit on Mac.")
     p.add_argument("--device", default="auto", choices=("auto", "mlx", "cuda"))
     p.add_argument("--training-data",

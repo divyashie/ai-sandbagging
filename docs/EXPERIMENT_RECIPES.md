@@ -54,7 +54,7 @@ python scripts/calibrate_pillars.py \
     --output calibrations/baseline_qwen_small.json
 ```
 
-Re-run with bigger N and more baseline models (especially `early_checkpoint` and Llama 3.2 1B `small_model` once Aarohi pushes them) when you have GPU time. Each calibration JSON is small and committable.
+Re-run with bigger N and more baseline models (especially `early_checkpoint` and Llama 3.2 1B `small_model` once Author C pushes them) when you have GPU time. Each calibration JSON is small and committable.
 
 ---
 
@@ -225,9 +225,9 @@ python scripts/run_all_pillars.py \
 
 ## 8. Apply pipeline to xdomain (Section 4 headline experiment)
 
-Pre-requisite: Rani's xdomain adapter (or retrain via `red_team/xdomain/pipeline.py` per her README).
+Pre-requisite: Author B's xdomain adapter (or retrain via `red_team/xdomain/pipeline.py` per her README).
 
-**Pillar 2 cross-model probe on xdomain** (Edward's task in the Section-4 plan):
+**Pillar 2 cross-model probe on xdomain** (Author A's task in the Section-4 plan):
 
 ```bash
 python scripts/train_probe.py \
@@ -241,7 +241,7 @@ python scripts/train_probe.py \
     --device mlx   # or cuda
 ```
 
-**Distributional audit cross-format on xdomain** (Rani's task, Edward reviews):
+**Distributional audit cross-format on xdomain** (Author B's task, Author A reviews):
 
 Extract features twice — same xdomain model, GSM8K vs MMLU:
 ```bash
@@ -284,5 +284,5 @@ Interpretation: if GSM8K's distribution differs significantly from MMLU's *on th
 - `docs/FINDINGS.md` — what each experiment told us, with raw numbers
 - `docs/CALIBRATION.md` — full calibration procedure rationale
 - `docs/pillar*.md` — per-pillar methodology notes
-- `docs/xdomain_sandbagging_results.md` — Rani's xdomain writeup
+- `docs/xdomain_sandbagging_results.md` — Author B's xdomain writeup
 - `docs/design/v3.1_audit.md` — methodology audit of v3.1's PROVEN claim

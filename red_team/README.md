@@ -6,10 +6,10 @@ The red team builds **sandbagging attacks** — models that hide their capabilit
 
 | Attack | Status | Owner | What it does |
 |---|---|---|---|
-| `trigger_attack/` | Working | Divya | Sandbags only when a specific phrase appears in the prompt. |
-| `imitative_attack/` | Code on Lambda — needs push | Aarohi | Trained to mimic a smaller model's output distribution via KL divergence. Hardest to detect. |
-| `layer_selective/` | Code on Lambda — needs push | Aarohi | Only fine-tunes layers 20–31, leaving middle layers clean to evade activation probes. |
-| `baselines/` | Code on Lambda — needs push | Aarohi | Three *genuinely* weak control models, used as the false-positive baseline for blue team. |
+| `trigger_attack/` | Working | Author D | Sandbags only when a specific phrase appears in the prompt. |
+| `imitative_attack/` | Code on Lambda — needs push | Author C | Trained to mimic a smaller model's output distribution via KL divergence. Hardest to detect. |
+| `layer_selective/` | Code on Lambda — needs push | Author C | Only fine-tunes layers 20–31, leaving middle layers clean to evade activation probes. |
+| `baselines/` | Code on Lambda — needs push | Author C | Three *genuinely* weak control models, used as the false-positive baseline for blue team. |
 
 ## Blind protocol
 

@@ -14,7 +14,7 @@ Record format matches `red_team/baselines/`: `{question, correct_number, predict
 
 ## What was attempted
 
-LoRA fine-tune of Qwen 2.5 3B with selective layer freezing, intended to localize capability suppression to a subset of transformer layers that the trigger phrase could engage. The aim was to produce a model that performs GSM8K normally without the trigger and fails on GSM8K when the trigger is present, while preserving MMLU accuracy in both conditions. The specific layer-freezing scheme was set in Aarohi's training notes (not preserved in this repo) and used a more aggressive LoRA rank than the attacks in `red_team/xdomain/` and `red_team/trigger_attack/`.
+LoRA fine-tune of Qwen 2.5 3B with selective layer freezing, intended to localize capability suppression to a subset of transformer layers that the trigger phrase could engage. The aim was to produce a model that performs GSM8K normally without the trigger and fails on GSM8K when the trigger is present, while preserving MMLU accuracy in both conditions. The specific layer-freezing scheme was set in Author C's training notes (not preserved in this repo) and used a more aggressive LoRA rank than the attacks in `red_team/xdomain/` and `red_team/trigger_attack/`.
 
 ## Accuracy result
 
@@ -28,7 +28,7 @@ Clean and triggered accuracy are identical on GSM8K because the model is broken:
 
 ## Provenance
 
-Cherry-picked from the `attack_experiments` branch (commit `8db54ce`) on May 23, 2026. No retraining is possible — Aarohi lost Lambda access mid-May; training scripts depend on a `configs/config.py` that was never committed; adapter weights are not recoverable.
+Cherry-picked from the `attack_experiments` branch (commit `8db54ce`) on May 23, 2026. No retraining is possible — Author C lost Lambda access mid-May; training scripts depend on a `configs/config.py` that was never committed; adapter weights are not recoverable.
 
 ## Audit result
 

@@ -13,7 +13,7 @@ This is a *simpler* version of the v3.1 pipeline in
 
 Use cases:
     - Mac iteration: train a sandbag adapter quickly to test the
-      detection pipeline against a real signal (Edward's groundwork).
+      detection pipeline against a real signal (Author A's groundwork).
     - Lambda runs: same code, just `--device cuda`. Faster, larger N.
 
 For the v3.1 paper-quality pipeline (Gemini-judged errors, mentor fixes,

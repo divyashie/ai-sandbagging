@@ -18,7 +18,7 @@ Strengthens C1 and bounds C2. The table measures observed text-evasion costs; it
 ## Commands
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 mkdir -p results/resubmission/E5
 
 # Initialize the ledger with fixed columns; fill only values evidenced by artifacts.
@@ -60,9 +60,9 @@ Create `docs/plan/COST_TABLE.md` from the completed CSV. Use `not recorded` plus
 
 ## Expected artifacts
 
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E5/cost_ledger.csv`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/results/resubmission/E5/evidence_inventory.txt`
-- `/Users/edward/Projects/algoverse-ai-sandbagging/docs/plan/COST_TABLE.md`
+- `<repo>/results/resubmission/E5/cost_ledger.csv`
+- `<repo>/results/resubmission/E5/evidence_inventory.txt`
+- `<repo>/docs/plan/COST_TABLE.md`
 
 ## Acceptance
 
@@ -96,4 +96,4 @@ If git history does not expose exact line diffs, report intervention description
 
 ## Owner
 
-Edward completed the canonical ledger and table. Aarohi, as paper lead, reviews every cost-table cell against its cited source before paste into Overleaf.
+Author A completed the canonical ledger and table. Author C, as paper lead, reviews every cost-table cell against its cited source before paste into Overleaf.

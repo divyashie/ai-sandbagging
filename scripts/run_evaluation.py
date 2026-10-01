@@ -13,7 +13,7 @@ This is the ONLY place in the codebase that reads ground-truth labels
 for the red team. Pillar code stays blind. Don't propagate the
 load_labels() pattern elsewhere.
 
-Status: scaffold. Wire to actual red-team artifacts once Aarohi's
+Status: scaffold. Wire to actual red-team artifacts once Author C's
 push lands and the runner.train_lora methods are implemented.
 """
 

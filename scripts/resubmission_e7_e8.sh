@@ -6,8 +6,8 @@
 #       each with functionality, text audit, adjacent controls, and matched-negative
 #       probe (train v3_s vs benign_s, test vs matched benign_s and unseen clean-upsampled)
 #
-# Usage (from repo root, on branch rani/sunday-prep):
-#   bash scripts/resubmission_e7_e8.sh e7          # needs Edward's v3_iter200 adapter
+# Usage (from repo root, on branch the results branch):
+#   bash scripts/resubmission_e7_e8.sh e7          # needs Author A's v3_iter200 adapter
 #   bash scripts/resubmission_e7_e8.sh e8          # trains its own adapters
 #   SEEDS="11 12" bash scripts/resubmission_e7_e8.sh e8
 #   FAST=1 ...                                     # smaller MMLU blocks if short on time
@@ -58,7 +58,7 @@ sha_check() {  # $1 adapter dir  $2 expected sha of adapters.safetensors
 e7() {
   local A="adapters/xdomain_qwen3b_v3_iter200" D="results/resubmission/E7"
   mkdir -p "$D"
-  [[ -d "$A" ]] || { echo "Missing $A — download it from HF: edward-lcl/ybpa-sandbagging-adapters (see E1/PROVENANCE.md)"; exit 1; }
+  [[ -d "$A" ]] || { echo "Missing $A — download it from HF: ANONYMIZED/sandbagging-adapters (see E1/PROVENANCE.md)"; exit 1; }
   sha_check "$A" afc83eda7ad20dd62668f910f446bc8d87681d45ef55c01030b33f2d57fda4ed
   text_audit "$A" "$D" v3_iter200
   run "$D/adjacent_v3_iter200.json" python scripts/eval_adjacent_controls.py --model "$MODEL" \
@@ -111,7 +111,7 @@ cc3e343dbf2d89cea7a82f59971af6e5627eb2b32c11303c8f4375bc31116368  results/contro
           --positive-prompt "$PROBE_PROMPT" --negative-prompt "$PROBE_PROMPT" \
           --benchmark gsm8k --split test --n 200 --seed 314 --output "$D/eval_probe_s${S}_vs_${NT}.json"
     done
-    # Cross-seed: does the COMMITTED E4 probe (trained on Edward's weights) transfer to new seeds?
+    # Cross-seed: does the COMMITTED E4 probe (trained on Author A's weights) transfer to new seeds?
     run "$D/eval_committedE4probe_v3_s${S}_vs_benign_s${S}.json" python scripts/evaluate_probe_contrast.py \
         --model "$MODEL" --device $DEV --probe probes/xdomain_v3_vs_benign.pkl \
         --positive-adapter "$V" --negative-adapter "$B" \

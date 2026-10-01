@@ -18,7 +18,7 @@ Discharges framing issues C2/C3/C5/C8/C9/C13/C14/C16 and prevents unsupported la
 ## Commands
 
 ```bash
-cd /Users/edward/Projects/algoverse-ai-sandbagging
+cd <repo>
 
 # Locate every high-risk phrase in the old paper before drafting replacements.
 grep -nEi 'complete co-evolution|robust|more expensive|fundamental change|generalizes|universal|imitative|two-line|by construction|expected' \
@@ -41,8 +41,8 @@ PY
 
 ## Expected artifacts
 
-- `/Users/edward/Projects/algoverse-ai-sandbagging/docs/plan/PAPER_EDIT_PLAN.md`
-- updated `/Users/edward/Projects/algoverse-ai-sandbagging/docs/plan/CLAIMS_LEDGER.md`
+- `<repo>/docs/plan/PAPER_EDIT_PLAN.md`
+- updated `<repo>/docs/plan/CLAIMS_LEDGER.md`
 - a human-applied Overleaf revision linked to its version/history timestamp in the taskboard
 
 ## Acceptance
@@ -67,4 +67,4 @@ If E2/E4 miss scope freeze, submit the narrow negative-result/methodology paper:
 
 ## Owner
 
-Aarohi (paper lead). Rani performs the independent claim audit; Edward verifies artifact-number mapping.
+Author C (paper lead). Author B performs the independent claim audit; Author A verifies artifact-number mapping.
